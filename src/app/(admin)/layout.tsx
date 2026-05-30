@@ -9,12 +9,14 @@ export default function AdminLayout({
 }) {
   return (
     <AdminGuard>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col">
-          <AppHeader />
-          <main className="flex-1 p-6">
-            {children}
+      <div className="flex min-h-screen flex-col bg-background">
+        <AppHeader />
+        <div className="flex flex-1">
+          <AdminSidebar />
+          <main className="min-w-0 flex-1">
+            <div className="mx-auto w-full max-w-[1450px] px-4 py-8 sm:px-6 lg:px-10">
+              {children}
+            </div>
           </main>
         </div>
       </div>

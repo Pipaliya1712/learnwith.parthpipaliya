@@ -34,19 +34,20 @@ export function DashboardContent({ projects, tags }: DashboardContentProps) {
   });
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Projects</h1>
-        <p className="text-muted-foreground">
+    <div className="space-y-7">
+      <div className="space-y-1 pt-2">
+        <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
+        <p className="text-lg text-muted-foreground">
           Browse all projects and find one to contribute to
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center gap-5 overflow-hidden">
         <SearchBar
           value={search}
           onChange={setSearch}
           placeholder="Search projects..."
+          className="w-[82px] shrink-0 transition-all duration-200 focus-within:w-72"
         />
         <TagFilter
           tags={tags}

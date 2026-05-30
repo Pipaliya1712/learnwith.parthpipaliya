@@ -25,11 +25,11 @@ export function ProjectGrid({
   const cols =
     variant === "related"
       ? "grid-cols-1 sm:grid-cols-2"
-      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+      : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3";
 
   if (isLoading) {
     return (
-      <div className={`grid gap-4 ${cols}`}>
+      <div className={`grid gap-5 ${cols}`}>
         {Array.from({ length: skeletonsCount }).map((_, i) => (
           <ProjectCardSkeleton key={i} />
         ))}
@@ -51,7 +51,7 @@ export function ProjectGrid({
   }
 
   return (
-    <div className={`grid gap-4 ${cols}`}>
+    <div className={`grid gap-5 ${cols}`}>
       {projects.map((project) => (
         <ProjectCard
           key={project.id}

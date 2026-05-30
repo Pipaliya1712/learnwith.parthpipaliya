@@ -70,7 +70,7 @@ export function SearchBar({
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        className="pl-8 pr-8"
+        className="h-10 rounded-xl bg-card/70 pl-8 pr-8 shadow-sm"
       />
       {value.length > 0 && (
         <Button

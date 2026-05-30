@@ -40,24 +40,27 @@ export function ProjectCard({
 
   const cardContent = (
     <Card
-      className={`card-hover overflow-hidden border bg-card h-full flex flex-col ${
+      className={`card-hover h-full overflow-hidden rounded-lg border border-border/80 bg-card p-0 shadow-sm ring-1 ring-foreground/5 flex flex-col ${
         project.is_visible && variant === "admin" ? "card-featured" : ""
       }`}
     >
       {/* Image */}
       <div
         className={`relative w-full bg-muted ${
-          isCompact ? "h-32" : "h-48"
+          isCompact ? "h-32" : "h-[240px]"
         } overflow-hidden`}
       >
         {thumbnail ? (
-          <Image
-            src={thumbnail.image_url}
-            alt={thumbnail.alt_text || project.name}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          <>
+            <Image
+              src={thumbnail.image_url}
+              alt={thumbnail.alt_text || project.name}
+              fill
+              className="object-cover grayscale transition duration-500 group-hover:scale-110 group-hover:grayscale-0 group-hover:brightness-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/45 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          </>
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
             <GitFork className="h-12 w-12 opacity-30" />
@@ -65,25 +68,25 @@ export function ProjectCard({
         )}
       </div>
 
-      <CardHeader className={`${isCompact ? "p-3 pb-1" : "p-4 pb-2"}`}>
+      <CardHeader className={`${isCompact ? "p-3 pb-1" : "p-5 pb-2"}`}>
         <h3
-          className={`font-semibold tracking-tight line-clamp-1 ${
-            isCompact ? "text-sm" : "text-lg"
+          className={`font-semibold tracking-tight line-clamp-1 transition-colors group-hover:text-primary ${
+            isCompact ? "text-sm" : "text-2xl"
           }`}
         >
           {project.name}
         </h3>
         <p
           className={`text-muted-foreground line-clamp-3 ${
-            isCompact ? "text-xs" : "text-sm"
+            isCompact ? "text-xs" : "text-base"
           }`}
         >
           {project.summary}
         </p>
       </CardHeader>
 
-      <CardContent className={`${isCompact ? "px-3 pb-1" : "px-4 pb-2"}`}>
-        <div className="flex flex-wrap gap-1">
+      <CardContent className={`${isCompact ? "px-3 pb-1" : "px-5 pb-5"}`}>
+        <div className="flex flex-wrap gap-2">
           {tags.slice(0, 3).map((tag) => (
             <TagBadge key={tag.id} tag={tag} />
           ))}
@@ -96,8 +99,8 @@ export function ProjectCard({
       </CardContent>
 
       <CardFooter
-        className={`mt-auto border-t border-border/50 ${
-          isCompact ? "p-3 pt-2" : "p-4 pt-3"
+        className={`mt-auto border-t border-border/70 bg-muted/40 transition-colors group-hover:bg-muted/60 ${
+          isCompact ? "p-3 pt-2" : "p-5 py-4"
         }`}
       >
         <div className="flex w-full items-center justify-between">
@@ -108,7 +111,7 @@ export function ProjectCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
                 Live
@@ -120,7 +123,7 @@ export function ProjectCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary"
               >
                 <GitFork className="h-3.5 w-3.5" />
                 Repo

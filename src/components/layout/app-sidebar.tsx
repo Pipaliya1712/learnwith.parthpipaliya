@@ -2,37 +2,66 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 import {
-  ArrowLeft,
-  FolderKanban,
-  MessageSquare,
-  Users,
+  LayoutDashboard,
+  Settings,
+  ShieldCheck,
+  User,
 } from "lucide-react";
+import { useAuth } from "@/components/providers/auth-provider";
+import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/admin/projects", label: "Projects", icon: FolderKanban },
-  { href: "/admin/users", label: "Users", icon: Users },
-  { href: "/admin/comments", label: "Comments", icon: MessageSquare },
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    label: "Profile",
+    href: "/profile",
+    icon: User,
+  },
+  {
+    label: "Settings",
+    href: "/settings",
+    icon: Settings,
+  },
 ];
 
 function isActivePath(pathname: string, href: string) {
+  if (href === "/dashboard") {
+    return pathname === "/dashboard" || pathname.startsWith("/dashboard/");
+  }
+
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function AdminSidebar() {
+export function AppSidebar() {
   const pathname = usePathname();
+  const { isAdmin } = useAuth();
+
+  const items = isAdmin
+    ? [
+        ...navItems,
+        {
+          label: "Admin",
+          href: "/admin",
+          icon: ShieldCheck,
+        },
+      ]
+    : navItems;
 
   return (
-    <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-44 shrink-0 flex-col border-r bg-background/95 px-4 py-6 lg:flex">
-      <nav className="flex-1 space-y-1">
-        {navItems.map((item) => {
+    <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-44 shrink-0 border-r bg-background/95 px-4 py-6 lg:block">
+      <nav className="space-y-1">
+        {items.map((item) => {
           const Icon = item.icon;
           const isActive = isActivePath(pathname, item.href);
 
           return (
             <Link
-              key={item.href}
+              key={item.label}
               href={item.href}
               className={cn(
                 "group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground",
@@ -53,18 +82,6 @@ export function AdminSidebar() {
           );
         })}
       </nav>
-
-      <div className="border-t pt-4">
-        <Link
-          href="/dashboard"
-          className="group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
-        >
-          <span className="flex size-8 items-center justify-center rounded-md bg-muted/70 transition-colors group-hover:bg-background">
-            <ArrowLeft className="size-4" />
-          </span>
-          <span>Dashboard</span>
-        </Link>
-      </div>
     </aside>
   );
 }

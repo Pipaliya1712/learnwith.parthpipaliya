@@ -42,21 +42,20 @@ function getInitials(name: string | null | undefined): string {
 
 export function AppHeader() {
   const { profile, isAdmin, signOut } = useAuth();
-  console.log("profileprofile", profile)
   const pathname = usePathname();
 
   const pageLabel = routeLabels[pathname] ?? "";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-[1450px] items-center justify-between px-4 sm:px-6 lg:px-10">
         {/* Left: Logo + Breadcrumb */}
         <div className="flex items-center gap-2">
           <Link
             href="/dashboard"
             className="flex items-center gap-2 text-lg font-bold tracking-tight"
           >
-            <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-500 to-violet-500 bg-clip-text text-transparent">
               {APP_NAME}
             </span>
           </Link>
@@ -64,7 +63,7 @@ export function AppHeader() {
           {pageLabel && (
             <>
               <ChevronRight className="size-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">
+              <span className="text-base font-medium text-muted-foreground">
                 {pageLabel}
               </span>
             </>
