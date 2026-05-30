@@ -297,4 +297,13 @@
     background-color: var(--muted-foreground);
     border-radius: 3px;
   }
+
+  .project-type-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .project-type-scroll::-webkit-scrollbar {
+    display: none;
+  }
 }
