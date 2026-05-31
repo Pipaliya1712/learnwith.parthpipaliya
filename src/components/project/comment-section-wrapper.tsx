@@ -37,11 +37,9 @@ export function CommentSectionWrapper({
     );
   }
 
-  const userComments = comments.filter((c) => c.user_id === profile.id);
-
   return (
     <CommentSection
-      comments={userComments}
+      comments={comments}
       projectId={projectId}
       onAddComment={addComment}
     />

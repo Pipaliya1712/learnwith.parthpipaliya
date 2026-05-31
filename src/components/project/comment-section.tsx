@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -70,14 +71,19 @@ export function CommentSection({
           {comments.map((comment) => (
             <div key={comment.id} className="rounded-lg border bg-card p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Avatar className="h-6 w-6">
-                  <AvatarFallback className="text-xs">
-                    {(comment.profiles.display_name || comment.profiles.email)[0].toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-sm font-medium">
-                  {comment.profiles.display_name || comment.profiles.email}
-                </span>
+                <Link
+                  href={`/profile/${comment.user_id}`}
+                  className="flex items-center gap-2 rounded-md transition-colors hover:text-primary"
+                >
+                  <Avatar className="h-6 w-6">
+                    <AvatarFallback className="text-xs">
+                      {(comment.profiles.display_name || comment.profiles.email)[0].toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium">
+                    {comment.profiles.display_name || comment.profiles.email}
+                  </span>
+                </Link>
                 <span className="text-xs text-muted-foreground">
                   {format(new Date(comment.created_at), "MMM d, yyyy 'at' h:mm a")}
                 </span>

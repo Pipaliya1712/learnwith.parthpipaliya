@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import { TagBadge } from "@/components/project/tag-badge";
 import { ImageGallery } from "@/components/project/image-gallery";
 import { FeatureList } from "@/components/project/feature-list";
@@ -13,6 +12,21 @@ import { CommentSectionWrapper } from "@/components/project/comment-section-wrap
 import { RelatedProjects } from "@/components/project/related-projects";
 import { ExternalLink, GitFork, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
+import type { Project, ProjectImage, Tag } from "@/types";
+
+type ProjectTagRow = {
+  project_id: string;
+  tags: Tag | Tag[] | null;
+};
+
+type ProjectWithRelations = Project & {
+  images: ProjectImage[];
+  tags: Tag[];
+};
+
+function normalizeTag(tags: Tag | Tag[] | null) {
+  return Array.isArray(tags) ? tags[0] : tags;
+}
 
 export default async function ProjectDetailPage({
   params,
@@ -59,8 +73,9 @@ export default async function ProjectDetailPage({
         .eq("project_id", project.id),
       supabase
         .from("comments")
-        .select("*, profiles(display_name, email)")
+        .select("*, profiles!inner(display_name, email, is_blocked)")
         .eq("project_id", project.id)
+        .eq("profiles.is_blocked", false)
         .order("created_at", { ascending: false }),
     ]);
 
@@ -68,11 +83,13 @@ export default async function ProjectDetailPage({
   const improvements = improvementsRes.data || [];
   const bugs = bugsRes.data || [];
   const images = imagesRes.data || [];
-  const tags = (tagsRes.data || []).map((pt: any) => Array.isArray(pt.tags) ? pt.tags[0] : pt.tags).filter(Boolean);
+  const tags = ((tagsRes.data || []) as ProjectTagRow[])
+    .map((pt) => normalizeTag(pt.tags))
+    .filter((tag): tag is Tag => Boolean(tag));
 
   // Get related projects
   const tagIds = tags.map((t) => t.id);
-  let relatedProjects: any[] = [];
+  let relatedProjects: ProjectWithRelations[] = [];
   if (tagIds.length > 0) {
     const { data: relatedPTs } = await supabase
       .from("project_tags")
@@ -112,9 +129,10 @@ export default async function ProjectDetailPage({
         relatedProjects = related.map((p) => ({
           ...p,
           images: (rImgs.data || []).filter((i) => i.project_id === p.id),
-          tags: (rTags.data || [])
+          tags: ((rTags.data || []) as ProjectTagRow[])
             .filter((t) => t.project_id === p.id)
-            .map((t) => t.tags),
+            .map((t) => normalizeTag(t.tags))
+            .filter((tag): tag is Tag => Boolean(tag)),
         }));
       }
     }
