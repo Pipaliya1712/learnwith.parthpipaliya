@@ -64,11 +64,12 @@ async function clearOTPCookie(type: string) {
 
 // ─── SIGNUP ──────────────────────────────────────────────────────────
 // Creates profile directly. No Supabase Auth.
-export async function signup(data: { email: string; password: string; confirmPassword: string }) {
+export async function signup(data: { display_name: string; email: string; password: string; confirmPassword: string }) {
   const validation = serverSignupSchema.safeParse(data);
   if (!validation.success) {
     return { success: false, error: validation.error.issues[0].message };
   }
+  const username = validation.data.display_name.trim();
 
   const supabase = createAdminClient();
 
@@ -78,6 +79,21 @@ export async function signup(data: { email: string; password: string; confirmPas
     .select("id, email_verified")
     .eq("email", data.email)
     .maybeSingle();
+
+  let usernameQuery = supabase
+    .from("profiles")
+    .select("id")
+    .ilike("display_name", username);
+
+  if (existing) {
+    usernameQuery = usernameQuery.neq("id", existing.id);
+  }
+
+  const { data: existingUsername } = await usernameQuery.maybeSingle();
+
+  if (existingUsername) {
+    return { success: false, error: "This username is already taken" };
+  }
 
   if (existing) {
     if (existing.email_verified) {
@@ -92,6 +108,7 @@ export async function signup(data: { email: string; password: string; confirmPas
     const { error: updateError } = await supabase
       .from("profiles")
       .update({
+        display_name: username,
         email_otp: otp,
         email_otp_expires_at: expiresAt.toISOString(),
         password_hash: passwordHash,
@@ -117,6 +134,7 @@ export async function signup(data: { email: string; password: string; confirmPas
 
   const { error: insertError } = await supabase.from("profiles").insert({
     email: data.email,
+    display_name: username,
     password_hash: passwordHash,
     email_verified: false,
     role: data.email === process.env.SUPER_ADMIN_EMAIL ? "admin" : "developer",
@@ -332,15 +350,27 @@ export async function updateProfile(display_name: string) {
   if (!validation.success) {
     return { success: false, error: validation.error.issues[0].message };
   }
+  const username = validation.data.display_name.trim();
 
   const { getSession } = await import("@/lib/session");
   const session = await getSession();
   if (!session) return { success: false, error: "You must be logged in" };
 
   const supabase = createAdminClient();
+  const { data: existingUsername } = await supabase
+    .from("profiles")
+    .select("id")
+    .ilike("display_name", username)
+    .neq("id", session.userId)
+    .maybeSingle();
+
+  if (existingUsername) {
+    return { success: false, error: "This username is already taken" };
+  }
+
   const { error } = await supabase
     .from("profiles")
-    .update({ display_name })
+    .update({ display_name: username })
     .eq("id", session.userId);
 
   if (error) return { success: false, error: "Failed to update profile" };

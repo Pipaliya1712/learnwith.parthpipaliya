@@ -7,6 +7,18 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+type CommentRow = {
+  id: string;
+  project_id: string;
+  content: string;
+  created_at: string;
+  deleted_at?: string | null;
+  projects:
+    | { name: string; slug: string; is_deleted?: boolean; is_visible?: boolean }
+    | { name: string; slug: string; is_deleted?: boolean; is_visible?: boolean }[]
+    | null;
+};
+
 export default async function PublicProfilePage({
   params,
 }: {
@@ -24,13 +36,29 @@ export default async function PublicProfilePage({
 
   if (!profile) notFound();
 
-  const { data: comments } = await supabase
+  const commentsWithDeleted = await supabase
     .from("comments")
-    .select("id, project_id, content, created_at, projects!inner(name, slug, is_deleted, is_visible)")
+    .select("id, project_id, content, created_at, deleted_at, projects!inner(name, slug, is_deleted, is_visible)")
     .eq("user_id", profile.id)
+    .is("deleted_at", null)
     .eq("projects.is_deleted", false)
     .eq("projects.is_visible", true)
     .order("created_at", { ascending: false });
+
+  const commentsRes = commentsWithDeleted.error
+    ? await supabase
+        .from("comments")
+        .select("id, project_id, content, created_at, projects!inner(name, slug, is_deleted, is_visible)")
+        .eq("user_id", profile.id)
+        .eq("projects.is_deleted", false)
+        .eq("projects.is_visible", true)
+        .order("created_at", { ascending: false })
+    : commentsWithDeleted;
+
+  const comments = ((commentsRes.data || []) as CommentRow[]).filter((comment) => {
+    if (!("deleted_at" in comment)) return true;
+    return comment.deleted_at === null;
+  });
 
   const displayName = profile.display_name || profile.email;
 

@@ -32,7 +32,7 @@ export default function SignupPage() {
     formState: { errors },
   } = useForm<SignupInput>({
     resolver: zodResolver(signupSchema),
-    defaultValues: { email: "", password: "", confirmPassword: "" },
+    defaultValues: { display_name: "", email: "", password: "", confirmPassword: "" },
   });
 
   const onSubmit = async (data: SignupInput) => {
@@ -42,6 +42,7 @@ export default function SignupPage() {
       const hashedPassword = await hashPassword(data.password);
       const hashedConfirmPassword = await hashPassword(data.confirmPassword);
       const result = await signup({
+        display_name: data.display_name,
         email: data.email,
         password: hashedPassword,
         confirmPassword: hashedConfirmPassword,
@@ -75,6 +76,21 @@ export default function SignupPage() {
 
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="display_name">Username</Label>
+            <Input
+              id="display_name"
+              type="text"
+              placeholder="Your public username"
+              autoComplete="username"
+              disabled={isLoading}
+              {...register("display_name")}
+            />
+            {errors.display_name && (
+              <p className="text-sm text-destructive">{errors.display_name.message}</p>
+            )}
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input

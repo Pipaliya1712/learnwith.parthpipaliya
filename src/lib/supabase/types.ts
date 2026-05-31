@@ -76,6 +76,8 @@ export type Comment = {
   user_id: string;
   content: string;
   created_at: string;
+  deleted_at: string | null;
+  deleted_by: string | null;
 };
 
 export type Database = {

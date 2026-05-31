@@ -4,13 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
-  ArrowLeft,
   FolderKanban,
+  LayoutDashboard,
   MessageSquare,
   Users,
 } from "lucide-react";
 
 const navItems = [
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
@@ -53,18 +54,6 @@ export function AdminSidebar() {
           );
         })}
       </nav>
-
-      <div className="border-t pt-4">
-        <Link
-          href="/dashboard"
-          className="group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
-        >
-          <span className="flex size-8 items-center justify-center rounded-md bg-muted/70 transition-colors group-hover:bg-background">
-            <ArrowLeft className="size-4" />
-          </span>
-          <span>Dashboard</span>
-        </Link>
-      </div>
     </aside>
   );
 }

@@ -3,25 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LogOut,
-  Settings,
-  User,
-  LayoutDashboard,
   ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/auth-provider";
 import { APP_NAME } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const routeLabels: Record<string, string> = {
@@ -41,7 +28,7 @@ function getInitials(name: string | null | undefined): string {
 }
 
 export function AppHeader() {
-  const { profile, isAdmin, signOut } = useAuth();
+  const { profile } = useAuth();
   const pathname = usePathname();
 
   const pageLabel = routeLabels[pathname] ?? "";
@@ -74,17 +61,12 @@ export function AppHeader() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
 
-          {/* User Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                  variant="ghost"
-                  className="relative flex items-center gap-2 rounded-full pl-1 pr-3"
-                  aria-label="User menu"
-                />
-              }
-            >
+          <Button
+            variant="ghost"
+            className="relative flex items-center gap-2 rounded-full pl-1 pr-3"
+            aria-label="Open profile"
+            render={<Link href="/profile" />}
+          >
               <Avatar size="sm">
                 <AvatarImage
                   src={profile?.avatar_url ?? undefined}
@@ -97,74 +79,7 @@ export function AppHeader() {
               <span className="hidden text-sm font-medium sm:inline-block">
                 {profile?.display_name || profile?.email?.split("@")[0] || "User"}
               </span>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuGroup>
-              <DropdownMenuLabel>
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-sm font-medium truncate">
-                    {profile?.display_name || profile?.email || "User"}
-                  </span>
-                  {!profile?.display_name && !profile?.email && (
-                    <span className="text-xs text-muted-foreground truncate">
-                      User
-                    </span>
-                  )}
-                  {profile?.display_name && profile?.email && (
-                    <span className="text-xs text-muted-foreground truncate">
-                      {profile?.email}
-                    </span>
-                  )}
-                </div>
-              </DropdownMenuLabel>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  render={<Link href="/dashboard" />}
-                >
-                  <LayoutDashboard className="size-4" />
-                  Dashboard
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  render={<Link href="/settings" />}
-                >
-                  <Settings className="size-4" />
-                  Settings
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  render={<Link href="/profile" />}
-                >
-                  <User className="size-4" />
-                  Profile
-                </DropdownMenuItem>
-
-                {isAdmin && (
-                  <DropdownMenuItem
-                    render={<Link href="/admin" />}
-                  >
-                    <Settings className="size-4" />
-                    Admin Panel
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => signOut()}
-              >
-                <LogOut className="size-4" />
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          </Button>
         </div>
       </div>
     </header>

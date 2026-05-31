@@ -91,8 +91,8 @@ function DisplayNameForm({ currentName }: { currentName: string }) {
     return (
       <div className="flex items-center justify-between">
         <div>
-          <Label className="text-muted-foreground">Display Name</Label>
-          <p className="font-medium mt-1">{currentName || "No name set"}</p>
+          <Label className="text-muted-foreground">Username</Label>
+          <p className="font-medium mt-1">{currentName || "No username set"}</p>
         </div>
         <Button variant="ghost" size="icon" onClick={() => setIsEditing(true)}>
           <Pencil className="h-4 w-4" />
@@ -104,7 +104,7 @@ function DisplayNameForm({ currentName }: { currentName: string }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <div className="space-y-2">
-        <Label htmlFor="display_name">Display Name</Label>
+        <Label htmlFor="display_name">Username</Label>
         <div className="flex gap-2">
           <div className="flex-1">
             <Input id="display_name" {...register("display_name")} autoFocus />

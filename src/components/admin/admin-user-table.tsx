@@ -90,7 +90,7 @@ export function AdminUserTable({ users: initialUsers, isSuperAdmin }: AdminUserT
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">
-                        {user.display_name || "No name"}
+                        {user.display_name || "No username"}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {user.email}

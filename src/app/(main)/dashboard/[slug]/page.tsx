@@ -86,6 +86,10 @@ export default async function ProjectDetailPage({
   const tags = ((tagsRes.data || []) as ProjectTagRow[])
     .map((pt) => normalizeTag(pt.tags))
     .filter((tag): tag is Tag => Boolean(tag));
+  const comments = (commentsRes.data || []).filter((comment) => {
+    if (!("deleted_at" in comment)) return true;
+    return comment.deleted_at === null;
+  });
 
   // Get related projects
   const tagIds = tags.map((t) => t.id);
@@ -238,7 +242,7 @@ export default async function ProjectDetailPage({
       <div className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">Comments</h2>
         <CommentSectionWrapper
-          comments={commentsRes.data || []}
+          comments={comments}
           projectId={project.id}
         />
       </div>

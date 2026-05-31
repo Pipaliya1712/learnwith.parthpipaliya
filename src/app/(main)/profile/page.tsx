@@ -1,22 +1,56 @@
-"use client";
-
-import { useAuth } from "@/components/providers/auth-provider";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { format } from "date-fns";
-import { CheckCircle2, Mail, Shield, Calendar } from "lucide-react";
+import { CheckCircle2, Mail, Shield, Calendar, MessageSquare } from "lucide-react";
+import { OwnProfileComments, type OwnProfileComment } from "@/components/profile/own-profile-comments";
 
-export default function ProfilePage() {
-  const { profile, isLoading } = useAuth();
+type CommentRow = {
+  id: string;
+  content: string;
+  created_at: string;
+  deleted_at: string | null;
+  projects: { name: string; slug: string } | { name: string; slug: string }[] | null;
+};
 
-  if (isLoading || !profile) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="shimmer h-8 w-8 rounded-full" />
-      </div>
-    );
-  }
+export default async function ProfilePage() {
+  const session = await getSession();
+  if (!session) redirect("/login");
+
+  const supabase = createAdminClient();
+  const [{ data: profile }, commentsWithDeleted] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", session.userId)
+      .maybeSingle(),
+    supabase
+      .from("comments")
+      .select("id, content, created_at, deleted_at, projects(name, slug)")
+      .eq("user_id", session.userId)
+      .order("created_at", { ascending: false }),
+  ]);
+
+  const commentsRes = commentsWithDeleted.error
+    ? await supabase
+        .from("comments")
+        .select("id, content, created_at, projects(name, slug)")
+        .eq("user_id", session.userId)
+        .order("created_at", { ascending: false })
+    : commentsWithDeleted;
+
+  if (!profile) redirect("/login");
+
+  const profileComments: OwnProfileComment[] = ((commentsRes.data || []) as CommentRow[]).map((comment) => ({
+    id: comment.id,
+    content: comment.content,
+    created_at: comment.created_at,
+    deleted_at: "deleted_at" in comment ? comment.deleted_at : null,
+    projects: Array.isArray(comment.projects) ? comment.projects[0] : comment.projects,
+  }));
 
   return (
     <div className="space-y-6 max-w-2xl">
@@ -39,7 +73,7 @@ export default function ProfilePage() {
             <div className="space-y-4 text-center sm:text-left">
               <div>
                 <p className="font-bold text-3xl">
-                  {profile.display_name || "No name set"}
+                  {profile.display_name || "No username set"}
                 </p>
               </div>
               
@@ -71,6 +105,18 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5" />
+            Your Comments
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <OwnProfileComments comments={profileComments} />
         </CardContent>
       </Card>
     </div>

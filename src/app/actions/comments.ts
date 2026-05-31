@@ -25,7 +25,7 @@ export async function addComment(projectId: string, content: string) {
     return { success: false, error: "Failed to post comment" };
   }
 
-  revalidatePath(`/dashboard/${projectId}`);
+  revalidatePath("/dashboard");
   return { success: true };
 }
 
@@ -40,13 +40,56 @@ export async function deleteComment(commentId: string) {
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("comments")
-    .delete()
+    .update({
+      deleted_at: new Date().toISOString(),
+      deleted_by: session.userId,
+    })
+    .eq("id", commentId)
+    .is("deleted_at", null);
+
+  if (error) {
+    return { success: false, error: "Failed to delete comment" };
+  }
+
+  revalidatePath("/admin/comments");
+  revalidatePath("/dashboard");
+  revalidatePath("/profile");
+  return { success: true };
+}
+
+export async function deleteOwnComment(commentId: string) {
+  const session = await getSession();
+  if (!session) return { success: false, error: "Unauthorized" };
+
+  const supabase = createAdminClient();
+  const { data: comment } = await supabase
+    .from("comments")
+    .select("id, user_id, deleted_at")
+    .eq("id", commentId)
+    .maybeSingle();
+
+  if (!comment || comment.user_id !== session.userId) {
+    return { success: false, error: "Comment not found" };
+  }
+
+  if (comment.deleted_at) {
+    return { success: true };
+  }
+
+  const { error } = await supabase
+    .from("comments")
+    .update({
+      deleted_at: new Date().toISOString(),
+      deleted_by: session.userId,
+    })
     .eq("id", commentId);
 
   if (error) {
     return { success: false, error: "Failed to delete comment" };
   }
 
+  revalidatePath("/profile");
+  revalidatePath("/dashboard");
   revalidatePath("/admin/comments");
   return { success: true };
 }

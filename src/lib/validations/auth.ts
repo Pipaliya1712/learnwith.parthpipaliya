@@ -7,6 +7,15 @@ export const loginSchema = z.object({
 
 export const signupSchema = z
   .object({
+    display_name: z
+      .string()
+      .trim()
+      .min(3, "Username must be at least 3 characters")
+      .max(40, "Username must be 40 characters or fewer")
+      .regex(
+        /^[a-zA-Z0-9_ ]+$/,
+        "Username can only use letters, numbers, spaces, and underscores"
+      ),
     email: z.string().email("Please enter a valid email address"),
     password: z
       .string()
@@ -45,7 +54,15 @@ export const resetPasswordSchema = z
   });
 
 export const updateProfileSchema = z.object({
-  display_name: z.string().min(1, "Name is required").max(100),
+  display_name: z
+    .string()
+    .trim()
+    .min(3, "Username must be at least 3 characters")
+    .max(40, "Username must be 40 characters or fewer")
+    .regex(
+      /^[a-zA-Z0-9_ ]+$/,
+      "Username can only use letters, numbers, spaces, and underscores"
+    ),
 });
 
 export const updateEmailSchema = z.object({
@@ -77,6 +94,15 @@ export const serverLoginSchema = z.object({
 
 export const serverSignupSchema = z
   .object({
+    display_name: z
+      .string()
+      .trim()
+      .min(3, "Username must be at least 3 characters")
+      .max(40, "Username must be 40 characters or fewer")
+      .regex(
+        /^[a-zA-Z0-9_ ]+$/,
+        "Username can only use letters, numbers, spaces, and underscores"
+      ),
     email: z.string().email("Please enter a valid email address"),
     password: z.string().length(64, "Invalid password format"),
     confirmPassword: z.string().length(64, "Invalid password format"),
