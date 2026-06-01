@@ -21,8 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
-import { login } from "@/app/actions/auth";
-import { hashPassword } from "@/lib/hash";
+import { authApi } from "@/lib/api-client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,19 +41,21 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const hashedPassword = await hashPassword(data.password);
-      const result = await login(data.email, hashedPassword, stayLoggedIn);
-
-      if (result?.error) {
-        toast.error(result.error);
-
-        if (result?.needsVerification && result?.email) {
-          router.push(`/verify-email?email=${encodeURIComponent(result.email)}`);
-        }
-        return;
+      const response = await authApi.login({
+        email: data.email,
+        password: data.password,
+        stay_logged_in: stayLoggedIn
+      });
+      
+      // If successful, redirect to dashboard
+      window.location.href = "/dashboard";
+    } catch (error: any) {
+      if (error.message.includes("verify your email")) {
+        toast.error("Please verify your email first");
+        router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
+      } else {
+        toast.error(error.message || "Failed to login");
       }
-    } catch {
-      // redirect() throws, which is expected on success
     } finally {
       setIsLoading(false);
     }

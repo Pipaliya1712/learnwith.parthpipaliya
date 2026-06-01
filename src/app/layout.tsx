@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
-import { getCurrentUser } from "@/app/actions/auth";
+import { getCurrentUserServer } from "@/lib/server-api";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -39,7 +39,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const profile = await getCurrentUser();
+  const profile = await getCurrentUserServer();
 
   return (
     <html

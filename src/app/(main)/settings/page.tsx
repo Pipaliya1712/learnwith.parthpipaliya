@@ -6,8 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { updateProfile, updateEmail, verifyEmailUpdate, changePassword } from "@/app/actions/auth";
-import { hashPassword } from "@/lib/hash";
+import { authApi } from "@/lib/api-client";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -78,12 +77,13 @@ function DisplayNameForm({ currentName }: { currentName: string }) {
   });
 
   const onSubmit = async (data: UpdateProfileInput) => {
-    const result = await updateProfile(data.display_name);
-    if (result?.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      await authApi.updateProfile(data.display_name);
       toast.success("Display name updated");
       setIsEditing(false);
+      window.location.reload();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update profile");
     }
   };
 
@@ -135,6 +135,7 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<UpdateEmailInput>({
@@ -147,30 +148,26 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
       setIsEditing(false);
       return;
     }
-    const result = await updateEmail(data.email);
-    if (result?.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      await authApi.requestEmailUpdate(data.email);
       toast.success("Verification email sent. Please check your inbox for the code.");
       setStep("verify");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to request email update");
     }
   };
 
   const onVerify = async () => {
-    if (otp.length !== 6) {
-      toast.error("Please enter a valid 6-digit code");
-      return;
-    }
-    
     setIsVerifying(true);
-    const result = await verifyEmailUpdate(otp);
-    if (result?.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      await authApi.verifyEmailUpdate(getValues().email, otp);
       toast.success("Email successfully updated!");
       setStep("request");
       setOtp("");
       setIsEditing(false);
+      window.location.reload();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to verify email update");
     }
     setIsVerifying(false);
   };
@@ -255,16 +252,17 @@ function PasswordForm() {
   });
 
   const onSubmit = async (data: UpdatePasswordInput) => {
-    const hashedCurrent = await hashPassword(data.currentPassword);
-    const hashedNew = await hashPassword(data.newPassword);
-    const hashedConfirm = await hashPassword(data.confirmPassword);
-    const result = await changePassword(hashedCurrent, hashedNew, hashedConfirm);
-    if (result?.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      await authApi.changePassword({
+        current_password: data.currentPassword,
+        new_password: data.newPassword,
+        confirm_password: data.confirmPassword
+      });
       toast.success("Password updated successfully");
       reset();
       setIsEditing(false);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to change password");
     }
   };
 

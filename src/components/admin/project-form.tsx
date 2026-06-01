@@ -13,7 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { createProject, updateProject, createTag, uploadProjectImage, deleteProjectImage } from "@/app/actions/projects";
+import { projectsApi } from "@/lib/api-client";
 import { projectSchema, type ProjectInput } from "@/lib/validations/project";
 import type { Project, Feature, Improvement, Bug, ProjectImage, Tag } from "@/types";
 import { Plus, X, Upload, Trash2, Loader2 } from "lucide-react";
@@ -90,30 +90,33 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
     formData.append("bugs", JSON.stringify(bugs));
     formData.append("tag_ids", JSON.stringify(selectedTagIds));
 
-    if (isEditing && projectId) {
-      const result = await updateProject(projectId, formData);
-      if (result?.error) {
-        toast.error(result.error);
-      } else {
+    try {
+      if (isEditing && projectId) {
+        await projectsApi.update(projectId, formData);
         toast.success("Project updated");
         router.push("/admin/projects");
         router.refresh();
+      } else {
+        await projectsApi.create(formData);
+        toast.success("Project created");
+        router.push("/admin/projects");
+        router.refresh();
       }
-    } else {
-      await createProject(formData);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to save project");
     }
   };
 
   const handleCreateTag = async () => {
     if (!newTagName.trim()) return;
-    const result = await createTag(newTagName);
-    if (result.error) {
-      toast.error(result.error);
-    } else if (result.data) {
-      setAllTags((prev) => [...prev, result.data]);
-      setSelectedTagIds((prev) => [...prev, result.data.id]);
+    try {
+      const data = (await projectsApi.createTag(newTagName)) as Tag;
+      setAllTags((prev) => [...prev, data]);
+      setSelectedTagIds((prev) => [...prev, data.id]);
       setNewTagName("");
       toast.success("Tag created");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to create tag");
     }
   };
 
@@ -121,9 +124,10 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
     if (!e.target.files?.length || !projectId) return;
     setUploading(true);
     for (const file of Array.from(e.target.files)) {
-      const result = await uploadProjectImage(projectId, file);
-      if (result.error) {
-        toast.error(result.error);
+      try {
+        await projectsApi.uploadImage(projectId, file);
+      } catch (error: any) {
+        toast.error(error.message || "Failed to upload image");
       }
     }
     setUploading(false);
@@ -131,12 +135,12 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
   };
 
   const handleDeleteImage = async (imageId: string) => {
-    const result = await deleteProjectImage(imageId);
-    if (result.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      await projectsApi.deleteImage(imageId);
       setImages((prev) => prev.filter((i) => i.id !== imageId));
       toast.success("Image deleted");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to delete image");
     }
   };
 

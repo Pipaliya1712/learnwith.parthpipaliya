@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { logout } from "@/app/actions/auth";
+import { authApi } from "@/lib/api-client";
 import type { Profile } from "@/types";
 
 type AuthContextType = {
@@ -28,9 +28,10 @@ export function AuthProvider({ children, initialProfile = null }: { children: Re
 
   const signOut = useCallback(async () => {
     try {
-      await logout();
+      await authApi.logout();
+      window.location.href = "/login";
     } catch {
-      // redirect() throws
+      // ignore
     }
     setProfile(null);
   }, []);

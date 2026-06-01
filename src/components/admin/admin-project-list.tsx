@@ -25,7 +25,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { deleteProject, toggleVisibility } from "@/app/actions/projects";
+import { projectsApi } from "@/lib/api-client";
 import type { Project, Tag } from "@/types";
 import { Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
@@ -36,26 +36,26 @@ export function AdminProjectList({ projects }: { projects: ProjectWithTags[] }) 
   const [projectList, setProjectList] = useState(projects);
 
   const handleToggleVisibility = async (projectId: string, current: boolean) => {
-    const result = await toggleVisibility(projectId, !current);
-    if (result.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      await projectsApi.toggleVisibility(projectId, !current);
       setProjectList((prev) =>
         prev.map((p) =>
           p.id === projectId ? { ...p, is_visible: !current } : p
         )
       );
       toast.success(current ? "Removed from landing page" : "Added to landing page");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to toggle visibility");
     }
   };
 
   const handleDelete = async (projectId: string) => {
-    const result = await deleteProject(projectId);
-    if (result.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      await projectsApi.delete(projectId);
       setProjectList((prev) => prev.filter((p) => p.id !== projectId));
       toast.success("Project deleted");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to delete project");
     }
   };
 

@@ -19,8 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { resetPasswordSchema, type ResetPasswordInput } from "@/lib/validations/auth";
-import { updatePassword } from "@/app/actions/auth";
-import { hashPassword } from "@/lib/hash";
+import { authApi } from "@/lib/api-client";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -44,20 +43,18 @@ export default function ResetPasswordPage() {
     setIsLoading(true);
 
     try {
-      const hashedPassword = await hashPassword(data.password);
-      const hashedConfirmPassword = await hashPassword(data.confirmPassword);
-      const result = await updatePassword(data.email, data.otp, hashedPassword, hashedConfirmPassword);
-
-      if (result?.error) {
-        toast.error(result.error);
-        return;
-      }
+      await authApi.resetPassword({
+        email: data.email,
+        otp: data.otp,
+        password: data.password,
+        confirm_password: data.confirmPassword,
+      });
 
       toast.success("Password updated successfully");
       router.push("/dashboard");
       router.refresh();
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }

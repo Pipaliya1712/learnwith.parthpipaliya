@@ -2,14 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { DataTable, type ColumnDef } from "@/components/ui/data-table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,13 +12,13 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { deleteComment } from "@/app/actions/comments";
-import { Trash2 } from "lucide-react";
+import { commentsApi } from "@/lib/api-client";
+import { Trash2, ArchiveX } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 
 export type CommentWithDetails = {
   id: string;
@@ -33,105 +26,185 @@ export type CommentWithDetails = {
   user_id: string;
   content: string;
   created_at: string;
+  updated_at: string | null;
   deleted_at: string | null;
   deleted_by: string | null;
   projects: { name: string } | null;
-  profiles: { email: string; display_name: string | null } | null;
+  profiles: { email: string; display_name: string | null; is_blocked?: boolean } | null;
 };
 
-export function AdminCommentTable({ comments: initialComments }: { comments: CommentWithDetails[] }) {
-  const [comments, setComments] = useState(initialComments);
+export function AdminCommentTable({
+  comments,
+  total,
+  currentPage,
+  pageSize = 10,
+  isSuperAdmin,
+}: {
+  comments: CommentWithDetails[];
+  total: number;
+  currentPage: number;
+  pageSize?: number;
+  isSuperAdmin: boolean;
+}) {
+  const router = useRouter();
 
-  const handleDelete = async (commentId: string) => {
-    const result = await deleteComment(commentId);
-    if (result.error) {
-      toast.error(result.error);
-    } else {
-      const deletedAt = new Date().toISOString();
-      setComments((prev) =>
-        prev.map((c) => c.id === commentId ? { ...c, deleted_at: deletedAt } : c)
-      );
-      toast.success("Comment marked as deleted");
+  const [deleteState, setDeleteState] = useState<{
+    id: string | null;
+    type: "soft" | "hard" | null;
+  }>({ id: null, type: null });
+
+  const handleConfirmDelete = async () => {
+    if (!deleteState.id || !deleteState.type) return;
+    
+    try {
+      if (deleteState.type === "soft") {
+        await commentsApi.adminSoftDelete(deleteState.id);
+        toast.success("Comment soft deleted successfully");
+      } else {
+        await commentsApi.adminHardDelete(deleteState.id);
+        toast.success("Comment permanently deleted");
+      }
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to delete comment");
+    } finally {
+      setDeleteState({ id: null, type: null });
     }
   };
 
+  const columns: ColumnDef<CommentWithDetails>[] = [
+    {
+      key: "project_name",
+      header: "Project",
+      sortable: true,
+      searchable: true,
+      searchPlaceholder: "Search project...",
+      cell: (row) => (
+        <span className="font-medium text-sm">
+          {row.projects?.name || "Unknown"}
+        </span>
+      ),
+    },
+    {
+      key: "user_email",
+      header: "User",
+      sortable: true,
+      searchable: true,
+      searchPlaceholder: "Search user email...",
+      cell: (row) => (
+        <span className="text-sm">
+          {row.profiles?.display_name || row.profiles?.email || "Unknown"}
+        </span>
+      ),
+    },
+    {
+      key: "content",
+      header: "Comment",
+      sortable: false,
+      searchable: true,
+      searchPlaceholder: "Search content...",
+      cell: (row) => (
+        <span className="max-w-xs truncate block text-sm text-muted-foreground">
+          {row.content}
+        </span>
+      ),
+    },
+    {
+      key: "created_at",
+      header: "Date",
+      sortable: true,
+      cell: (row) => {
+        let text = `Created: ${format(new Date(row.created_at), "MMM d, yyyy")}`;
+        if (row.deleted_at) {
+          text = `Deleted: ${format(new Date(row.deleted_at), "MMM d, yyyy")}`;
+        } else if (row.updated_at) {
+          text = `Updated: ${format(new Date(row.updated_at), "MMM d, yyyy")}`;
+        }
+        return <span className="text-sm text-muted-foreground whitespace-nowrap">{text}</span>;
+      },
+    },
+    {
+      key: "status",
+      header: "User Status",
+      sortable: false,
+      filterOptions: [
+        { label: "Active", value: "active" },
+        { label: "Blocked", value: "blocked" },
+      ],
+      cell: (row) => {
+        if (row.profiles?.is_blocked) {
+          return <Badge variant="destructive">Blocked</Badge>;
+        }
+        return <Badge variant="outline">Active</Badge>;
+      },
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      sortable: false,
+      cell: (row) => {
+        if (!isSuperAdmin) return <span className="text-xs text-muted-foreground">View Only</span>;
+        
+        return (
+          <div className="flex items-center justify-end gap-2">
+            {!row.deleted_at && (
+              <Button
+                variant="ghost"
+                size="icon"
+                title="Soft Delete"
+                onClick={() => setDeleteState({ id: row.id, type: "soft" })}
+              >
+                <ArchiveX className="h-4 w-4 text-orange-500" />
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Hard Delete"
+              onClick={() => setDeleteState({ id: row.id, type: "hard" })}
+            >
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
+
   return (
-    <div className="rounded-lg border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Project</TableHead>
-            <TableHead>User</TableHead>
-            <TableHead>Comment</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {comments.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                No comments yet.
-              </TableCell>
-            </TableRow>
-          ) : (
-            comments.map((comment) => (
-              <TableRow key={comment.id}>
-                <TableCell className="font-medium text-sm">
-                  {comment.projects?.name || "Unknown"}
-                </TableCell>
-                <TableCell className="text-sm">
-                  {comment.profiles?.display_name || comment.profiles?.email || "Unknown"}
-                </TableCell>
-                <TableCell className="max-w-xs truncate text-sm text-muted-foreground">
-                  {comment.content}
-                </TableCell>
-                <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
-                  {format(new Date(comment.created_at), "MMM d, yyyy")}
-                </TableCell>
-                <TableCell className="text-sm whitespace-nowrap">
-                  {comment.deleted_at ? (
-                    <Badge variant="destructive">
-                      Deleted {format(new Date(comment.deleted_at), "MMM d, yyyy")}
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline">Active</Badge>
-                  )}
-                </TableCell>
-                <TableCell className="text-right">
-                  {comment.deleted_at ? null : (
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <Button variant="ghost" size="icon">
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete this comment?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          The comment will be hidden from users and kept in admin activity.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleDelete(comment.id)}
-                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
-    </div>
+    <>
+      <DataTable
+        columns={columns}
+        data={comments}
+        total={total}
+        pageSize={pageSize}
+        currentPage={currentPage}
+      />
+      
+      <AlertDialog
+        open={deleteState.id !== null}
+        onOpenChange={(open) => !open && setDeleteState({ id: null, type: null })}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteState.type === "soft"
+                ? "This will hide the comment from users, but retain it in the database for auditing."
+                : "This will permanently delete the comment from the database. This action cannot be undone."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

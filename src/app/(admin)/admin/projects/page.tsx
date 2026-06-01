@@ -1,32 +1,11 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getAdminProjectsServer } from "@/lib/server-api";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AdminProjectList } from "@/components/admin/admin-project-list";
 
 export default async function AdminProjectsPage() {
-  const supabase = createAdminClient();
-
-  const { data: projects } = await supabase
-    .from("projects")
-    .select("*")
-    .order("updated_at", { ascending: false });
-
-  const projectIds = (projects || []).map((p) => p.id);
-
-  const { data: allProjectTags } = projectIds.length
-    ? await supabase
-        .from("project_tags")
-        .select("project_id, tags(id, name, slug)")
-        .in("project_id", projectIds)
-    : { data: [] };
-
-  const projectsWithTags = (projects || []).map((project) => ({
-    ...project,
-    tags: (allProjectTags || [])
-      .filter((pt) => pt.project_id === project.id)
-      .map((pt) => pt.tags),
-  }));
+  const { projects: projectsWithTags } = await getAdminProjectsServer();
 
   return (
     <div className="space-y-6">

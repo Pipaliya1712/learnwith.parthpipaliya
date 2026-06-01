@@ -3,28 +3,25 @@
 import { useState } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Trash2 } from "lucide-react";
+import { Edit2, MoreVertical, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
-import { deleteOwnComment } from "@/app/actions/comments";
-import { Badge } from "@/components/ui/badge";
+import { commentsApi } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { commentSchema } from "@/lib/validations/comment";
 
 export type OwnProfileComment = {
   id: string;
   content: string;
   created_at: string;
-  deleted_at: string | null;
+  updated_at: string | null;
   projects: {
     name: string;
     slug: string;
@@ -32,27 +29,41 @@ export type OwnProfileComment = {
 };
 
 export function OwnProfileComments({
-  comments: initialComments,
+  comments,
 }: {
   comments: OwnProfileComment[];
 }) {
-  const [comments, setComments] = useState(initialComments);
+  const router = useRouter();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleDelete = async (commentId: string) => {
-    const result = await deleteOwnComment(commentId);
-
-    if (result.error) {
-      toast.error(result.error);
-      return;
+    try {
+      await commentsApi.deleteOwn(commentId);
+      toast.success("Comment deleted successfully");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to delete comment");
     }
+  };
 
-    const deletedAt = new Date().toISOString();
-    setComments((prev) =>
-      prev.map((comment) =>
-        comment.id === commentId ? { ...comment, deleted_at: deletedAt } : comment
-      )
-    );
-    toast.success("Comment marked as deleted");
+  const handleEditSubmit = async (commentId: string) => {
+    const result = commentSchema.safeParse({ content: editContent });
+    if (!result.success) return;
+
+    setIsEditing(true);
+    try {
+      await commentsApi.updateOwn(commentId, editContent);
+      toast.success("Comment updated successfully");
+      setEditingId(null);
+      setEditContent("");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update comment");
+    } finally {
+      setIsEditing(false);
+    }
   };
 
   if (comments.length === 0) {
@@ -67,7 +78,6 @@ export function OwnProfileComments({
     <div className="space-y-3">
       {comments.map((comment) => {
         const project = comment.projects;
-        const isDeleted = Boolean(comment.deleted_at);
 
         return (
           <div key={comment.id} className="rounded-lg border bg-card p-4">
@@ -84,51 +94,78 @@ export function OwnProfileComments({
                   <span className="font-medium">Unknown project</span>
                 )}
                 <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  <span>{format(new Date(comment.created_at), "MMM d, yyyy 'at' h:mm a")}</span>
-                  {comment.deleted_at && (
-                    <span>
-                      Deleted {format(new Date(comment.deleted_at), "MMM d, yyyy 'at' h:mm a")}
-                    </span>
+                  {comment.updated_at ? (
+                    <span>Edited {format(new Date(comment.updated_at), "MMM d, yyyy 'at' h:mm a")}</span>
+                  ) : (
+                    <span>Created {format(new Date(comment.created_at), "MMM d, yyyy 'at' h:mm a")}</span>
                   )}
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                {isDeleted ? (
-                  <Badge variant="destructive">Deleted</Badge>
-                ) : (
-                  <>
-                    <Badge variant="outline">Active</Badge>
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <Button variant="ghost" size="icon" aria-label="Delete comment">
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete this comment?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This hides the comment from users, but keeps the activity for admins.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDelete(comment.id)}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </>
-                )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground outline-none">
+                    <MoreVertical className="h-4 w-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setEditingId(comment.id);
+                        setEditContent(comment.content);
+                      }}
+                    >
+                      <Edit2 className="mr-2 h-4 w-4" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="text-destructive focus:text-destructive"
+                      onClick={() => {
+                        if (confirm("Are you sure you want to delete this comment?")) {
+                          handleDelete(comment.id);
+                        }
+                      }}
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
-            <p className="whitespace-pre-wrap text-sm text-muted-foreground">
-              {comment.content}
-            </p>
+            
+            {editingId === comment.id ? (
+              <div className="space-y-2 mt-2">
+                <Textarea
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  rows={2}
+                  maxLength={2000}
+                />
+                <div className="flex justify-end gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setEditingId(null);
+                      setEditContent("");
+                    }}
+                    disabled={isEditing}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => handleEditSubmit(comment.id)}
+                    disabled={isEditing || !editContent.trim()}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <p className="whitespace-pre-wrap text-sm text-muted-foreground">
+                {comment.content}
+              </p>
+            )}
           </div>
         );
       })}

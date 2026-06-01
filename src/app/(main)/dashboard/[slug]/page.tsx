@@ -1,4 +1,4 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getProjectBySlugServer } from "@/lib/server-api";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -12,21 +12,6 @@ import { CommentSectionWrapper } from "@/components/project/comment-section-wrap
 import { RelatedProjects } from "@/components/project/related-projects";
 import { ExternalLink, GitFork, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
-import type { Project, ProjectImage, Tag } from "@/types";
-
-type ProjectTagRow = {
-  project_id: string;
-  tags: Tag | Tag[] | null;
-};
-
-type ProjectWithRelations = Project & {
-  images: ProjectImage[];
-  tags: Tag[];
-};
-
-function normalizeTag(tags: Tag | Tag[] | null) {
-  return Array.isArray(tags) ? tags[0] : tags;
-}
 
 export default async function ProjectDetailPage({
   params,
@@ -34,113 +19,20 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = createAdminClient();
 
-  const { data: project } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("slug", slug)
-    .eq("is_deleted", false)
-    .single();
+  const projectData = await getProjectBySlugServer(slug);
+  if (!projectData) notFound();
 
-  if (!project) notFound();
-
-  const [featuresRes, improvementsRes, bugsRes, imagesRes, tagsRes, commentsRes] =
-    await Promise.all([
-      supabase
-        .from("features")
-        .select("*")
-        .eq("project_id", project.id)
-        .order("display_order"),
-      supabase
-        .from("improvements")
-        .select("*")
-        .eq("project_id", project.id)
-        .order("display_order"),
-      supabase
-        .from("bugs")
-        .select("*")
-        .eq("project_id", project.id)
-        .order("display_order"),
-      supabase
-        .from("project_images")
-        .select("*")
-        .eq("project_id", project.id)
-        .order("display_order"),
-      supabase
-        .from("project_tags")
-        .select("tags(id, name, slug)")
-        .eq("project_id", project.id),
-      supabase
-        .from("comments")
-        .select("*, profiles!inner(display_name, email, is_blocked)")
-        .eq("project_id", project.id)
-        .eq("profiles.is_blocked", false)
-        .order("created_at", { ascending: false }),
-    ]);
-
-  const features = featuresRes.data || [];
-  const improvements = improvementsRes.data || [];
-  const bugs = bugsRes.data || [];
-  const images = imagesRes.data || [];
-  const tags = ((tagsRes.data || []) as ProjectTagRow[])
-    .map((pt) => normalizeTag(pt.tags))
-    .filter((tag): tag is Tag => Boolean(tag));
-  const comments = (commentsRes.data || []).filter((comment) => {
-    if (!("deleted_at" in comment)) return true;
-    return comment.deleted_at === null;
-  });
-
-  // Get related projects
-  const tagIds = tags.map((t) => t.id);
-  let relatedProjects: ProjectWithRelations[] = [];
-  if (tagIds.length > 0) {
-    const { data: relatedPTs } = await supabase
-      .from("project_tags")
-      .select("project_id, tags(id, name, slug)")
-      .in("tag_id", tagIds);
-
-    const relatedProjectIds = [
-      ...new Set(
-        (relatedPTs || [])
-          .map((pt) => pt.project_id)
-          .filter((id) => id !== project.id)
-      ),
-    ];
-
-    if (relatedProjectIds.length > 0) {
-      const { data: related } = await supabase
-        .from("projects")
-        .select("*")
-        .in("id", relatedProjectIds)
-        .eq("is_deleted", false)
-        .limit(4);
-
-      if (related && related.length > 0) {
-        const rIds = related.map((r) => r.id);
-        const [rImgs, rTags] = await Promise.all([
-          supabase
-            .from("project_images")
-            .select("*")
-            .in("project_id", rIds)
-            .order("display_order"),
-          supabase
-            .from("project_tags")
-            .select("project_id, tags(id, name, slug)")
-            .in("project_id", rIds),
-        ]);
-
-        relatedProjects = related.map((p) => ({
-          ...p,
-          images: (rImgs.data || []).filter((i) => i.project_id === p.id),
-          tags: ((rTags.data || []) as ProjectTagRow[])
-            .filter((t) => t.project_id === p.id)
-            .map((t) => normalizeTag(t.tags))
-            .filter((tag): tag is Tag => Boolean(tag)),
-        }));
-      }
-    }
-  }
+  const project = projectData;
+  const features = project.features || [];
+  const improvements = project.improvements || [];
+  const bugs = project.bugs || [];
+  const images = project.images || [];
+  const tags = project.tags || [];
+  
+  // Filter out comments from blocked users
+  const comments = (project.comments || []).filter((c: any) => c.profiles && !c.profiles.is_blocked);
+  const relatedProjects = project.related_projects || [];
 
   return (
     <div className="space-y-8">
@@ -156,7 +48,7 @@ export default async function ProjectDetailPage({
       {/* Hero */}
       <div className="space-y-4">
         <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
+          {tags.map((tag: any) => (
             <TagBadge key={tag.id} tag={tag} />
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getUserProfileServer } from "@/lib/server-api";
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,44 +12,26 @@ type CommentRow = {
   id: string;
   content: string;
   created_at: string;
+  updated_at: string | null;
   deleted_at: string | null;
-  projects: { name: string; slug: string } | { name: string; slug: string }[] | null;
+  projects: { name: string; slug: string } | null;
 };
 
 export default async function ProfilePage() {
   const session = await getSession();
   if (!session) redirect("/login");
 
-  const supabase = createAdminClient();
-  const [{ data: profile }, commentsWithDeleted] = await Promise.all([
-    supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", session.userId)
-      .maybeSingle(),
-    supabase
-      .from("comments")
-      .select("id, content, created_at, deleted_at, projects(name, slug)")
-      .eq("user_id", session.userId)
-      .order("created_at", { ascending: false }),
-  ]);
-
-  const commentsRes = commentsWithDeleted.error
-    ? await supabase
-        .from("comments")
-        .select("id, content, created_at, projects(name, slug)")
-        .eq("user_id", session.userId)
-        .order("created_at", { ascending: false })
-    : commentsWithDeleted;
-
-  if (!profile) redirect("/login");
-
-  const profileComments: OwnProfileComment[] = ((commentsRes.data || []) as CommentRow[]).map((comment) => ({
+  const data = await getUserProfileServer(session.userId);
+  if (!data || !data.user) redirect("/login");
+  
+  const { user: profile, comments } = data;
+  const profileComments: OwnProfileComment[] = ((comments || []) as CommentRow[]).map((comment) => ({
     id: comment.id,
     content: comment.content,
     created_at: comment.created_at,
+    updated_at: "updated_at" in comment ? comment.updated_at : null,
     deleted_at: "deleted_at" in comment ? comment.deleted_at : null,
-    projects: Array.isArray(comment.projects) ? comment.projects[0] : comment.projects,
+    projects: comment.projects,
   }));
 
   return (
@@ -78,20 +60,6 @@ export default async function ProfilePage() {
               </div>
               
               <div className="flex flex-col items-center sm:items-start gap-3">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Mail className="h-4 w-4" />
-                  <span>{profile.email}</span>
-                  {profile.email_verified ? (
-                    <Badge variant="secondary" className="gap-1 text-xs">
-                      <CheckCircle2 className="h-3 w-3" />
-                      Verified
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline" className="text-xs">
-                      Unverified
-                    </Badge>
-                  )}
-                </div>
 
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Shield className="h-4 w-4" />

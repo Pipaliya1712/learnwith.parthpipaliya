@@ -1,49 +1,10 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getLandingProjectsServer } from "@/lib/server-api";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { LandingContent } from "@/components/project/landing-content";
 
 export default async function LandingPage() {
-  const supabase = createAdminClient();
-
-  const { data: projects } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("is_visible", true)
-    .eq("is_deleted", false)
-    .order("landing_page_order", { ascending: true, nullsFirst: false })
-    .order("created_at", { ascending: false })
-    .limit(10);
-
-  const { data: tags } = await supabase
-    .from("tags")
-    .select("id, name, slug")
-    .order("name");
-
-  const projectIds = (projects || []).map((p) => p.id);
-
-  const { data: allImages } = projectIds.length
-    ? await supabase
-        .from("project_images")
-        .select("*")
-        .in("project_id", projectIds)
-        .order("display_order")
-    : { data: [] };
-
-  const { data: allProjectTags } = projectIds.length
-    ? await supabase
-        .from("project_tags")
-        .select("project_id, tags(id, name, slug)")
-        .in("project_id", projectIds)
-    : { data: [] };
-
-  const projectsWithRelations = (projects || []).map((project) => ({
-    ...project,
-    images: (allImages || []).filter((img) => img.project_id === project.id),
-    tags: (allProjectTags || [])
-      .filter((pt) => pt.project_id === project.id)
-      .map((pt) => pt.tags),
-  }));
+  const { projects: projectsWithRelations, tags } = await getLandingProjectsServer();
 
   return (
     <div className="flex min-h-screen flex-col">

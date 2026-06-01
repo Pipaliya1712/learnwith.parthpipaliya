@@ -14,7 +14,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { blockUser, unblockUser, updateUserRole } from "@/app/actions/users";
+import { usersApi } from "@/lib/api-client";
 import type { Profile } from "@/types";
 import { format } from "date-fns";
 
@@ -27,35 +27,35 @@ export function AdminUserTable({ users: initialUsers, isSuperAdmin }: AdminUserT
   const [users, setUsers] = useState(initialUsers);
 
   const handleToggleBlock = async (userId: string, isBlocked: boolean) => {
-    const result = isBlocked
-      ? await unblockUser(userId)
-      : await blockUser(userId);
-
-    if (result.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      if (isBlocked) {
+        await usersApi.unblock(userId);
+      } else {
+        await usersApi.block(userId);
+      }
       setUsers((prev) =>
         prev.map((u) =>
           u.id === userId ? { ...u, is_blocked: !isBlocked } : u
         )
       );
       toast.success(isBlocked ? "User unblocked" : "User blocked");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update user block status");
     }
   };
 
   const handleToggleRole = async (userId: string, currentRole: string) => {
     const newRole = currentRole === "admin" ? "developer" : "admin";
-    const result = await updateUserRole(userId, newRole);
-    
-    if (result.error) {
-      toast.error(result.error);
-    } else {
+    try {
+      await usersApi.updateRole(userId, newRole);
       setUsers((prev) =>
         prev.map((u) =>
           u.id === userId ? { ...u, role: newRole } : u
         )
       );
       toast.success(`User role updated to ${newRole}`);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update user role");
     }
   };
 
@@ -113,7 +113,7 @@ export function AdminUserTable({ users: initialUsers, isSuperAdmin }: AdminUserT
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-6">
-                    {isSuperAdmin && (
+                    {isSuperAdmin && !user.is_blocked && (
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-medium text-muted-foreground w-12 text-right">
                           Admin

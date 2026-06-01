@@ -11,23 +11,23 @@ This document is intended for AI coding assistants (like Copilot, Cursor, Antigr
   - Styling: **Tailwind CSS**, **shadcn/ui** (Base UI)
   - Database: **Supabase (PostgreSQL)**
 
-## 2. Authentication & Security (CRITICAL CONTEXT)
-We are **not** using standard Supabase Auth for session management. We have implemented a highly secure, custom authentication flow.
-
-- **Session Management (`src/lib/session.ts`)**: Sessions are maintained using cryptographically signed HTTP-only cookies (`HMAC-SHA256`). Do not try to implement JWT libraries or standard Supabase Auth methods for user sessions.
-- **Middleware (`src/middleware.ts`)**: Protects routes by verifying the signed session cookies.
-- **Role-Based Access**: Users are either `admin` or `developer`. There is a dynamic "Super Admin" designated by the `SUPER_ADMIN_EMAIL` environment variable. The Super Admin can promote/demote other admins.
-- **Stateless OTP Flow**: OTPs for Signup, Email Updates, and Password Resets are **NOT** stored in the database. Instead, they are packaged with the user's data, cryptographically signed, and stored in temporary, secure cookies (e.g., `otp_signup`, `otp_update_email`).
-  - *Example*: When updating an email, the new email and OTP are saved to an `otp_update_email` cookie. Only when the user inputs the matching OTP does the server verify the cookie and update the actual database row.
+## 2. Architecture & Security (CRITICAL CONTEXT)
+We are using a **Decoupled Proxy Architecture**:
+- **Frontend (Next.js)**: Handles UI, routing, and rendering. Hosted on Vercel.
+- **Backend (FastAPI)**: Handles database connections (Supabase SQL), business logic, email sending, and authentication. Hosted on Render.
+- **Proxy Layer (`src/app/api/`)**: Next.js App Router API routes act as a proxy. The frontend *never* calls FastAPI directly to avoid CORS and security issues. All client-side API calls go through `src/lib/api-client.ts`, which calls the Next.js proxy, which then forwards the request to FastAPI.
+- **Authentication**: FastAPI issues a JWT (`HS256`). The Next.js login proxy route intercepts this JWT and stores it in a secure, `HttpOnly` cookie (`learnwith_jwt`). The Next.js middleware uses `jose` to verify this JWT locally for UI routing protection.
+- **Stateful OTP Flow**: OTPs are hashed (`bcrypt`) and stored in the database (`otp_tokens` table) with a `UNIQUE(email, purpose)` constraint to prevent unauthorized usage or replay attacks.
 
 ## 3. Key Directories
-- `src/app/actions/`: Contains all Next.js Server Actions (e.g., `auth.ts`, `users.ts`). This is the primary way the frontend interacts with the database.
+- `src/lib/api-client.ts`: The universal frontend API client that fetches from the Next.js proxy (`/api/*`).
+- `src/app/api/`: The Next.js proxy routes that forward requests to FastAPI and attach the `learnwith_jwt` cookie as a Bearer token.
 - `src/app/(main)/`: The authenticated dashboard, profile, and settings routes.
   - `/profile`: A strictly read-only summary of the user's account.
   - `/settings`: The hub for account configuration featuring inline editing.
 - `src/app/(admin)/`: Protected routes only accessible to users with the `admin` role.
 - `src/components/ui/`: Contains all `shadcn/ui` primitive components.
-- `src/lib/`: Core utilities like `session.ts`, `supabase/admin.ts`, and `validations/auth.ts` (Zod schemas).
+- `src/lib/`: Core utilities like `session.ts` and `validations/auth.ts` (Zod schemas).
 
 ## 4. UI/UX Guidelines
 - **Interactive Elements**: All clickable items (buttons, links, dropdown items, switches) should explicitly show a pointer cursor. The `shadcn/ui` components have been customized to ensure `cursor-pointer` is applied where appropriate.
@@ -36,13 +36,19 @@ We are **not** using standard Supabase Auth for session management. We have impl
 
 ## 5. Environment Variables Required
 ```env
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
-SUPABASE_SERVICE_ROLE_KEY=...
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+FASTAPI_BASE_URL=http://localhost:8000
+JWT_SECRET="your-secure-random-string-used-by-both-frontend-and-backend"
+```
+
+**FastAPI Backend Environment Requirements:**
+```env
+DATABASE_URL=postgresql://...
+SUPABASE_URL=...
+SUPABASE_SERVICE_KEY=...
 SMTP_USER=...
 SMTP_PASS=...
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-SESSION_SECRET="your-secure-random-string"
+JWT_SECRET="must-match-frontend"
 SUPER_ADMIN_EMAIL="superadmin@example.com"
 ```
 

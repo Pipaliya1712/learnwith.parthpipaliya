@@ -1,4 +1,4 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getUserProfileServer } from "@/lib/server-api";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -13,10 +13,7 @@ type CommentRow = {
   content: string;
   created_at: string;
   deleted_at?: string | null;
-  projects:
-    | { name: string; slug: string; is_deleted?: boolean; is_visible?: boolean }
-    | { name: string; slug: string; is_deleted?: boolean; is_visible?: boolean }[]
-    | null;
+  projects: { name: string; slug: string; is_deleted?: boolean; is_visible?: boolean } | null;
 };
 
 export default async function PublicProfilePage({
@@ -25,37 +22,13 @@ export default async function PublicProfilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = createAdminClient();
+  
+  const data = await getUserProfileServer(id);
+  if (!data || !data.user) notFound();
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("id, email, display_name, role, is_blocked, created_at")
-    .eq("id", id)
-    .eq("is_blocked", false)
-    .single();
+  const { user: profile, comments: rawComments } = data;
 
-  if (!profile) notFound();
-
-  const commentsWithDeleted = await supabase
-    .from("comments")
-    .select("id, project_id, content, created_at, deleted_at, projects!inner(name, slug, is_deleted, is_visible)")
-    .eq("user_id", profile.id)
-    .is("deleted_at", null)
-    .eq("projects.is_deleted", false)
-    .eq("projects.is_visible", true)
-    .order("created_at", { ascending: false });
-
-  const commentsRes = commentsWithDeleted.error
-    ? await supabase
-        .from("comments")
-        .select("id, project_id, content, created_at, projects!inner(name, slug, is_deleted, is_visible)")
-        .eq("user_id", profile.id)
-        .eq("projects.is_deleted", false)
-        .eq("projects.is_visible", true)
-        .order("created_at", { ascending: false })
-    : commentsWithDeleted;
-
-  const comments = ((commentsRes.data || []) as CommentRow[]).filter((comment) => {
+  const comments = ((rawComments || []) as CommentRow[]).filter((comment) => {
     if (!("deleted_at" in comment)) return true;
     return comment.deleted_at === null;
   });

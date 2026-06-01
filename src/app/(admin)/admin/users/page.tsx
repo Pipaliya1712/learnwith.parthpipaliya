@@ -1,16 +1,12 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getAdminUsersServer } from "@/lib/server-api";
 import { AdminUserTable } from "@/components/admin/admin-user-table";
 import { getSession } from "@/lib/session";
 
 export default async function AdminUsersPage() {
-  const supabase = createAdminClient();
   const session = await getSession();
   const isSuperAdmin = session?.email === process.env.SUPER_ADMIN_EMAIL;
 
-  const { data: profiles } = await supabase
-    .from("profiles")
-    .select("id, email, display_name, role, is_blocked, created_at")
-    .order("created_at", { ascending: false });
+  const profiles = await getAdminUsersServer();
 
   return (
     <div className="space-y-6">

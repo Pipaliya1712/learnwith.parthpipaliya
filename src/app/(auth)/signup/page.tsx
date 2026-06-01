@@ -19,8 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signupSchema, type SignupInput } from "@/lib/validations/auth";
-import { signup } from "@/app/actions/auth";
-import { hashPassword } from "@/lib/hash";
+import { authApi } from "@/lib/api-client";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -39,25 +38,18 @@ export default function SignupPage() {
     setIsLoading(true);
 
     try {
-      const hashedPassword = await hashPassword(data.password);
-      const hashedConfirmPassword = await hashPassword(data.confirmPassword);
-      const result = await signup({
+      await authApi.signup({
         display_name: data.display_name,
         email: data.email,
-        password: hashedPassword,
-        confirmPassword: hashedConfirmPassword,
+        password: data.password,
+        confirm_password: data.confirmPassword,
       });
-
-      if (result?.error) {
-        toast.error(result.error);
-        return;
-      }
 
       // Redirect to verify-email with the email
       toast.success("Verification code sent to your email");
-      router.push(`/verify-email?email=${encodeURIComponent(result.email || data.email)}`);
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+      router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }

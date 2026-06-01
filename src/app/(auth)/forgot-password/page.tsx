@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Mail, CheckCircle2, ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import {
@@ -22,9 +23,10 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordInput,
 } from "@/lib/validations/auth";
-import { resetPassword } from "@/app/actions/auth";
+import { authApi } from "@/lib/api-client";
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
@@ -44,17 +46,12 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      const result = await resetPassword(data.email);
-
-      if (result?.error) {
-        toast.error(result.error);
-        return;
-      }
-
+      await authApi.forgotPassword(data.email);
       setSubmittedEmail(data.email);
       setIsSuccess(true);
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+      router.push(`/reset-password?email=${encodeURIComponent(data.email)}`);
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }

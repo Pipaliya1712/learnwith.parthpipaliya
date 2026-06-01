@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { verifyOTP, resendOTP } from "@/app/actions/auth";
+import { authApi } from "@/lib/api-client";
 
 function VerifyEmailForm() {
   const router = useRouter();
@@ -59,17 +59,12 @@ function VerifyEmailForm() {
 
     setIsVerifying(true);
     try {
-      const result = await verifyOTP(email, code);
-      if (result?.error) {
-        toast.error(result.error);
-        return;
-      }
-
+      await authApi.verifyOtp(email, code);
       setIsSuccess(true);
       toast.success("Email verified successfully!");
       setTimeout(() => router.push("/dashboard"), 2000);
-    } catch {
-      toast.error("Something went wrong");
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
     } finally {
       setIsVerifying(false);
     }
@@ -78,14 +73,10 @@ function VerifyEmailForm() {
   const handleResend = async () => {
     setIsResending(true);
     try {
-      const result = await resendOTP(email);
-      if (result?.error) {
-        toast.error(result.error);
-        return;
-      }
+      await authApi.resendOtp(email);
       toast.success("New code sent to your email");
-    } catch {
-      toast.error("Failed to resend code");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to resend code");
     } finally {
       setIsResending(false);
     }

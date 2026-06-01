@@ -1,13 +1,25 @@
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getAdminCommentsServer, getCurrentUserServer } from "@/lib/server-api";
 import { AdminCommentTable, type CommentWithDetails } from "@/components/admin/admin-comment-table";
 
-export default async function AdminCommentsPage() {
-  const supabase = createAdminClient();
-
-  const { data: comments } = await supabase
-    .from("comments")
-    .select("id, project_id, user_id, content, created_at, deleted_at, deleted_by, projects(name), profiles(email, display_name)")
-    .order("created_at", { ascending: false });
+export default async function AdminCommentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const [params, currentUser] = await Promise.all([searchParams, getCurrentUserServer()]);
+  const response = await getAdminCommentsServer(params);
+  
+  const superAdminEmails = (process.env.SUPER_ADMIN_EMAIL || "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase());
+    
+  const isSuperAdmin = Boolean(
+    currentUser && currentUser.email && superAdminEmails.includes(currentUser.email.toLowerCase())
+  );
+  const comments = response.data || [];
+  const total = response.total || 0;
+  const page = response.page || 1;
+  const limit = parseInt((params.limit as string) || "10");
 
   type CommentRow = {
     id: string;
@@ -15,20 +27,22 @@ export default async function AdminCommentsPage() {
     user_id: string;
     content: string;
     created_at: string;
-    deleted_at: string | null;
-    deleted_by: string | null;
+    updated_at?: string | null;
+    deleted_at?: string | null;
+    deleted_by?: string | null;
     projects: { name: string } | { name: string }[] | null;
-    profiles: { email: string; display_name: string | null } | { email: string; display_name: string | null }[] | null;
+    profiles: { email: string; display_name: string | null; is_blocked?: boolean } | { email: string; display_name: string | null; is_blocked?: boolean }[] | null;
   };
 
-  const mapped: CommentWithDetails[] = ((comments || []) as CommentRow[]).map((c) => ({
+  const mapped: CommentWithDetails[] = (comments as CommentRow[]).map((c) => ({
     id: c.id,
     project_id: c.project_id,
     user_id: c.user_id,
     content: c.content,
     created_at: c.created_at,
-    deleted_at: c.deleted_at,
-    deleted_by: c.deleted_by,
+    updated_at: c.updated_at || null,
+    deleted_at: c.deleted_at || null,
+    deleted_by: c.deleted_by || null,
     projects: Array.isArray(c.projects) ? c.projects[0] : c.projects,
     profiles: Array.isArray(c.profiles) ? c.profiles[0] : c.profiles,
   }));
@@ -41,7 +55,7 @@ export default async function AdminCommentsPage() {
           View and moderate user comments on projects
         </p>
       </div>
-      <AdminCommentTable comments={mapped} />
+      <AdminCommentTable comments={mapped} total={total} currentPage={page} pageSize={limit} isSuperAdmin={isSuperAdmin} />
     </div>
   );
 }
