@@ -17,6 +17,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import type { Project, Tag, ProjectImage } from "@/types";
+import { cleanImageUrl } from "@/lib/utils";
 
 type ProjectWithRelations = Project & {
   tags: Tag[];
@@ -182,7 +183,7 @@ export function ProjectGrid({
               <div className="relative h-44 w-full shrink-0 overflow-hidden rounded-md bg-muted sm:h-28 sm:w-40">
                 {thumbnail ? (
                   <Image
-                    src={thumbnail.image_url}
+                    src={cleanImageUrl(thumbnail.image_url)}
                     alt={thumbnail.alt_text || project.name}
                     fill
                     className="object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
@@ -219,28 +220,30 @@ export function ProjectGrid({
 
                   <div className="flex shrink-0 gap-3 text-sm text-muted-foreground">
                     {project.live_link && (
-                      <a
-                        href={project.live_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-1 transition-colors hover:text-primary"
+                      <span
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          window.open(project.live_link, '_blank', 'noopener,noreferrer');
+                        }}
+                        className="inline-flex items-center gap-1 cursor-pointer transition-colors hover:text-primary"
                       >
                         <ExternalLink className="size-4" />
                         Live
-                      </a>
+                      </span>
                     )}
                     {project.repo_link && (
-                      <a
-                        href={project.repo_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-1 transition-colors hover:text-primary"
+                      <span
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          window.open(project.repo_link, '_blank', 'noopener,noreferrer');
+                        }}
+                        className="inline-flex items-center gap-1 cursor-pointer transition-colors hover:text-primary"
                       >
                         <GitFork className="size-4" />
                         Repo
-                      </a>
+                      </span>
                     )}
                   </div>
                 </div>

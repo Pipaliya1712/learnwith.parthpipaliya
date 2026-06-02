@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
 import { ArrowLeft, Calendar, MessageSquare, Shield } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { AvatarModal } from "@/components/ui/avatar-modal";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -48,11 +48,11 @@ export default async function PublicProfilePage({
       <Card>
         <CardContent className="pt-6">
           <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
-            <Avatar className="h-24 w-24">
-              <AvatarFallback className="text-3xl">
-                {displayName[0].toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+            <AvatarModal
+              src={profile.avatar_url}
+              fallback={displayName[0].toUpperCase()}
+              className="h-24 w-24 text-3xl"
+            />
             <div className="space-y-3 text-center sm:text-left">
               <div>
                 <h1 className="text-3xl font-bold tracking-tight">{displayName}</h1>

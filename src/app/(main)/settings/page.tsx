@@ -19,7 +19,9 @@ import {
   type UpdatePasswordInput,
 } from "@/lib/validations/auth";
 import { toast } from "sonner";
-import { Pencil, Check, X, ShieldAlert } from "lucide-react";
+import { Pencil, Check, X, ShieldAlert, Upload, Loader2, Image as ImageIcon } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarModal } from "@/components/ui/avatar-modal";
 
 export default function SettingsPage() {
   const { profile, isLoading } = useAuth();
@@ -45,6 +47,8 @@ export default function SettingsPage() {
           <CardDescription>Update your personal details and contact information.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          <ProfilePictureForm currentUrl={profile.avatar_url} displayName={profile.display_name} email={profile.email} />
+          <Separator />
           <DisplayNameForm currentName={profile.display_name || ""} />
           <Separator />
           <EmailForm currentEmail={profile.email} />
@@ -60,6 +64,84 @@ export default function SettingsPage() {
           <PasswordForm />
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+function getInitials(name: string | null | undefined): string {
+  if (!name) return "U";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+function ProfilePictureForm({ currentUrl, displayName, email }: { currentUrl: string | null, displayName: string | null, email: string }) {
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File size should be less than 5MB.");
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      await authApi.uploadAvatar(file);
+      toast.success("Profile picture updated!");
+      window.location.reload();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to upload picture");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-between">
+      <div>
+        <Label className="text-muted-foreground">Profile Picture</Label>
+        <p className="text-sm text-muted-foreground mt-1 mb-3">
+          Upload a profile picture for your account.
+        </p>
+        <div className="flex items-center gap-4">
+          <AvatarModal 
+            src={currentUrl} 
+            alt={displayName || "Profile picture"} 
+            fallback={getInitials(displayName || email)} 
+            size="lg"
+            className="ring-2 ring-primary/10"
+          />
+          <div className="flex flex-col gap-2">
+            <Label 
+              htmlFor="avatar-upload" 
+              className={`cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-9 px-4 py-2 ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}
+            >
+              {isUploading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Upload className="mr-2 h-4 w-4" />
+              )}
+              {isUploading ? "Uploading..." : "Upload Photo"}
+            </Label>
+            <Input 
+              id="avatar-upload" 
+              type="file" 
+              accept="image/*" 
+              className="hidden" 
+              onChange={handleFileChange} 
+              disabled={isUploading}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

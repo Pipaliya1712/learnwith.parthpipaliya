@@ -12,6 +12,7 @@ import { TagBadge } from "@/components/project/tag-badge";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, GitFork } from "lucide-react";
 import type { Project, Tag, ProjectImage } from "@/types";
+import { cleanImageUrl } from "@/lib/utils";
 
 type ProjectCardProps = {
   project: Project;
@@ -53,7 +54,7 @@ export function ProjectCard({
         {thumbnail ? (
           <>
             <Image
-              src={thumbnail.image_url}
+              src={cleanImageUrl(thumbnail.image_url)}
               alt={thumbnail.alt_text || project.name}
               fill
               className="object-cover grayscale transition duration-500 group-hover:scale-110 group-hover:grayscale-0 group-hover:brightness-110"
@@ -106,28 +107,30 @@ export function ProjectCard({
         <div className="flex w-full items-center justify-between">
           <div className="flex gap-2">
             {project.live_link && (
-              <a
-                href={project.live_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary"
+              <span
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(project.live_link, '_blank', 'noopener,noreferrer');
+                }}
+                className="inline-flex items-center gap-1 text-sm text-muted-foreground cursor-pointer transition-colors hover:text-primary"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
                 Live
-              </a>
+              </span>
             )}
             {project.repo_link && (
-              <a
-                href={project.repo_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary"
+              <span
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(project.repo_link, '_blank', 'noopener,noreferrer');
+                }}
+                className="inline-flex items-center gap-1 text-sm text-muted-foreground cursor-pointer transition-colors hover:text-primary"
               >
                 <GitFork className="h-3.5 w-3.5" />
                 Repo
-              </a>
+              </span>
             )}
           </div>
           {variant === "admin" && (

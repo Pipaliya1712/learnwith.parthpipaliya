@@ -9,12 +9,9 @@ import {
   LayoutDashboard,
   MessageSquare,
   Users,
-  LogOut,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { authApi } from "@/lib/api-client";
-import { toast } from "sonner";
 import { useAuth } from "@/components/providers/auth-provider";
 
 const navItems = [
@@ -30,17 +27,7 @@ function isActivePath(pathname: string, href: string) {
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const router = useRouter();
-  const { signOut } = useAuth();
   const [isExpanded, setIsExpanded] = useState(true);
-
-  const handleLogout = async () => {
-    try {
-      await signOut();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to logout");
-    }
-  };
 
   return (
     <aside
@@ -78,8 +65,7 @@ export function AdminSidebar() {
                     "flex size-8 shrink-0 items-center justify-center rounded-md transition-colors",
                     isActive
                       ? "bg-primary text-primary-foreground group-hover:bg-background group-hover:text-foreground"
-                      : "bg-muted/70 group-hover:bg-background",
-                    !isExpanded && "size-11"
+                      : "bg-muted/70 group-hover:bg-background"
                   )}
                 >
                   <Icon className="size-4" />
@@ -89,27 +75,6 @@ export function AdminSidebar() {
             );
           })}
         </nav>
-
-        <div className="mt-auto space-y-2 pt-4 border-t w-full flex flex-col items-center">
-          <button
-            onClick={handleLogout}
-            title={!isExpanded ? "Logout" : undefined}
-            className={cn(
-              "group flex h-11 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-destructive/10 hover:text-destructive",
-              !isExpanded && "justify-center px-0 w-11"
-            )}
-          >
-            <span
-              className={cn(
-                "flex size-8 shrink-0 items-center justify-center rounded-md bg-muted/70 transition-colors group-hover:bg-background",
-                !isExpanded && "size-11"
-              )}
-            >
-              <LogOut className="size-4 text-destructive" />
-            </span>
-            {isExpanded && <span className="text-destructive">Logout</span>}
-          </button>
-        </div>
       </div>
     </aside>
   );

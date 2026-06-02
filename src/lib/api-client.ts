@@ -38,6 +38,8 @@ export const authApi = {
     password: string;
     confirm_password: string;
     display_name: string;
+    captcha_answer?: string;
+    captcha_token?: string;
   }) => request("/auth/signup", { method: "POST", body: JSON.stringify(data) }),
 
   verifyOtp: (email: string, otp: string) =>
@@ -46,7 +48,7 @@ export const authApi = {
   resendOtp: (email: string) =>
     request("/auth/resend-otp", { method: "POST", body: JSON.stringify({ email }) }),
 
-  login: (data: { email: string; password: string; stay_logged_in?: boolean }) =>
+  login: (data: { email: string; password: string; captcha_answer?: string; captcha_token?: string; stay_logged_in?: boolean }) =>
     request("/auth/login", { method: "POST", body: JSON.stringify(data) }),
 
   logout: () => request("/auth/logout", { method: "POST" }),
@@ -63,8 +65,30 @@ export const authApi = {
 
   getMe: () => request("/auth/me"),
 
+  getCaptcha: () => request<{ question: string; captcha_token: string }>("/auth/captcha"),
+
   updateProfile: (display_name: string) =>
     request("/auth/profile", { method: "PATCH", body: JSON.stringify({ display_name }) }),
+
+  uploadAvatar: (file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    return fetch(`${API_BASE}/auth/avatar`, {
+      method: "POST",
+      body: form,
+      credentials: "include",
+    }).then(async (res) => {
+      if (!res.ok) {
+        let error = "An unexpected error occurred";
+        try {
+          const body = await res.json();
+          error = body.detail || body.error || error;
+        } catch {}
+        throw new Error(error);
+      }
+      return res.json();
+    });
+  },
 
   requestEmailUpdate: (email: string) =>
     request("/auth/email", { method: "PATCH", body: JSON.stringify({ email }) }),
@@ -109,8 +133,9 @@ export const projectsApi = {
   deleteImage: (imageId: string) =>
     request(`/projects/images/${imageId}`, { method: "DELETE" }),
 
-  createTag: (name: string) =>
-    request("/projects/tags", { method: "POST", body: JSON.stringify({ name }) }),
+  createTag: (name: string) => request("/projects/tags", { method: "POST", body: JSON.stringify({ name }) }),
+
+  deleteTag: (id: string) => request(`/projects/tags/${id}`, { method: "DELETE" }),
 };
 
 // ─── COMMENTS ────────────────────────────────────────────────────────────────

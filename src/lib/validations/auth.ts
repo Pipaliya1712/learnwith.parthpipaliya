@@ -3,6 +3,7 @@ import { z } from "zod";
 export const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
+  captchaAnswer: z.string().min(1, "Please answer the CAPTCHA"),
 });
 
 export const signupSchema = z
@@ -25,6 +26,7 @@ export const signupSchema = z
         "Password must contain at least one uppercase letter, one lowercase letter, and one number"
       ),
     confirmPassword: z.string(),
+    captchaAnswer: z.string().min(1, "Please answer the CAPTCHA"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

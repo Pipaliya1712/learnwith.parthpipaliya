@@ -34,6 +34,7 @@ import type {
   ProjectWithDetails,
   Tag,
 } from "@/types";
+import { cleanImageUrl } from "@/lib/utils";
 
 type CommentWithProfile = Comment & {
   profiles: Pick<Profile, "display_name" | "email" | "is_blocked">;
@@ -92,7 +93,7 @@ export default async function ProjectDetailPage({
           <div className="relative aspect-[1.3] overflow-hidden rounded-lg border bg-muted shadow-2xl shadow-primary/5 ring-1 ring-foreground/10 lg:aspect-[1.28]">
             {primaryImage ? (
               <Image
-                src={primaryImage.image_url}
+                src={cleanImageUrl(primaryImage.image_url)}
                 alt={primaryImage.alt_text || project.name}
                 fill
                 className="object-cover grayscale"

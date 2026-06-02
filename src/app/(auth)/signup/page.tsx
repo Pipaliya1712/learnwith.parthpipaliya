@@ -20,10 +20,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signupSchema, type SignupInput } from "@/lib/validations/auth";
 import { authApi } from "@/lib/api-client";
+import { CaptchaField } from "@/components/auth/captcha-field";
 
 export default function SignupPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string>("");
 
   const {
     register,
@@ -31,7 +33,7 @@ export default function SignupPage() {
     formState: { errors },
   } = useForm<SignupInput>({
     resolver: zodResolver(signupSchema),
-    defaultValues: { display_name: "", email: "", password: "", confirmPassword: "" },
+    defaultValues: { display_name: "", email: "", password: "", confirmPassword: "", captchaAnswer: "" },
   });
 
   const onSubmit = async (data: SignupInput) => {
@@ -43,6 +45,8 @@ export default function SignupPage() {
         email: data.email,
         password: data.password,
         confirm_password: data.confirmPassword,
+        captcha_answer: data.captchaAnswer,
+        captcha_token: captchaToken,
       });
 
       // Redirect to verify-email with the email
@@ -127,6 +131,13 @@ export default function SignupPage() {
               <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
             )}
           </div>
+
+          <CaptchaField 
+            onTokenChange={setCaptchaToken}
+            error={errors.captchaAnswer?.message}
+            registerProps={register("captchaAnswer")}
+            disabled={isLoading}
+          />
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { ProjectImage } from "@/types";
+import { cleanImageUrl } from "@/lib/utils";
 
 export function ImageGallery({ images }: { images: ProjectImage[] }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -13,7 +14,7 @@ export function ImageGallery({ images }: { images: ProjectImage[] }) {
     <div className="space-y-3">
       <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
         <Image
-          src={images[selectedIndex].image_url}
+          src={cleanImageUrl(images[selectedIndex].image_url)}
           alt={images[selectedIndex].alt_text || "Project screenshot"}
           fill
           className="object-cover"
@@ -34,7 +35,7 @@ export function ImageGallery({ images }: { images: ProjectImage[] }) {
               }`}
             >
               <Image
-                src={img.image_url}
+                src={cleanImageUrl(img.image_url)}
                 alt={img.alt_text || `Screenshot ${i + 1}`}
                 fill
                 className="object-cover"

@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { AvatarModal } from "@/components/ui/avatar-modal";
+import { useConfirm } from "@/hooks/use-confirm";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { commentSchema } from "@/lib/validations/comment";
 import { format } from "date-fns";
@@ -20,7 +22,7 @@ import { cn } from "@/lib/utils";
 const COMMENTS_BATCH_SIZE = 5;
 
 type CommentWithProfile = Comment & {
-  profiles: Pick<Profile, "display_name" | "email">;
+  profiles: Pick<Profile, "display_name" | "email" | "avatar_url">;
 };
 
 type CommentSectionProps = {
@@ -51,6 +53,7 @@ export function CommentSection({
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
+  const { confirm } = useConfirm();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,11 +207,12 @@ export function CommentSection({
                     isOwnComment && "font-semibold text-primary"
                   )}
                 >
-                  <Avatar className="h-6 w-6">
-                    <AvatarFallback className="text-xs">
-                      {(comment.profiles.display_name || comment.profiles.email)[0].toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+                  <AvatarModal
+                    src={comment.profiles.avatar_url}
+                    fallback={(comment.profiles.display_name || comment.profiles.email)[0].toUpperCase()}
+                    className="h-6 w-6 text-xs"
+                    size="sm"
+                  />
                   <span className="text-sm font-medium">
                     {isOwnComment ? "You" : comment.profiles.display_name || comment.profiles.email}
                   </span>
@@ -241,10 +245,16 @@ export function CommentSection({
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-destructive focus:text-destructive"
-                        onClick={() => {
-                          if (confirm("Are you sure you want to delete this comment?")) {
-                            onDeleteComment(comment.id);
-                          }
+                        onClick={(e) => {
+                          e.preventDefault(); // keep dropdown open briefly or close immediately, but we prevent default to handle via modal
+                          confirm({
+                            title: "Delete Comment",
+                            description: "Are you sure you want to delete this comment? This action cannot be undone.",
+                            variant: "destructive",
+                            onConfirm: async () => {
+                              if (onDeleteComment) await onDeleteComment(comment.id);
+                            }
+                          });
                         }}
                       >
                         <Trash2 className="mr-2 h-4 w-4" />

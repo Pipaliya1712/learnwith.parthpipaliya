@@ -3,7 +3,7 @@ import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { AvatarModal } from "@/components/ui/avatar-modal";
 import { format } from "date-fns";
 import { CheckCircle2, Mail, Shield, Calendar, MessageSquare } from "lucide-react";
 import { OwnProfileComments, type OwnProfileComment } from "@/components/profile/own-profile-comments";
@@ -47,11 +47,11 @@ export default async function ProfilePage() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-            <Avatar className="h-24 w-24">
-              <AvatarFallback className="text-3xl">
-                {(profile.display_name || profile.email)[0].toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+            <AvatarModal
+              src={profile.avatar_url}
+              fallback={(profile.display_name || profile.email)[0].toUpperCase()}
+              className="h-24 w-24 text-3xl"
+            />
             <div className="space-y-4 text-center sm:text-left">
               <div>
                 <p className="font-bold text-3xl">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { TagBadge } from "@/components/project/tag-badge";
 import { ArrowRight, ExternalLink, GitFork, Grid2X2 } from "lucide-react";
 import type { Project, Tag, ProjectImage } from "@/types";
+import { cleanImageUrl } from "@/lib/utils";
 
 type ProjectWithRelations = Project & {
   tags: Tag[];
@@ -47,7 +48,7 @@ export function RelatedProjects({ projects }: RelatedProjectsProps) {
               <div className="relative m-3 overflow-hidden rounded-lg bg-muted">
                 {thumbnail ? (
                   <Image
-                    src={thumbnail.image_url}
+                    src={cleanImageUrl(thumbnail.image_url)}
                     alt={thumbnail.alt_text || project.name}
                     fill
                     className="object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"

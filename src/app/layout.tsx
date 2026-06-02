@@ -4,17 +4,22 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
+import { ConfirmProvider } from "@/hooks/use-confirm";
 import { getCurrentUserServer } from "@/lib/server-api";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
+  preload: false,
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  preload: false,
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -55,9 +60,11 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider initialProfile={profile}>
-            <TooltipProvider>
-              {children}
-            </TooltipProvider>
+            <ConfirmProvider>
+              <TooltipProvider>
+                {children}
+              </TooltipProvider>
+            </ConfirmProvider>
           </AuthProvider>
           <Toaster richColors position="top-right" />
         </ThemeProvider>

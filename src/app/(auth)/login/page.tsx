@@ -22,11 +22,13 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
 import { authApi } from "@/lib/api-client";
+import { CaptchaField } from "@/components/auth/captcha-field";
 
 export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [stayLoggedIn, setStayLoggedIn] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string>("");
 
   const {
     register,
@@ -34,7 +36,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "", captchaAnswer: "" },
   });
 
   const onSubmit = async (data: LoginInput) => {
@@ -44,6 +46,8 @@ export default function LoginPage() {
       const response = await authApi.login({
         email: data.email,
         password: data.password,
+        captcha_answer: data.captchaAnswer,
+        captcha_token: captchaToken,
         stay_logged_in: stayLoggedIn
       });
       
@@ -111,6 +115,13 @@ export default function LoginPage() {
               <p className="text-sm text-destructive">{errors.password.message}</p>
             )}
           </div>
+
+          <CaptchaField 
+            onTokenChange={setCaptchaToken}
+            error={errors.captchaAnswer?.message}
+            registerProps={register("captchaAnswer")}
+            disabled={isLoading}
+          />
 
           <div className="flex items-center gap-2">
             <Checkbox

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { cleanImageUrl } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -49,7 +50,7 @@ export function ProjectDetailModal({
           {thumbnail && (
             <div className="relative h-48 w-full overflow-hidden rounded-lg bg-muted">
               <Image
-                src={thumbnail.image_url}
+                src={cleanImageUrl(thumbnail.image_url)}
                 alt={thumbnail.alt_text || project.name}
                 fill
                 className="object-cover"
