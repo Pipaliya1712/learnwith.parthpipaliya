@@ -248,7 +248,7 @@ export default async function ProjectDetailPage({
               </div>
             </section>
 
-            <section className="detail-surface rounded-2xl border p-6">
+            <section className="detail-surface flex h-[380px] min-h-0 flex-col rounded-2xl border p-6">
               <div className="mb-5 flex items-center gap-3">
                 <MessageCircle className="size-5 text-primary" />
                 <h2 className="text-lg font-semibold">Comments</h2>

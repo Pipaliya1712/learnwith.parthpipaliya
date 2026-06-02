@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Comment, Profile } from "@/types";
 import { cn } from "@/lib/utils";
+
+const COMMENTS_BATCH_SIZE = 5;
 
 type CommentWithProfile = Comment & {
   profiles: Pick<Profile, "display_name" | "email">;
@@ -45,6 +47,10 @@ export function CommentSection({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(COMMENTS_BATCH_SIZE);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,8 +76,53 @@ export function CommentSection({
     setIsEditing(false);
   };
 
+  const sortedComments = useMemo(
+    () =>
+      [...comments].sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      ),
+    [comments]
+  );
+
+  const visibleComments = sortedComments.slice(0, visibleCount);
+  const hasMoreComments = visibleCount < sortedComments.length;
+
+  const loadMoreComments = useCallback(() => {
+    if (isLoadingMore || !hasMoreComments) return;
+
+    setIsLoadingMore(true);
+    window.setTimeout(() => {
+      setVisibleCount((count) =>
+        Math.min(count + COMMENTS_BATCH_SIZE, sortedComments.length)
+      );
+      setIsLoadingMore(false);
+    }, 320);
+  }, [hasMoreComments, isLoadingMore, sortedComments.length]);
+
+  useEffect(() => {
+    const sentinel = loadMoreRef.current;
+    if (!sentinel || !hasMoreComments) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          loadMoreComments();
+        }
+      },
+      {
+        root: scrollAreaRef.current,
+        rootMargin: "80px 0px",
+      }
+    );
+
+    observer.observe(sentinel);
+
+    return () => observer.disconnect();
+  }, [hasMoreComments, loadMoreComments]);
+
   return (
-    <div className="space-y-5">
+    <div className="flex min-h-0 flex-1 flex-col space-y-5">
       {canComment ? (
         <form onSubmit={handleSubmit} className="flex items-center gap-3">
           <Avatar className="size-8 shrink-0">
@@ -111,7 +162,7 @@ export function CommentSection({
       )}
 
       {comments.length === 0 ? (
-        <div className="flex min-h-40 flex-col items-center justify-center text-center">
+        <div className="flex min-h-0 flex-1 flex-col items-center justify-center text-center">
           <div className="relative mb-5 h-14 w-24">
             <span className="absolute bottom-1 left-3 flex h-9 w-12 items-center justify-center rounded-lg bg-primary/80 text-primary-foreground shadow-lg shadow-primary/20">
               <MessageCircle className="size-5" />
@@ -130,8 +181,11 @@ export function CommentSection({
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {comments.map((comment) => {
+        <div
+          ref={scrollAreaRef}
+          className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-2 scrollbar-thin"
+        >
+          {visibleComments.map((comment) => {
             const isOwnComment = comment.user_id === currentUserId;
 
             return (
@@ -236,8 +290,38 @@ export function CommentSection({
             </div>
           );
           })}
+          {isLoadingMore && <CommentSkeletonList />}
+          {hasMoreComments && (
+            <div
+              ref={loadMoreRef}
+              className="h-8"
+              aria-label="Load more comments when visible"
+            />
+          )}
         </div>
       )}
+    </div>
+  );
+}
+
+function CommentSkeletonList() {
+  return (
+    <div className="space-y-3" aria-label="Loading more comments">
+      {Array.from({ length: 3 }).map((_, index) => (
+        <div
+          key={index}
+          className="rounded-lg border bg-background/35 p-4"
+        >
+          <div className="mb-3 flex items-center gap-3">
+            <div className="size-7 rounded-full shimmer" />
+            <div className="h-3 w-32 rounded-full shimmer" />
+          </div>
+          <div className="space-y-2">
+            <div className="h-3 w-full rounded-full shimmer" />
+            <div className="h-3 w-3/4 rounded-full shimmer" />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
