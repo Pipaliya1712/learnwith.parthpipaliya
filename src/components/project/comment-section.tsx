@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { commentSchema } from "@/lib/validations/comment";
 import { format } from "date-fns";
-import { Send, MoreVertical, Edit2, Trash2, X } from "lucide-react";
+import { MessageCircle, Send, MoreVertical, Edit2, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,25 +71,29 @@ export function CommentSection({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {canComment ? (
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <Textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Add a comment about this project..."
-            rows={3}
-            maxLength={2000}
-          />
-          <div className="flex justify-end">
+        <form onSubmit={handleSubmit} className="flex items-center gap-3">
+          <Avatar className="size-8 shrink-0">
+            <AvatarFallback className="text-xs">R</AvatarFallback>
+          </Avatar>
+          <div className="relative min-w-0 flex-1">
+            <Textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Add a comment about this project..."
+              rows={1}
+              maxLength={2000}
+              className="min-h-14 resize-none rounded-xl bg-background/55 py-4 pr-14"
+            />
             <Button
               type="submit"
-              size="sm"
+              size="icon"
               disabled={isSubmitting || !content.trim()}
-              className="gap-2"
+              className="absolute right-3 top-1/2 size-8 -translate-y-1/2 rounded-full shadow-lg shadow-primary/20"
+              aria-label="Post comment"
             >
               <Send className="h-4 w-4" />
-              {isSubmitting ? "Posting..." : "Post Comment"}
             </Button>
           </div>
         </form>
@@ -107,9 +111,24 @@ export function CommentSection({
       )}
 
       {comments.length === 0 ? (
-        <p className="text-sm text-muted-foreground text-center py-4">
-          No comments yet. Be the first to comment!
-        </p>
+        <div className="flex min-h-40 flex-col items-center justify-center text-center">
+          <div className="relative mb-5 h-14 w-24">
+            <span className="absolute bottom-1 left-3 flex h-9 w-12 items-center justify-center rounded-lg bg-primary/80 text-primary-foreground shadow-lg shadow-primary/20">
+              <MessageCircle className="size-5" />
+            </span>
+            <span className="absolute right-2 top-0 flex h-10 w-14 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/25">
+              <span className="flex gap-1">
+                <span className="size-1.5 rounded-full bg-current" />
+                <span className="size-1.5 rounded-full bg-current" />
+                <span className="size-1.5 rounded-full bg-current" />
+              </span>
+            </span>
+          </div>
+          <p className="font-medium">No comments yet.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Be the first to comment!
+          </p>
+        </div>
       ) : (
         <div className="space-y-3">
           {comments.map((comment) => {

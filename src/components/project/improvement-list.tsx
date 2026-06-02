@@ -15,7 +15,7 @@ export function ImprovementList({ improvements }: { improvements: Improvement[] 
       {improvements.map((improvement) => (
         <div
           key={improvement.id}
-          className="rounded-lg border bg-card p-4 space-y-2"
+          className="space-y-2 rounded-xl border bg-background/35 p-4 shadow-inner shadow-black/10 transition-colors hover:border-primary/35"
         >
           <div className="flex items-start gap-3">
             <ArrowUpCircle className="h-5 w-5 text-info mt-0.5 shrink-0" />

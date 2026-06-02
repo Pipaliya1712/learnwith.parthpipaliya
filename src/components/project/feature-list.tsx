@@ -1,5 +1,4 @@
 import type { Feature } from "@/types";
-import { Badge } from "@/components/ui/badge";
 import { CheckCircle2 } from "lucide-react";
 
 export function FeatureList({ features }: { features: Feature[] }) {
@@ -16,7 +15,7 @@ export function FeatureList({ features }: { features: Feature[] }) {
       {features.map((feature) => (
         <div
           key={feature.id}
-          className="rounded-lg border bg-card p-4 space-y-2"
+          className="space-y-2 rounded-xl border bg-background/35 p-4 shadow-inner shadow-black/10 transition-colors hover:border-primary/35"
         >
           <div className="flex items-start gap-3">
             <CheckCircle2 className="h-5 w-5 text-success mt-0.5 shrink-0" />

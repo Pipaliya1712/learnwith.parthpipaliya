@@ -26,7 +26,7 @@ export function BugList({ bugs }: { bugs: Bug[] }) {
         return (
           <div
             key={bug.id}
-            className="rounded-lg border bg-card p-4 space-y-2"
+            className="space-y-2 rounded-xl border bg-background/35 p-4 shadow-inner shadow-black/10 transition-colors hover:border-primary/35"
           >
             <div className="flex items-start gap-3">
               <BugIcon className="h-5 w-5 text-destructive mt-0.5 shrink-0" />
