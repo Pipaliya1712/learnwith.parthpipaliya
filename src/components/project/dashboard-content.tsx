@@ -24,7 +24,7 @@ export function DashboardContent({ projects, tags }: DashboardContentProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const hasActiveFilters = search.length > 0 || selectedTags.length > 0;
-
+  console.log("projects:", projects);
   const filtered = projects.filter((project) => {
     const matchesSearch =
       !search ||

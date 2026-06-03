@@ -6,10 +6,9 @@ export function Footer() {
   return (
     <footer className="border-t">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <Separator className="mb-6" />
         <div className="flex flex-col items-center gap-2 text-center text-sm text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} {APP_NAME}{" "}
+            &copy; 2024-2026 {APP_NAME}{" "}
             <Link
               href="https://parthpipaliya.com"
               target="_blank"
@@ -18,7 +17,7 @@ export function Footer() {
             >
               Parth Pipaliya
             </Link>
-            . All rights reserved.
+            . All rights reserved. Related anything which is important.
           </p>
         </div>
       </div>

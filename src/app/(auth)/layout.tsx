@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { Moon, Sun, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Footer } from "@/components/layout/footer";
 
 export default function AuthLayout({
   children,
@@ -13,7 +14,8 @@ export default function AuthLayout({
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 py-12">
+    <div className="flex min-h-screen flex-col">
+      <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-12">
       {/* Dot pattern background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-40 dark:opacity-20"
@@ -56,6 +58,8 @@ export default function AuthLayout({
 
       {/* Content card area */}
       <div className="relative z-10 w-full max-w-md">{children}</div>
+      </div>
+      <Footer />
     </div>
   );
 }

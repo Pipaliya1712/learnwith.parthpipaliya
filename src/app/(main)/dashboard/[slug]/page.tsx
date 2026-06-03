@@ -10,6 +10,7 @@ import { ImprovementList } from "@/components/project/improvement-list";
 import { BugList } from "@/components/project/bug-list";
 import { CommentSectionWrapper } from "@/components/project/comment-section-wrapper";
 import { RelatedProjects } from "@/components/project/related-projects";
+import { ImageGallery } from "@/components/project/image-gallery";
 import {
   ArrowLeft,
   CalendarDays,
@@ -59,7 +60,6 @@ export default async function ProjectDetailPage({
 
   const projectData = await getProjectBySlugServer(slug);
   if (!projectData) notFound();
-
   const project = projectData as ProjectDetail;
   const features = project.features || [];
   const improvements = project.improvements || [];
@@ -91,28 +91,9 @@ export default async function ProjectDetailPage({
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_520px] xl:h-[calc(100vh-8rem)] xl:min-h-[750px]">
         {/* Left Column */}
         <div className="flex min-h-0 min-w-0 flex-col gap-6">
-          <div className="grid shrink-0 gap-8 lg:grid-cols-[300px_minmax(0,1fr)]">
-            <div className="relative aspect-[1.3] overflow-hidden rounded-lg border bg-muted shadow-2xl shadow-primary/5 ring-1 ring-foreground/10 lg:aspect-[1.28]">
-              {primaryImage ? (
-                <Image
-                  src={cleanImageUrl(primaryImage.image_url)}
-                  alt={primaryImage.alt_text || project.name}
-                  fill
-                  className="object-cover grayscale"
-                  sizes="(max-width: 1024px) 100vw, 300px"
-                  priority
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center text-muted-foreground">
-                  <ImageIcon className="size-12 opacity-50" />
-                </div>
-              )}
-              {images.length > 1 && (
-                <div className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-md bg-background/75 px-2 py-1 text-xs font-semibold text-foreground backdrop-blur">
-                  <ImageIcon className="size-3.5" />
-                  {images.length}
-                </div>
-              )}
+          <div className="grid shrink-0 gap-8 lg:grid-cols-[450px_minmax(0,1fr)]">
+            <div className="w-full">
+              <ImageGallery images={images} />
             </div>
 
             <div className="flex min-w-0 flex-col justify-center space-y-5">

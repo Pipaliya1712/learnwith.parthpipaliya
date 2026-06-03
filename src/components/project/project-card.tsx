@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { TagBadge } from "@/components/project/tag-badge";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, GitFork } from "lucide-react";
+import { ExternalLink, GitFork, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Project, Tag, ProjectImage } from "@/types";
 import { cleanImageUrl } from "@/lib/utils";
 
@@ -29,7 +30,15 @@ export function ProjectCard({
   variant = "dashboard",
   onClick,
 }: ProjectCardProps) {
-  const thumbnail = images?.[0];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Sort images safely by display_order
+  const sortedImages = [...(images || [])].sort(
+    (a, b) => (a.display_order || 0) - (b.display_order || 0)
+  );
+
+  const thumbnail = sortedImages[currentImageIndex];
+
   const href =
     variant === "admin"
       ? `/admin/projects/${project.id}/edit`
@@ -39,6 +48,18 @@ export function ProjectCard({
 
   const isCompact = variant === "related";
 
+  const handlePrevious = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev === 0 ? sortedImages.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev === sortedImages.length - 1 ? 0 : prev + 1));
+  };
+
   const cardContent = (
     <Card
       className={`card-hover h-full overflow-hidden rounded-lg border border-border/80 bg-card p-0 shadow-sm ring-1 ring-foreground/5 flex flex-col ${
@@ -47,13 +68,14 @@ export function ProjectCard({
     >
       {/* Image */}
       <div
-        className={`relative w-full bg-muted ${
+        className={`relative w-full bg-muted group/image ${
           isCompact ? "h-32" : "h-[240px]"
         } overflow-hidden`}
       >
         {thumbnail ? (
           <>
             <Image
+              key={thumbnail.id}
               src={cleanImageUrl(thumbnail.image_url)}
               alt={thumbnail.alt_text || project.name}
               fill
@@ -61,6 +83,37 @@ export function ProjectCard({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/45 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            
+            {sortedImages.length > 1 && (
+              <>
+                <div className="absolute inset-y-0 left-0 flex items-center px-1 opacity-0 transition-opacity group-hover/image:opacity-100">
+                  <button
+                    onClick={handlePrevious}
+                    className="h-6 w-6 rounded-full bg-background/80 flex items-center justify-center backdrop-blur hover:bg-background shadow-sm"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="absolute inset-y-0 right-0 flex items-center px-1 opacity-0 transition-opacity group-hover/image:opacity-100">
+                  <button
+                    onClick={handleNext}
+                    className="h-6 w-6 rounded-full bg-background/80 flex items-center justify-center backdrop-blur hover:bg-background shadow-sm"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1 rounded-full bg-background/50 px-1.5 py-0.5 backdrop-blur opacity-0 transition-opacity group-hover/image:opacity-100">
+                  {sortedImages.map((img, idx) => (
+                    <div
+                      key={img.id}
+                      className={`h-1 w-1 rounded-full transition-all ${
+                        idx === currentImageIndex ? "w-2 bg-primary" : "bg-primary/40"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </>
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
