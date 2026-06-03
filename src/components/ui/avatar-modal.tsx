@@ -30,13 +30,13 @@ export function AvatarModal({ src, alt = "Avatar", fallback, size = "default", c
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <button className={cn("hover:opacity-90 transition-opacity rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", className)}>
-          <Avatar size={size} className="h-full w-full">
-            <AvatarImage src={src} alt={alt} />
-            <AvatarFallback>{fallback}</AvatarFallback>
-          </Avatar>
-        </button>
+      <DialogTrigger
+        render={<button className={cn("hover:opacity-90 transition-opacity rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", className)} />}
+      >
+        <Avatar size={size} className="h-full w-full">
+          <AvatarImage src={src} alt={alt} />
+          <AvatarFallback>{fallback}</AvatarFallback>
+        </Avatar>
       </DialogTrigger>
       <DialogContent 
         showCloseButton={false}

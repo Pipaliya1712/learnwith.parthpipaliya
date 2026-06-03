@@ -65,11 +65,11 @@ export function AppHeader() {
         {/* Left: Mobile Menu + Logo + Breadcrumb */}
         <div className="flex items-center gap-2">
           <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
+            <SheetTrigger
+              render={<Button variant="ghost" size="icon" className="md:hidden" />}
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle menu</span>
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <SheetHeader className="p-4 text-left border-b">
@@ -126,24 +126,26 @@ export function AppHeader() {
           <ThemeToggle />
 
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative flex items-center gap-2 rounded-full pl-1 pr-3 hover:bg-accent focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                <Avatar size="sm">
-                  <AvatarImage
-                    src={profile?.avatar_url ?? undefined}
-                    alt={profile?.display_name || "User"}
-                  />
-                  <AvatarFallback>
-                    {getInitials(profile?.display_name || profile?.email)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="hidden text-sm font-medium sm:inline-block">
-                  {profile?.display_name || profile?.email?.split("@")[0] || "User"}
-                </span>
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  className="relative flex items-center gap-2 rounded-full pl-1 pr-3 hover:bg-accent focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              }
+            >
+              <Avatar size="sm">
+                <AvatarImage
+                  src={profile?.avatar_url ?? undefined}
+                  alt={profile?.display_name || "User"}
+                />
+                <AvatarFallback>
+                  {getInitials(profile?.display_name || profile?.email)}
+                </AvatarFallback>
+              </Avatar>
+              <span className="hidden text-sm font-medium sm:inline-block">
+                {profile?.display_name || profile?.email?.split("@")[0] || "User"}
+              </span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuGroup>
@@ -156,11 +158,11 @@ export function AppHeader() {
                 </DropdownMenuLabel>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/profile" className="cursor-pointer w-full flex items-center">
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </Link>
+              <DropdownMenuItem
+                render={<Link href="/profile" className="cursor-pointer w-full flex items-center" />}
+              >
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"

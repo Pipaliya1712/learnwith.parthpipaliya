@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 type CommentWithProfile = Comment & {
-  profiles: Pick<Profile, "display_name" | "email">;
+  profiles: Pick<Profile, "display_name" | "email" | "avatar_url">;
 };
 
 type CommentSectionWrapperProps = {

@@ -23,7 +23,7 @@ export function RecordPagination({
   return (
     <nav
       aria-label="Record pagination"
-      className="mt-5 flex flex-wrap items-center justify-center gap-2 border-t border-border/70 pt-5"
+      className="flex flex-wrap items-center justify-center gap-2"
     >
       <Button
         type="button"

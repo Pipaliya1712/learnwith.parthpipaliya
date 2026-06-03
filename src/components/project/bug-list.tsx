@@ -46,45 +46,49 @@ export function BugList({ bugs }: { bugs: Bug[] }) {
   };
 
   return (
-    <>
-      {isLoading ? (
-        <RecordPageSkeleton />
-      ) : (
-        <div className="space-y-4">
-          {pageBugs.map((bug) => {
-            const config = severityConfig[bug.severity];
-            return (
-              <div
-                key={bug.id}
-                className="space-y-2 rounded-xl border bg-background/35 p-4 shadow-inner shadow-black/10 transition-colors hover:border-primary/35"
-              >
-                <div className="flex items-start gap-3">
-                  <BugIcon className="h-5 w-5 text-destructive mt-0.5 shrink-0" />
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium text-sm">{bug.title}</h4>
-                      <Badge variant={config.variant} className="text-xs">
-                        {config.label}
-                      </Badge>
+    <div className="flex flex-col h-full min-h-0">
+      <div className="flex-1 overflow-y-auto pr-2 pb-4 scrollbar-thin">
+        {isLoading ? (
+          <RecordPageSkeleton />
+        ) : (
+          <div className="space-y-4">
+            {pageBugs.map((bug) => {
+              const config = severityConfig[bug.severity];
+              return (
+                <div
+                  key={bug.id}
+                  className="space-y-2 rounded-xl border bg-background/35 p-4 shadow-inner shadow-black/10 transition-colors hover:border-primary/35"
+                >
+                  <div className="flex items-start gap-3">
+                    <BugIcon className="h-5 w-5 text-destructive mt-0.5 shrink-0" />
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-medium text-sm">{bug.title}</h4>
+                        <Badge variant={config.variant} className="text-xs">
+                          {config.label}
+                        </Badge>
+                      </div>
+                      {bug.description && (
+                        <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                          {bug.description}
+                        </p>
+                      )}
                     </div>
-                    {bug.description && (
-                      <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                        {bug.description}
-                      </p>
-                    )}
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-      <RecordPagination
-        page={page}
-        totalPages={totalPages}
-        isLoading={isLoading}
-        onPageChange={handlePageChange}
-      />
-    </>
+              );
+            })}
+          </div>
+        )}
+      </div>
+      <div className="shrink-0 pt-4 mt-auto border-t">
+        <RecordPagination
+          page={page}
+          totalPages={totalPages}
+          isLoading={isLoading}
+          onPageChange={handlePageChange}
+        />
+      </div>
+    </div>
   );
 }

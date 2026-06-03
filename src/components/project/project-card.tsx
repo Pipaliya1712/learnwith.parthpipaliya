@@ -111,7 +111,7 @@ export function ProjectCard({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  window.open(project.live_link, '_blank', 'noopener,noreferrer');
+                  window.open(project.live_link || undefined, '_blank', 'noopener,noreferrer');
                 }}
                 className="inline-flex items-center gap-1 text-sm text-muted-foreground cursor-pointer transition-colors hover:text-primary"
               >
@@ -124,7 +124,7 @@ export function ProjectCard({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  window.open(project.repo_link, '_blank', 'noopener,noreferrer');
+                  window.open(project.repo_link || undefined, '_blank', 'noopener,noreferrer');
                 }}
                 className="inline-flex items-center gap-1 text-sm text-muted-foreground cursor-pointer transition-colors hover:text-primary"
               >

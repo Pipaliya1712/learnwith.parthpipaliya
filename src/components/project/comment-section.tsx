@@ -135,16 +135,24 @@ export function CommentSection({
             <Textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  if (content.trim() && !isSubmitting) {
+                    handleSubmit(e as unknown as React.FormEvent);
+                  }
+                }
+              }}
               placeholder="Add a comment about this project..."
               rows={1}
               maxLength={2000}
-              className="min-h-14 resize-none rounded-xl bg-background/55 py-4 pr-14"
+              className="min-h-14 max-h-40 overflow-y-auto resize-none rounded-xl bg-background/55 py-4 pr-14 scrollbar-thin"
             />
             <Button
               type="submit"
               size="icon"
               disabled={isSubmitting || !content.trim()}
-              className="absolute right-3 top-1/2 size-8 -translate-y-1/2 rounded-full shadow-lg shadow-primary/20"
+              className="absolute right-3 top-0 bottom-0 my-auto size-8 rounded-full shadow-lg shadow-primary/20"
               aria-label="Post comment"
             >
               <Send className="h-4 w-4" />
