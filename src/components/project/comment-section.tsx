@@ -128,9 +128,6 @@ export function CommentSection({
     <div className="flex min-h-0 flex-1 flex-col space-y-5">
       {canComment ? (
         <form onSubmit={handleSubmit} className="flex items-center gap-3">
-          <Avatar className="size-8 shrink-0">
-            <AvatarFallback className="text-xs">R</AvatarFallback>
-          </Avatar>
           <div className="relative min-w-0 flex-1">
             <Textarea
               value={content}
