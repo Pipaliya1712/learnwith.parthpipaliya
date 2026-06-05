@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { AvatarModal } from "@/components/ui/avatar-modal";
 import { useConfirm } from "@/hooks/use-confirm";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { commentSchema } from "@/lib/validations/comment";
 import { format } from "date-fns";
 import { MessageCircle, Send, MoreVertical, Edit2, Trash2 } from "lucide-react";
@@ -27,7 +26,16 @@ type CommentWithProfile = Comment & {
 
 type CommentSectionProps = {
   comments: CommentWithProfile[];
+  total: number;
   projectId: string;
+  onLoadMoreComments?: (
+    skip: number,
+    limit: number
+  ) => Promise<{
+    success: boolean;
+    comments: CommentWithProfile[];
+    total: number;
+  }>;
   onAddComment: (projectId: string, content: string) => Promise<{ success: boolean; error?: string }>;
   onEditComment?: (commentId: string, content: string) => Promise<{ success: boolean; error?: string }>;
   onDeleteComment?: (commentId: string) => Promise<{ success: boolean; error?: string }>;
@@ -37,7 +45,9 @@ type CommentSectionProps = {
 
 export function CommentSection({
   comments,
+  total,
   projectId,
+  onLoadMoreComments,
   onAddComment,
   onEditComment,
   onDeleteComment,
@@ -49,7 +59,8 @@ export function CommentSection({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(COMMENTS_BATCH_SIZE);
+  const [loadedComments, setLoadedComments] = useState(comments);
+  const [commentsTotal, setCommentsTotal] = useState(total);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
@@ -81,27 +92,36 @@ export function CommentSection({
 
   const sortedComments = useMemo(
     () =>
-      [...comments].sort(
+      [...loadedComments].sort(
         (a, b) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       ),
-    [comments]
+    [loadedComments]
   );
 
-  const visibleComments = sortedComments.slice(0, visibleCount);
-  const hasMoreComments = visibleCount < sortedComments.length;
+  const hasMoreComments = sortedComments.length < commentsTotal;
 
-  const loadMoreComments = useCallback(() => {
-    if (isLoadingMore || !hasMoreComments) return;
+  const loadMoreComments = useCallback(async () => {
+    if (isLoadingMore || !hasMoreComments || !onLoadMoreComments) return;
 
     setIsLoadingMore(true);
-    window.setTimeout(() => {
-      setVisibleCount((count) =>
-        Math.min(count + COMMENTS_BATCH_SIZE, sortedComments.length)
+    try {
+      const result = await onLoadMoreComments(
+        sortedComments.length,
+        COMMENTS_BATCH_SIZE
       );
+      if (result.success) {
+        setLoadedComments((current) => {
+          const seen = new Set(current.map((comment) => comment.id));
+          const next = result.comments.filter((comment) => !seen.has(comment.id));
+          return [...current, ...next];
+        });
+        setCommentsTotal(result.total);
+      }
+    } finally {
       setIsLoadingMore(false);
-    }, 320);
-  }, [hasMoreComments, isLoadingMore, sortedComments.length]);
+    }
+  }, [hasMoreComments, isLoadingMore, onLoadMoreComments, sortedComments.length]);
 
   useEffect(() => {
     const sentinel = loadMoreRef.current;
@@ -169,7 +189,7 @@ export function CommentSection({
         </div>
       )}
 
-      {comments.length === 0 ? (
+      {loadedComments.length === 0 ? (
         <div className="flex min-h-0 flex-1 flex-col items-center justify-center text-center">
           <div className="relative mb-5 h-14 w-24">
             <span className="absolute bottom-1 left-3 flex h-9 w-12 items-center justify-center rounded-lg bg-primary/80 text-primary-foreground shadow-lg shadow-primary/20">
@@ -193,7 +213,7 @@ export function CommentSection({
           ref={scrollAreaRef}
           className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-2 scrollbar-thin"
         >
-          {visibleComments.map((comment) => {
+          {sortedComments.map((comment) => {
             const isOwnComment = comment.user_id === currentUserId;
 
             return (

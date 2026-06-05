@@ -4,8 +4,17 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AdminProjectList } from "@/components/admin/admin-project-list";
 
-export default async function AdminProjectsPage() {
-  const { projects: projectsWithTags } = await getAdminProjectsServer();
+export default async function AdminProjectsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const response = await getAdminProjectsServer(params);
+  const projectsWithTags = response.projects || [];
+  const total = response.total || 0;
+  const page = response.page || 1;
+  const limit = parseInt((params.limit as string) || "10");
 
   return (
     <div className="space-y-6">
@@ -24,7 +33,13 @@ export default async function AdminProjectsPage() {
         </Link>
       </div>
 
-      <AdminProjectList projects={projectsWithTags} />
+      <AdminProjectList
+        key={JSON.stringify(params)}
+        projects={projectsWithTags}
+        total={total}
+        currentPage={page}
+        pageSize={limit}
+      />
     </div>
   );
 }

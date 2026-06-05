@@ -44,13 +44,25 @@ export async function getLandingProjectsServer() {
 }
 
 export async function getDashboardProjectsServer() {
-  const data = await fetchFromApi("/projects/dashboard");
-  return data || { projects: [] };
+  const data = await fetchFromApi("/projects/dashboard?skip=0&limit=12");
+  return data || { projects: [], total: 0, page: 1 };
 }
 
-export async function getAdminProjectsServer() {
-  const data = await fetchFromApi("/projects/admin");
-  return data || { projects: [] };
+export async function getAdminProjectsServer(params: { [key: string]: string | string[] | undefined } = {}) {
+  const query = new URLSearchParams();
+
+  const page = parseInt((params.page as string) || "1");
+  const limit = parseInt((params.limit as string) || "10");
+  query.set("skip", ((page - 1) * limit).toString());
+  query.set("limit", limit.toString());
+
+  if (params.sort_by) query.set("sort_by", params.sort_by as string);
+  if (params.sort_desc) query.set("sort_desc", params.sort_desc as string);
+  if (params.q_name) query.set("name", params.q_name as string);
+  if (params.q_status) query.set("status", params.q_status as string);
+
+  const data = await fetchFromApi(`/projects/admin?${query.toString()}`);
+  return data || { projects: [], total: 0, page: 1 };
 }
 
 export async function getProjectBySlugServer(slug: string) {
@@ -63,9 +75,24 @@ export async function getProjectByIdServer(id: string) {
   return data;
 }
 
-export async function getAdminUsersServer() {
-  const data = await fetchFromApi("/users");
-  return data?.users || [];
+export async function getAdminUsersServer(params: { [key: string]: string | string[] | undefined } = {}) {
+  const query = new URLSearchParams();
+
+  const page = parseInt((params.page as string) || "1");
+  const limit = parseInt((params.limit as string) || "10");
+  query.set("skip", ((page - 1) * limit).toString());
+  query.set("limit", limit.toString());
+
+  if (params.sort_by) {
+    query.set("sort_by", params.sort_by === "user" ? "display_name" : params.sort_by as string);
+  }
+  if (params.sort_desc) query.set("sort_desc", params.sort_desc as string);
+  if (params.q_user) query.set("user", params.q_user as string);
+  if (params.q_role) query.set("role", params.q_role as string);
+  if (params.q_status) query.set("status", params.q_status as string);
+
+  const data = await fetchFromApi(`/users?${query.toString()}`);
+  return data || { users: [], total: 0, page: 1 };
 }
 
 export async function getAdminCommentsServer(params: { [key: string]: string | string[] | undefined } = {}) {

@@ -2,11 +2,25 @@ import { getAdminUsersServer } from "@/lib/server-api";
 import { AdminUserTable } from "@/components/admin/admin-user-table";
 import { getSession } from "@/lib/session";
 
-export default async function AdminUsersPage() {
+export default async function AdminUsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
   const session = await getSession();
-  const isSuperAdmin = session?.email === process.env.SUPER_ADMIN_EMAIL;
+  const superAdminEmails = (process.env.SUPER_ADMIN_EMAIL || "")
+    .split(",")
+    .map((email) => email.trim().toLowerCase());
+  const isSuperAdmin = Boolean(
+    session?.email && superAdminEmails.includes(session.email.toLowerCase())
+  );
 
-  const profiles = await getAdminUsersServer();
+  const response = await getAdminUsersServer(params);
+  const profiles = response.users || [];
+  const total = response.total || 0;
+  const page = response.page || 1;
+  const limit = parseInt((params.limit as string) || "10");
 
   return (
     <div className="space-y-6">
@@ -16,7 +30,14 @@ export default async function AdminUsersPage() {
           Manage registered developers and their access
         </p>
       </div>
-      <AdminUserTable users={profiles || []} isSuperAdmin={isSuperAdmin} />
+      <AdminUserTable
+        key={JSON.stringify(params)}
+        users={profiles}
+        total={total}
+        currentPage={page}
+        pageSize={limit}
+        isSuperAdmin={isSuperAdmin}
+      />
     </div>
   );
 }

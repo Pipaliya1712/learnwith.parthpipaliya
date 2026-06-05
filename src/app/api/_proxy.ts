@@ -36,11 +36,16 @@ export async function proxyToFastAPI(
   }
 
   try {
-    const upstream = await fetch(`${FASTAPI_BASE}${path}`, {
+    const search = req.nextUrl.search;
+    const targetPath = search
+      ? `${path}${path.includes("?") ? "&" : "?"}${search.slice(1)}`
+      : path;
+
+    const upstream = await fetch(`${FASTAPI_BASE}${targetPath}`, {
       method: method || req.method,
       headers: reqHeaders,
       body: requestBody,
-      // @ts-ignore — duplex is required for streaming body in Node 18+
+      // @ts-expect-error duplex is required for streaming body in Node 18+
       duplex: "half",
     });
 

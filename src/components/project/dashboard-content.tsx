@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SearchBar } from "@/components/layout/search-bar";
 import { TagFilter } from "@/components/layout/tag-filter";
 import { ProjectGrid } from "@/components/project/project-grid";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Grid3X3, List } from "lucide-react";
 import type { Project, Tag, ProjectImage } from "@/types";
+import { projectsApi } from "@/lib/api-client";
 
 type ProjectWithRelations = Project & {
   images: ProjectImage[];
@@ -16,27 +17,101 @@ type ProjectWithRelations = Project & {
 
 type DashboardContentProps = {
   projects: ProjectWithRelations[];
+  total: number;
   tags: Tag[];
 };
 
-export function DashboardContent({ projects, tags }: DashboardContentProps) {
+const PROJECTS_BATCH_SIZE = 12;
+
+export function DashboardContent({
+  projects: initialProjects,
+  total: initialTotal,
+  tags,
+}: DashboardContentProps) {
   const [search, setSearch] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [projects, setProjects] = useState(initialProjects);
+  const [total, setTotal] = useState(initialTotal);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const hasActiveFilters = search.length > 0 || selectedTags.length > 0;
-  console.log("projects:", projects);
-  const filtered = projects.filter((project) => {
-    const matchesSearch =
-      !search ||
-      project.name.toLowerCase().includes(search.toLowerCase()) ||
-      project.summary.toLowerCase().includes(search.toLowerCase());
+  const debouncedSearch = useDebouncedValue(search, 350);
+  const hasMoreProjects = projects.length < total;
 
-    const matchesTags =
-      selectedTags.length === 0 ||
-      project.tags.some((t) => selectedTags.includes(t.id));
+  useEffect(() => {
+    let isActive = true;
 
-    return matchesSearch && matchesTags;
-  });
+    async function loadFirstPage() {
+      setIsLoading(true);
+      try {
+        const response = await projectsApi.dashboard({
+          skip: 0,
+          limit: PROJECTS_BATCH_SIZE,
+          search: debouncedSearch,
+          tagIds: selectedTags,
+        });
+        if (!isActive) return;
+        setProjects(response.projects as ProjectWithRelations[]);
+        setTotal(response.total);
+      } finally {
+        if (isActive) setIsLoading(false);
+      }
+    }
+
+    loadFirstPage();
+
+    return () => {
+      isActive = false;
+    };
+  }, [debouncedSearch, selectedTags]);
+
+  const loadMoreProjects = useCallback(async () => {
+    if (isLoading || isLoadingMore || !hasMoreProjects) return;
+
+    setIsLoadingMore(true);
+    try {
+      const response = await projectsApi.dashboard({
+        skip: projects.length,
+        limit: PROJECTS_BATCH_SIZE,
+        search: debouncedSearch,
+        tagIds: selectedTags,
+      });
+      setProjects((current) => [
+        ...current,
+        ...(response.projects as ProjectWithRelations[]),
+      ]);
+      setTotal(response.total);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [
+    debouncedSearch,
+    hasMoreProjects,
+    isLoading,
+    isLoadingMore,
+    projects.length,
+    selectedTags,
+  ]);
+
+  useEffect(() => {
+    const sentinel = loadMoreRef.current;
+    if (!sentinel || !hasMoreProjects) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          loadMoreProjects();
+        }
+      },
+      { rootMargin: "320px 0px" }
+    );
+
+    observer.observe(sentinel);
+
+    return () => observer.disconnect();
+  }, [hasMoreProjects, loadMoreProjects]);
 
   const clearFilters = () => {
     setSearch("");
@@ -101,12 +176,31 @@ export function DashboardContent({ projects, tags }: DashboardContentProps) {
       </div>
 
       <ProjectGrid
-        projects={filtered}
+        projects={projects}
         variant="dashboard"
         viewMode={viewMode}
         hasActiveFilters={hasActiveFilters}
         onClearFilters={clearFilters}
       />
+      {(isLoading || isLoadingMore) && (
+        <div className="py-2 text-center text-sm text-muted-foreground">
+          Loading projects...
+        </div>
+      )}
+      {hasMoreProjects && (
+        <div ref={loadMoreRef} className="h-8" aria-label="Load more projects" />
+      )}
     </div>
   );
+}
+
+function useDebouncedValue<T>(value: T, delay: number) {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebounced(value), delay);
+    return () => window.clearTimeout(timer);
+  }, [delay, value]);
+
+  return debounced;
 }

@@ -1,6 +1,5 @@
 import { getProjectBySlugServer } from "@/lib/server-api";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,10 +14,8 @@ import {
   ArrowLeft,
   CalendarDays,
   CheckCircle2,
-  Clock3,
   Code2,
   GitFork,
-  ImageIcon,
   Info,
   Lightbulb,
   MessageCircle,
@@ -35,7 +32,6 @@ import type {
   ProjectWithDetails,
   Tag,
 } from "@/types";
-import { cleanImageUrl } from "@/lib/utils";
 
 type CommentWithProfile = Comment & {
   profiles: Pick<Profile, "display_name" | "email" | "is_blocked" | "avatar_url">;
@@ -48,6 +44,7 @@ type RelatedProject = Project & {
 
 type ProjectDetail = ProjectWithDetails & {
   comments?: CommentWithProfile[];
+  comments_total?: number;
   related_projects?: RelatedProject[];
 };
 
@@ -69,8 +66,8 @@ export default async function ProjectDetailPage({
   const comments = (project.comments || []).filter(
     (comment) => comment.profiles && !comment.profiles.is_blocked
   );
+  const commentsTotal = project.comments_total || comments.length;
   const relatedProjects = project.related_projects || [];
-  const primaryImage = images[0];
 
   const overviewItems = [
     `Responsive UI built with ${tags[0]?.name || "modern tooling"}`,
@@ -249,6 +246,7 @@ export default async function ProjectDetailPage({
             </div>
             <CommentSectionWrapper
               comments={comments}
+              total={commentsTotal}
               projectId={project.id}
             />
           </aside>
