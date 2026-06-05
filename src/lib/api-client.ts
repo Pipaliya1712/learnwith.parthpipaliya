@@ -105,12 +105,21 @@ export const authApi = {
 
 // ─── PROJECTS ─────────────────────────────────────────────────────────────────
 export const projectsApi = {
-  dashboard: (params: { skip?: number; limit?: number; search?: string; tagIds?: string[] } = {}) => {
+  dashboard: (params: {
+    skip?: number;
+    limit?: number;
+    search?: string;
+    tagIds?: string[];
+    sortBy?: string;
+    sortDesc?: boolean;
+  } = {}) => {
     const query = new URLSearchParams();
     if (params.skip !== undefined) query.set("skip", params.skip.toString());
     if (params.limit !== undefined) query.set("limit", params.limit.toString());
     if (params.search) query.set("search", params.search);
     if (params.tagIds?.length) query.set("tag_ids", params.tagIds.join(","));
+    if (params.sortBy) query.set("sort_by", params.sortBy);
+    if (params.sortDesc !== undefined) query.set("sort_desc", params.sortDesc.toString());
     return request<{ projects: unknown[]; total: number; page: number }>(
       `/projects/dashboard?${query.toString()}`
     );

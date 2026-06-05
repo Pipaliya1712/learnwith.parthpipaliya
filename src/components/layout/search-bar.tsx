@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -12,6 +13,10 @@ interface SearchBarProps {
   onChange?: (value: string) => void;
   debounceMs?: number;
   className?: string;
+  inputClassName?: string;
+  iconClassName?: string;
+  clearButtonClassName?: string;
+  shortcut?: string;
 }
 
 export function SearchBar({
@@ -21,6 +26,10 @@ export function SearchBar({
   onChange,
   debounceMs = 0,
   className,
+  inputClassName,
+  iconClassName,
+  clearButtonClassName,
+  shortcut,
 }: SearchBarProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const value = controlledValue !== undefined ? controlledValue : internalValue;
@@ -63,20 +72,30 @@ export function SearchBar({
   };
 
   return (
-    <div className={`relative ${className ?? ""}`}>
-      <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+    <div className={cn("relative", className)}>
+      <Search
+        className={cn(
+          "pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground",
+          iconClassName
+        )}
+      />
       <Input
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        className="h-10 rounded-xl bg-card/70 pl-8 pr-8 shadow-sm"
+        className={cn("h-10 rounded-xl bg-card/70 pl-8 pr-8 shadow-sm", inputClassName)}
       />
+      {shortcut && value.length === 0 && (
+        <span className="pointer-events-none absolute right-7 top-1/2 hidden -translate-y-1/2 items-center rounded-lg border border-border/40 bg-muted/50 px-2 py-1 text-xs font-semibold text-muted-foreground sm:inline-flex">
+          {shortcut}
+        </span>
+      )}
       {value.length > 0 && (
         <Button
           variant="ghost"
           size="icon-xs"
-          className="absolute right-1.5 top-1/2 -translate-y-1/2"
+          className={cn("absolute right-1.5 top-1/2 -translate-y-1/2", clearButtonClassName)}
           onClick={handleClear}
           aria-label="Clear search"
         >
