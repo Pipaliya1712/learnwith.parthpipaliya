@@ -191,13 +191,13 @@ export function DashboardContent({
           shortcut="Ctrl K"
           className="min-w-0"
           iconClassName="left-6 size-4"
-          inputClassName="h-10 rounded-2xl border-primary/35 bg-card/45 pl-20 pr-28 text-lg shadow-lg shadow-primary/5 focus-visible:border-primary/70 focus-visible:ring-primary/20 sm:text-xl"
+          inputClassName="h-14 rounded-2xl border-primary/35 bg-card/45 pl-20 pr-28 text-lg shadow-lg shadow-primary/5 focus-visible:border-primary/70 focus-visible:ring-primary/20 sm:text-xl"
           clearButtonClassName="right-5 size-6 rounded-lg"
         />
 
         <Button
           variant="outline"
-          className="h-10 justify-between gap-4 rounded-2xl border-border/80 bg-card/35 px-7 text-base text-muted-foreground shadow-sm hover:border-primary/45 hover:bg-card"
+          className="h-14 justify-between gap-4 rounded-2xl border-border/80 bg-card/35 px-7 text-base text-muted-foreground shadow-sm hover:border-primary/45 hover:bg-card"
           onClick={() => setShowFilters((value) => !value)}
           aria-expanded={showFilters}
         >
@@ -218,7 +218,7 @@ export function DashboardContent({
           />
         </Button>
 
-        <div className="flex h-10 items-center gap-4 rounded-2xl border border-border/80 bg-card/35 px-6 shadow-sm">
+        <div className="flex h-14 items-center gap-4 rounded-2xl border border-border/80 bg-card/35 px-6 shadow-sm">
           <ArrowDownUp className="size-6 text-muted-foreground" />
           <div className="min-w-24">
             <Select value={sort} onValueChange={(value) => setSort(value as SortOption)}>
@@ -236,7 +236,7 @@ export function DashboardContent({
           </div>
         </div>
 
-        <div className="flex h-10 shrink-0 items-center gap-2 rounded-2xl border border-border/80 bg-card/35 p-2 shadow-sm">
+        <div className="flex h-14 shrink-0 items-center gap-2 rounded-2xl border border-border/80 bg-card/35 p-2 shadow-sm">
           {[
             { value: "grid" as const, label: "Grid view", icon: Grid3X3 },
             { value: "list" as const, label: "List view", icon: List },
@@ -363,7 +363,7 @@ function TagChip({
     <Button
       variant="outline"
       className={cn(
-        "h-14 gap-3 rounded-xl border-border/80 bg-background/35 px-5 text-sm font-semibold text-foreground shadow-sm hover:border-primary/50 hover:bg-primary/10",
+        "h-10 gap-3 rounded-xl border-border/80 bg-background/35 px-5 text-sm font-semibold text-foreground shadow-sm hover:border-primary/50 hover:bg-primary/10",
         active &&
           "border-primary/70 bg-primary/15 text-primary shadow-lg shadow-primary/15 hover:bg-primary/20 hover:text-primary"
       )}
@@ -372,7 +372,8 @@ function TagChip({
       <span
         className={cn(
           "flex size-7 items-center justify-center rounded-lg text-primary",
-          active && "bg-primary text-primary-foreground"
+          active &&
+      "bg-primary text-primary-foreground"
         )}
       >
         <Icon className="size-4" />
