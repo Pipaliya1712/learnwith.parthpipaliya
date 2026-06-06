@@ -94,3 +94,11 @@ export type ProjectWithDetails = Project & {
   improvements: Improvement[];
   bugs: Bug[];
 };
+
+export type PublicUser = {
+  id: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  role: "admin" | "developer";
+  created_at: string;
+};

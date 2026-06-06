@@ -194,6 +194,14 @@ export const usersApi = {
     return request(`/users?${query.toString()}`);
   },
 
+  search: (params: { search?: string; skip?: number; limit?: number } = {}) => {
+    const query = new URLSearchParams();
+    if (params.search) query.set("search", params.search);
+    if (params.skip !== undefined) query.set("skip", params.skip.toString());
+    if (params.limit !== undefined) query.set("limit", params.limit.toString());
+    return request<{ users: unknown[]; total: number }>(`/users/search?${query.toString()}`);
+  },
+
   block: (userId: string) =>
     request(`/users/${userId}/block`, { method: "PATCH" }),
 

@@ -157,10 +157,8 @@ export function AdminProjectList({
           </Link>
           {!project.is_deleted && (
             <AlertDialog>
-              <AlertDialogTrigger>
-                <Button variant="ghost" size="icon">
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
+              <AlertDialogTrigger render={<Button variant="ghost" size="icon" />}>
+                <Trash2 className="h-4 w-4 text-destructive" />
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
