@@ -190,8 +190,8 @@ export function DashboardContent({
           placeholder="Search projects..."
           shortcut="Ctrl K"
           className="min-w-0"
-          iconClassName="left-6 size-4"
-          inputClassName="h-14 rounded-2xl border-primary/35 bg-card/45 pl-20 pr-28 text-lg shadow-lg shadow-primary/5 focus-visible:border-primary/70 focus-visible:ring-primary/20 sm:text-xl"
+          iconClassName="left-4 size-6"
+          inputClassName="h-14 rounded-2xl border-primary/35 bg-card/45 pl-15 pr-28 text-lg shadow-lg shadow-primary/5 focus-visible:border-primary/70 focus-visible:ring-primary/20 sm:text-xl"
           clearButtonClassName="right-5 size-6 rounded-lg"
         />
 
@@ -202,7 +202,7 @@ export function DashboardContent({
           aria-expanded={showFilters}
         >
           <span className="flex items-center gap-3">
-            <Filter className="size-4" />
+            <Filter className="size-6" />
             <span className="">Filters</span>
             {activeFilterCount > 0 && (
               <span className="flex size-4 items-center justify-center rounded-full bg-primary text-sm text-primary-foreground shadow-lg shadow-primary/25">
@@ -212,7 +212,7 @@ export function DashboardContent({
           </span>
           <ChevronDown
             className={cn(
-              "size-5 transition-transform",
+              "size-6 transition-transform",
               showFilters && "rotate-180"
             )}
           />
@@ -258,7 +258,7 @@ export function DashboardContent({
                 )}
                 onClick={() => setViewMode(item.value)}
               >
-                <Icon className="size-4" />
+                <Icon className="size-6" />
               </Button>
             );
           })}
