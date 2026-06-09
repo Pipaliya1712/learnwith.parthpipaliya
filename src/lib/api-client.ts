@@ -160,7 +160,8 @@ export const projectsApi = {
 
 // ─── CHALLENGES ───────────────────────────────────────────────────────────────
 export const challengesApi = {
-  getBySlug: (slug: string) => request<any>(`/challenges/${slug}`),
+  getBySlug: (slug: string) => request<any>(`/challenges/slug/${slug}`),
+  claim: (id: string) => request(`/challenges/${id}/claim`, { method: "POST" }),
 };
 
 // ─── COMMENTS ────────────────────────────────────────────────────────────────

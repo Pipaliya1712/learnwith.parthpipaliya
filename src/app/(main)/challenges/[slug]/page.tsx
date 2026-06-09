@@ -1,4 +1,4 @@
-import { getChallengeBySlugServer } from "@/lib/server-api";
+import { getChallengeBySlugServer, getMyChallengesServer } from "@/lib/server-api";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Clock, Trophy, Target, FileText, ExternalLink, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { ClaimButton } from "@/components/challenge/claim-button";
 
 export default async function ChallengeDetailPage({
   params,
@@ -18,6 +19,10 @@ export default async function ChallengeDetailPage({
   if (!challenge) {
     notFound();
   }
+
+  const myChallenges = await getMyChallengesServer();
+  const existingClaim = myChallenges.items.find((c: any) => c.challenge?.id === challenge.id);
+  const initialStatus = existingClaim ? existingClaim.status : null;
 
   // Helper for difficulty colors
   const getDifficultyColor = (diff: string) => {
@@ -149,9 +154,7 @@ export default async function ChallengeDetailPage({
                 </div>
               )}
 
-              <Button className="w-full font-semibold" size="lg">
-                Start Challenge
-              </Button>
+              <ClaimButton challengeId={challenge.id} initialStatus={initialStatus} />
             </CardContent>
           </Card>
 

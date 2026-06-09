@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
+  Target,
+  Trophy,
   Settings,
   ShieldCheck,
   ChevronLeft,
@@ -20,6 +22,16 @@ const navItems = [
     label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    label: "Challenges",
+    href: "/challenges",
+    icon: Target,
+  },
+  {
+    label: "My Challenges",
+    href: "/my-challenges",
+    icon: Trophy,
   },
   {
     label: "Settings",
