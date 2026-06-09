@@ -158,6 +158,11 @@ export const projectsApi = {
   deleteTag: (id: string) => request(`/projects/tags/${id}`, { method: "DELETE" }),
 };
 
+// ─── CHALLENGES ───────────────────────────────────────────────────────────────
+export const challengesApi = {
+  getBySlug: (slug: string) => request<any>(`/challenges/${slug}`),
+};
+
 // ─── COMMENTS ────────────────────────────────────────────────────────────────
 export const commentsApi = {
   listByProject: (projectId: string, params: { skip?: number; limit?: number } = {}) => {
