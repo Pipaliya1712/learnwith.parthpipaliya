@@ -164,6 +164,12 @@ export const challengesApi = {
   claim: (id: string) => request(`/challenges/${id}/claim`, { method: "POST" }),
 };
 
+// ─── SUBMISSIONS ──────────────────────────────────────────────────────────────
+export const submissionsApi = {
+  submit: (data: { challenge_id: string; github_pr_url: string; github_repo_url?: string; notes?: string }) => 
+    request(`/submissions`, { method: "POST", body: JSON.stringify(data) }),
+};
+
 // ─── COMMENTS ────────────────────────────────────────────────────────────────
 export const commentsApi = {
   listByProject: (projectId: string, params: { skip?: number; limit?: number } = {}) => {

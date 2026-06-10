@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Target,
   Trophy,
+  History,
   Settings,
   ShieldCheck,
   ChevronLeft,
@@ -32,6 +33,11 @@ const navItems = [
     label: "My Challenges",
     href: "/my-challenges",
     icon: Trophy,
+  },
+  {
+    label: "History",
+    href: "/submissions",
+    icon: History,
   },
   {
     label: "Settings",

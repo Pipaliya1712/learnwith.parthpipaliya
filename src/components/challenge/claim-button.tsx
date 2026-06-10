@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { challengesApi } from "@/lib/api-client";
-import { Loader2, CheckCircle, Clock, CheckCircle2, XCircle, Activity } from "lucide-react";
+import { Loader2, CheckCircle, Clock, CheckCircle2, XCircle, Activity, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { SubmitModal } from "./submit-modal";
 
 interface ClaimButtonProps {
   challengeId: string;
@@ -19,10 +20,7 @@ export function ClaimButton({ challengeId, initialStatus }: ClaimButtonProps) {
   const handleClaim = async () => {
     try {
       setIsClaiming(true);
-      
-      // Call the API via the proxy route
       await challengesApi.claim(challengeId);
-      
       setStatus("in_progress");
       toast.success("Challenge claimed successfully! Good luck!");
     } catch (error: any) {
@@ -32,15 +30,19 @@ export function ClaimButton({ challengeId, initialStatus }: ClaimButtonProps) {
     }
   };
 
-  // If the user has already claimed/submitted this challenge, show a distinct action
+  const handleSubmissionSuccess = () => {
+    setStatus("submitted");
+  };
+
+  // If the user has claimed it but not yet submitted the PR
   if (status === "in_progress") {
     return (
-      <Link href="/my-challenges" className="w-full block">
-        <Button className="w-full font-semibold bg-blue-500/10 text-blue-600 hover:bg-blue-500/20" size="lg">
-          <Activity className="mr-2 h-5 w-5" />
-          Continue Work
+      <SubmitModal challengeId={challengeId} onSuccess={handleSubmissionSuccess}>
+        <Button className="w-full font-semibold bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 hover:text-blue-700" size="lg">
+          <UploadCloud className="mr-2 h-5 w-5" />
+          Submit Solution
         </Button>
-      </Link>
+      </SubmitModal>
     );
   }
 
@@ -66,12 +68,12 @@ export function ClaimButton({ challengeId, initialStatus }: ClaimButtonProps) {
 
   if (status === "rejected") {
     return (
-      <Link href="/my-challenges" className="w-full block">
+      <SubmitModal challengeId={challengeId} onSuccess={handleSubmissionSuccess}>
         <Button className="w-full font-semibold bg-red-500/10 text-red-600 hover:bg-red-500/20" size="lg">
           <XCircle className="mr-2 h-5 w-5" />
-          Changes Requested
+          Changes Requested (Resubmit)
         </Button>
-      </Link>
+      </SubmitModal>
     );
   }
 

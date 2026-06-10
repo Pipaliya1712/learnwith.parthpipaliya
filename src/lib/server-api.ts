@@ -146,3 +146,14 @@ export async function getMyChallengesServer() {
   return data || { items: [], total: 0 };
 }
 
+export async function getMySubmissionsServer(params: { [key: string]: string | string[] | undefined } = {}) {
+  const query = new URLSearchParams();
+  const page = parseInt((params.page as string) || "1");
+  const limit = parseInt((params.limit as string) || "20");
+  query.set("skip", ((page - 1) * limit).toString());
+  query.set("limit", limit.toString());
+
+  const data = await fetchFromApi(`/submissions/me?${query.toString()}`);
+  return data || { items: [], total: 0, page: 1, limit: 20 };
+}
+
