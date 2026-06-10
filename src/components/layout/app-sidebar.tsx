@@ -40,6 +40,11 @@ const navItems = [
     icon: History,
   },
   {
+    label: "Leaderboard",
+    href: "/leaderboard",
+    icon: Trophy,
+  },
+  {
     label: "Settings",
     href: "/settings",
     icon: Settings,

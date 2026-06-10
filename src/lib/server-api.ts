@@ -157,3 +157,13 @@ export async function getMySubmissionsServer(params: { [key: string]: string | s
   return data || { items: [], total: 0, page: 1, limit: 20 };
 }
 
+export async function getMyProgressServer() {
+  const data = await fetchFromApi("/auth/me/progress");
+  return data || { points: 0, level: "V1", solved_challenges: 0 };
+}
+
+export async function getLeaderboardServer(limit: number = 50) {
+  const data = await fetchFromApi(`/users/leaderboard?limit=${limit}`);
+  return data || { items: [] };
+}
+
