@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Clock, Trophy, Target, FileText, ExternalLink, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { ClaimButton } from "@/components/challenge/claim-button";
+import { AiReviewResult } from "@/components/challenge/ai-review-result";
 
 export default async function ChallengeDetailPage({
   params,
