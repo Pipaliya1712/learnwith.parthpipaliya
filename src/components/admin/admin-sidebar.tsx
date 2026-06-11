@@ -11,12 +11,16 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
+  Target,
+  CheckSquare,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/auth-provider";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
+  { href: "/admin/challenges", label: "Challenges", icon: Target },
+  { href: "/admin/reviews", label: "Reviews", icon: CheckSquare },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
 ];
