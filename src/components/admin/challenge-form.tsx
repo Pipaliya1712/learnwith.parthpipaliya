@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { LWOverlayLoader } from "@/components/ui/lw-overlay-loader";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getAdminProjectsServer } from "@/lib/server-api";
 
@@ -27,7 +27,17 @@ const formSchema = z.object({
   project_id: z.string().uuid("Please select a project"),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = {
+  title: string;
+  slug: string;
+  description: string;
+  acceptance_criteria: string;
+  difficulty: string;
+  points: number;
+  estimated_hours: number;
+  status: string;
+  project_id: string;
+};
 
 interface ChallengeFormProps {
   initialData?: any;
@@ -44,7 +54,8 @@ export function ChallengeForm({ initialData, projects }: ChallengeFormProps) {
   };
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       title: initialData?.title || "",
       slug: initialData?.slug || "",
@@ -86,6 +97,7 @@ export function ChallengeForm({ initialData, projects }: ChallengeFormProps) {
   }
 
   return (
+    <LWOverlayLoader loading={isLoading}>
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
@@ -118,7 +130,7 @@ export function ChallengeForm({ initialData, projects }: ChallengeFormProps) {
           <Label htmlFor="project_id">Associated Project</Label>
           <Select 
             value={form.watch("project_id")}
-            onValueChange={(val) => form.setValue("project_id", val, { shouldValidate: true })} 
+            onValueChange={(val) => form.setValue("project_id", val ?? "", { shouldValidate: true })}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select a project">
@@ -142,7 +154,7 @@ export function ChallengeForm({ initialData, projects }: ChallengeFormProps) {
           <Label htmlFor="status">Status</Label>
           <Select 
             value={form.watch("status")}
-            onValueChange={(val) => form.setValue("status", val, { shouldValidate: true })} 
+            onValueChange={(val) => form.setValue("status", val ?? "", { shouldValidate: true })} 
           >
             <SelectTrigger>
               <SelectValue placeholder="Select a status">
@@ -164,7 +176,7 @@ export function ChallengeForm({ initialData, projects }: ChallengeFormProps) {
           <Label htmlFor="difficulty">Difficulty Level</Label>
           <Select 
             value={form.watch("difficulty")}
-            onValueChange={(val) => form.setValue("difficulty", val, { shouldValidate: true })} 
+            onValueChange={(val) => form.setValue("difficulty", val ?? "", { shouldValidate: true })} 
           >
             <SelectTrigger>
               <SelectValue placeholder="Select a difficulty">
@@ -233,10 +245,10 @@ export function ChallengeForm({ initialData, projects }: ChallengeFormProps) {
           Cancel
         </Button>
         <Button type="submit" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {initialData ? "Save Changes" : "Create Challenge"}
         </Button>
       </div>
     </form>
+    </LWOverlayLoader>
   );
 }

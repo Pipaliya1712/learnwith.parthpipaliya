@@ -2,7 +2,7 @@ import { getMySubmissionsServer } from "@/lib/server-api";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clock, CheckCircle2, XCircle, Activity, GitPullRequest, MessageSquare } from "lucide-react";
+import { Clock, CheckCircle2, XCircle, Activity, GitPullRequest, MessageSquare, FileText } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow, format } from "date-fns";
 
@@ -68,8 +68,14 @@ export default async function SubmissionHistoryPage({
         </CardHeader>
         <CardContent>
           {items.length === 0 ? (
-            <div className="text-center py-10 border-t border-dashed mt-4">
-              <p className="text-muted-foreground">You haven't submitted any challenges yet.</p>
+            <div className="flex flex-col items-center justify-center py-16 text-center border-t border-dashed mt-4">
+              <div className="mb-6 flex size-16 items-center justify-center rounded-2xl bg-muted">
+                <FileText className="size-8 text-muted-foreground" />
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight">No submissions yet</h2>
+              <p className="mt-3 max-w-md text-base leading-7 text-muted-foreground">
+                You haven&apos;t submitted any challenges yet. Start solving challenges to see your history here.
+              </p>
             </div>
           ) : (
             <div className="rounded-md border">

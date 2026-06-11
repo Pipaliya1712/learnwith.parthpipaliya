@@ -19,6 +19,8 @@ import { Trash2, ArchiveX } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import { LWOverlayLoader } from "@/components/ui/lw-overlay-loader";
+import { LWLoader } from "@/components/ui/lw-loader";
 
 export type CommentWithDetails = {
   id: string;
@@ -48,6 +50,7 @@ export function AdminCommentTable({
 }) {
   const router = useRouter();
 
+  const [isProcessing, setIsProcessing] = useState(false);
   const [deleteState, setDeleteState] = useState<{
     id: string | null;
     type: "soft" | "hard" | null;
@@ -55,7 +58,8 @@ export function AdminCommentTable({
 
   const handleConfirmDelete = async () => {
     if (!deleteState.id || !deleteState.type) return;
-    
+
+    setIsProcessing(true);
     try {
       if (deleteState.type === "soft") {
         await commentsApi.adminSoftDelete(deleteState.id);
@@ -64,11 +68,12 @@ export function AdminCommentTable({
         await commentsApi.adminHardDelete(deleteState.id);
         toast.success("Comment permanently deleted");
       }
+      setDeleteState({ id: null, type: null });
       router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Failed to delete comment");
     } finally {
-      setDeleteState({ id: null, type: null });
+      setIsProcessing(false);
     }
   };
 
@@ -144,7 +149,7 @@ export function AdminCommentTable({
       sortable: false,
       cell: (row) => {
         if (!isSuperAdmin) return <span className="text-xs text-muted-foreground">View Only</span>;
-        
+
         return (
           <div className="flex items-center justify-end gap-2">
             {!row.deleted_at && (
@@ -173,36 +178,48 @@ export function AdminCommentTable({
 
   return (
     <>
-      <DataTable
-        columns={columns}
-        data={comments}
-        total={total}
-        pageSize={pageSize}
-        currentPage={currentPage}
-      />
-      
+      <LWOverlayLoader loading={isProcessing}>
+        <DataTable
+          columns={columns}
+          data={comments}
+          total={total}
+          pageSize={pageSize}
+          currentPage={currentPage}
+        />
+      </LWOverlayLoader>
+
       <AlertDialog
         open={deleteState.id !== null}
-        onOpenChange={(open) => !open && setDeleteState({ id: null, type: null })}
+        onOpenChange={(open) => {
+          if (!isProcessing && !open) setDeleteState({ id: null, type: null });
+        }}
       >
         <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              {deleteState.type === "soft"
-                ? "This will hide the comment from users, but retain it in the database for auditing."
-                : "This will permanently delete the comment from the database. This action cannot be undone."}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleConfirmDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Confirm
-            </AlertDialogAction>
-          </AlertDialogFooter>
+          {isProcessing ? (
+            <div className="flex items-center justify-center py-8">
+              <LWLoader size="lg" />
+            </div>
+          ) : (
+            <>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {deleteState.type === "soft"
+                    ? "This will hide the comment from users, but retain it in the database for auditing."
+                    : "This will permanently delete the comment from the database. This action cannot be undone."}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleConfirmDelete}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Confirm
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </>
+          )}
         </AlertDialogContent>
       </AlertDialog>
     </>

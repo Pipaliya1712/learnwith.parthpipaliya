@@ -57,10 +57,14 @@ export default async function LeaderboardPage() {
       </div>
 
       {items.length === 0 ? (
-        <div className="text-center py-20 border rounded-xl border-dashed">
-          <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-bold">No Leaders Yet</h3>
-          <p className="text-muted-foreground mt-2">Complete a challenge to be the first on the board!</p>
+        <div className="flex flex-col items-center justify-center py-20 text-center border rounded-xl border-dashed bg-card/50">
+          <div className="mb-6 flex size-16 items-center justify-center rounded-2xl bg-muted">
+            <Trophy className="size-8 text-muted-foreground" />
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight">No Leaders Yet</h2>
+          <p className="mt-3 max-w-md text-base leading-7 text-muted-foreground">
+            Complete a challenge to be the first on the board!
+          </p>
         </div>
       ) : (
         <>

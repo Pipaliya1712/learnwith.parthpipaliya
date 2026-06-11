@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trophy, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default async function ChallengesPage({
   searchParams,
@@ -40,9 +41,11 @@ export default async function ChallengesPage({
 
       {/* Challenge Grid */}
       {items.length === 0 ? (
-        <div className="text-center py-20 border rounded-xl bg-muted/20">
-          <p className="text-muted-foreground text-lg">No challenges found.</p>
-        </div>
+        <EmptyState
+          icon={Trophy}
+          title="No challenges found"
+          description="There are no challenges available right now. Check back soon for new ones!"
+        />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {items.map((challenge: any) => (

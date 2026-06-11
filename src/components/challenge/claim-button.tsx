@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { challengesApi } from "@/lib/api-client";
-import { Loader2, CheckCircle, Clock, CheckCircle2, XCircle, Activity, UploadCloud } from "lucide-react";
+import { CheckCircle, Clock, CheckCircle2, XCircle, Activity, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { SubmitModal } from "./submit-modal";
+import { LWButtonLoader } from "@/components/ui/lw-loader";
 
 interface ClaimButtonProps {
   challengeId: string;
@@ -87,7 +88,7 @@ export function ClaimButton({ challengeId, initialStatus }: ClaimButtonProps) {
     >
       {isClaiming ? (
         <>
-          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+          <LWButtonLoader />
           Claiming...
         </>
       ) : (

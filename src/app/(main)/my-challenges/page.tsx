@@ -68,10 +68,19 @@ export default async function MyChallengesPage() {
 
       {/* Challenge Grid */}
       {items.length === 0 ? (
-        <div className="text-center py-20 border rounded-xl bg-muted/20">
-          <p className="text-muted-foreground text-lg">You haven't claimed any challenges yet.</p>
+        <div className="flex flex-col items-center justify-center py-20 text-center border rounded-xl bg-card/50">
+          <div className="mb-6 flex size-16 items-center justify-center rounded-2xl bg-muted">
+            <Trophy className="size-8 text-muted-foreground" />
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight">No challenges yet</h2>
+          <p className="mt-3 max-w-md text-base leading-7 text-muted-foreground">
+            You haven&apos;t claimed any challenges yet. Browse available challenges and start solving!
+          </p>
           <Link href="/challenges">
-            <Button className="mt-4">Browse Challenges</Button>
+            <Button className="mt-6 gap-2">
+              <ArrowRight className="size-4" />
+              Browse Challenges
+            </Button>
           </Link>
         </div>
       ) : (

@@ -1,8 +1,10 @@
+import { LWPageSkeleton } from "@/components/ui/lw-page-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function ProfileLoading() {
   return (
-    <div className="mx-auto max-w-4xl space-y-8 p-6 md:p-8">
+    <LWPageSkeleton className="mx-auto max-w-4xl space-y-8 p-6 md:p-8">
       {/* Header Profile Section */}
       <div className="flex flex-col items-center sm:flex-row sm:items-start gap-6">
         <Skeleton className="h-32 w-32 rounded-full" />
@@ -15,7 +17,7 @@ export default function ProfileLoading() {
           </div>
         </div>
       </div>
-      
+
       {/* Stats/Details Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
         <div className="space-y-4">
@@ -28,6 +30,6 @@ export default function ProfileLoading() {
           <Skeleton className="h-40 w-full rounded-xl" />
         </div>
       </div>
-    </div>
+    </LWPageSkeleton>
   );
 }

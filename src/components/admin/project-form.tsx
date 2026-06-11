@@ -16,9 +16,11 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { projectsApi } from "@/lib/api-client";
 import { projectSchema, type ProjectInput } from "@/lib/validations/project";
 import type { Project, Feature, Improvement, Bug, ProjectImage, Tag } from "@/types";
-import { Plus, X, Upload, Trash2, Loader2, Check, ChevronRight } from "lucide-react";
+import { Plus, X, Upload, Trash2, Check, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { cn, cleanImageUrl } from "@/lib/utils";
+import { LWButtonLoader, LWLoader } from "@/components/ui/lw-loader";
+import { LWOverlayLoader } from "@/components/ui/lw-overlay-loader";
   
 type InitialData = {
   project: Project;
@@ -247,6 +249,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
   };
 
   return (
+    <LWOverlayLoader loading={isProcessing}>
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
       {/* Stepper Header */}
       <div className="flex items-center justify-between relative px-4">
@@ -362,7 +365,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
                     className="hidden"
                   />
                   {uploading ? (
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                    <LWLoader size="md" className="text-muted-foreground" />
                   ) : (
                     <div className="text-center">
                       <Upload className="mx-auto h-8 w-8 text-muted-foreground transition-transform hover:scale-110 duration-200" />
@@ -684,7 +687,6 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
               </Button>
             ) : (
               <Button type="submit" disabled={isProcessing} className="min-w-[140px] shadow-md">
-                {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {isEditing ? "Save Changes" : "Create Project"}
               </Button>
             )}
@@ -692,5 +694,6 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
         </div>
       </form>
     </div>
+    </LWOverlayLoader>
   );
 }

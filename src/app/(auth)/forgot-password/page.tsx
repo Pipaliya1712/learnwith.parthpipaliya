@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Mail, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Mail, CheckCircle2, ArrowLeft } from "lucide-react";
+import { LWButtonLoader } from "@/components/ui/lw-loader";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -131,7 +132,7 @@ export default function ForgotPasswordPage() {
             disabled={isLoading}
           >
             {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <LWButtonLoader />
             ) : (
               <Mail className="mr-2 h-4 w-4" />
             )}

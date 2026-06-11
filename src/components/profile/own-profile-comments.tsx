@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { commentSchema } from "@/lib/validations/comment";
+import { useConfirm } from "@/hooks/use-confirm";
 
 export type OwnProfileComment = {
   id: string;
@@ -34,6 +35,7 @@ export function OwnProfileComments({
   comments: OwnProfileComment[];
 }) {
   const router = useRouter();
+  const { confirm } = useConfirm();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -119,9 +121,15 @@ export function OwnProfileComments({
                     <DropdownMenuItem
                       className="text-destructive focus:text-destructive"
                       onClick={() => {
-                        if (confirm("Are you sure you want to delete this comment?")) {
-                          handleDelete(comment.id);
-                        }
+                        confirm({
+                          title: "Delete Comment",
+                          description: "Are you sure you want to delete this comment? This action cannot be undone.",
+                          variant: "destructive",
+                          confirmText: "Delete",
+                          onConfirm: async () => {
+                            await handleDelete(comment.id);
+                          }
+                        });
                       }}
                     >
                       <Trash2 className="mr-2 h-4 w-4" />

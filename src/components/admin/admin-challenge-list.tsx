@@ -4,11 +4,24 @@ import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Pencil, Trash2, CheckCircle2, Clock, XCircle, Search } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { challengesAdminApi } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
+import { EmptyState } from "@/components/ui/empty-state";
+import { LWOverlayLoader } from "@/components/ui/lw-overlay-loader";
+import { LWLoader } from "@/components/ui/lw-loader";
 
 interface AdminChallengeListProps {
   challenges: any[];
@@ -25,14 +38,17 @@ export function AdminChallengeList({
 }: AdminChallengeListProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to archive this challenge?")) return;
-    
+  const handleDelete = async () => {
+    if (!pendingDeleteId) return;
+    setIsDeleting(pendingDeleteId);
     try {
-      setIsDeleting(id);
-      await challengesAdminApi.delete(id);
+      await challengesAdminApi.delete(pendingDeleteId);
       toast.success("Challenge archived successfully");
+      setDeleteDialogOpen(false);
+      setPendingDeleteId(null);
       router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Failed to archive challenge");
@@ -40,6 +56,13 @@ export function AdminChallengeList({
       setIsDeleting(null);
     }
   };
+
+  const openDeleteDialog = (id: string) => {
+    setPendingDeleteId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const pendingChallenge = challenges.find((c) => c.id === pendingDeleteId);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -71,71 +94,102 @@ export function AdminChallengeList({
 
   if (challenges.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 border rounded-xl bg-card/50 border-dashed">
-        <Search className="h-10 w-10 text-muted-foreground mb-4 opacity-50" />
-        <h3 className="font-semibold text-lg">No challenges found</h3>
-        <p className="text-muted-foreground text-sm mt-1 mb-4">Create your first learning challenge to get started.</p>
-        <Link href="/admin/challenges/new">
-          <Button>Create Challenge</Button>
-        </Link>
-      </div>
+      <EmptyState
+        icon={Search}
+        title="No challenges found"
+        description="Create your first learning challenge to get started."
+      />
     );
   }
 
   return (
-    <div className="rounded-xl border bg-card overflow-hidden">
-      <Table>
-        <TableHeader className="bg-muted/50">
-          <TableRow>
-            <TableHead>Challenge</TableHead>
-            <TableHead>Project</TableHead>
-            <TableHead>Difficulty</TableHead>
-            <TableHead>Points</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {challenges.map((challenge) => (
-            <TableRow key={challenge.id}>
-              <TableCell className="font-medium">
-                <div>{challenge.title}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">{challenge.slug}</div>
-              </TableCell>
-              <TableCell className="text-muted-foreground">
-                {challenge.project?.name || "No Project"}
-              </TableCell>
-              <TableCell>
-                {getDifficultyBadge(challenge.difficulty)}
-              </TableCell>
-              <TableCell className="font-medium">
-                {challenge.points}
-              </TableCell>
-              <TableCell>
-                {getStatusBadge(challenge.status)}
-              </TableCell>
-              <TableCell className="text-right">
-                <div className="flex items-center justify-end gap-2">
-                  <Link href={`/admin/challenges/${challenge.slug}/edit`}>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600">
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-8 w-8 text-muted-foreground hover:text-red-600"
-                    onClick={() => handleDelete(challenge.id)}
-                    disabled={isDeleting === challenge.id || challenge.status === "archived"}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <>
+      <LWOverlayLoader loading={!!isDeleting}>
+        <div className="rounded-xl border bg-card overflow-hidden">
+          <Table>
+            <TableHeader className="bg-muted/50">
+              <TableRow>
+                <TableHead>Challenge</TableHead>
+                <TableHead>Project</TableHead>
+                <TableHead>Difficulty</TableHead>
+                <TableHead>Points</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {challenges.map((challenge) => (
+                <TableRow key={challenge.id}>
+                  <TableCell className="font-medium">
+                    <div>{challenge.title}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{challenge.slug}</div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {challenge.project?.name || "No Project"}
+                  </TableCell>
+                  <TableCell>
+                    {getDifficultyBadge(challenge.difficulty)}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {challenge.points}
+                  </TableCell>
+                  <TableCell>
+                    {getStatusBadge(challenge.status)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link href={`/admin/challenges/${challenge.slug}/edit`}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600">
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-red-600"
+                        onClick={() => openDeleteDialog(challenge.id)}
+                        disabled={challenge.status === "archived"}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </LWOverlayLoader>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={(open) => {
+        if (!isDeleting) setDeleteDialogOpen(open);
+      }}>
+        <AlertDialogContent>
+          {isDeleting ? (
+            <div className="flex items-center justify-center py-8">
+              <LWLoader size="lg" />
+            </div>
+          ) : (
+            <>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Archive challenge?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will archive &quot;{pendingChallenge?.title}&quot;. The data will be soft-deleted and can be recovered from the database.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Archive
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </>
+          )}
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

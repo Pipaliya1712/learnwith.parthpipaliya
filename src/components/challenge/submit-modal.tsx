@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submissionsApi } from "@/lib/api-client";
-import { Loader2, GitPullRequest, Link as LinkIcon, Send } from "lucide-react";
+import { GitPullRequest, Link as LinkIcon, Send } from "lucide-react";
 import { toast } from "sonner";
+import { LWButtonLoader } from "@/components/ui/lw-loader";
 
 const submissionSchema = z.object({
   github_pr_url: z.string().url({ message: "Please enter a valid GitHub PR URL." }).includes("github.com", { message: "URL must be from GitHub." }),
@@ -82,7 +83,7 @@ export function SubmitModal({ challengeId, onSuccess, children }: SubmitModalPro
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger render={<div />}>
         {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
@@ -143,12 +144,12 @@ export function SubmitModal({ challengeId, onSuccess, children }: SubmitModalPro
           </div>
 
           <DialogFooter className="pt-2">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isSubmitting}>
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</>
+                <><LWButtonLoader /> Submitting...</>
               ) : (
                 <><Send className="mr-2 h-4 w-4" /> Submit for Review</>
               )}
