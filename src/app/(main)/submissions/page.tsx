@@ -86,7 +86,8 @@ export default async function SubmissionHistoryPage({
                     <TableHead>Status</TableHead>
                     <TableHead>AI Score</TableHead>
                     <TableHead className="w-[300px]">Feedback</TableHead>
-                    <TableHead>Submitted On</TableHead>
+                    <TableHead>Accepted At</TableHead>
+                    <TableHead>Submitted At</TableHead>
                     <TableHead className="text-right">Links</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -114,7 +115,9 @@ export default async function SubmissionHistoryPage({
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          {sub.ai_score !== null && sub.ai_score !== undefined ? (
+                          {sub.status === "draft" || sub.status === "in_progress" ? (
+                            <span className="text-muted-foreground text-xs italic">-</span>
+                          ) : sub.ai_score !== null && sub.ai_score !== undefined ? (
                             <div className="flex items-center gap-2">
                               <div className={`h-2 w-2 rounded-full ${sub.ai_score >= 80 ? 'bg-green-500' : sub.ai_score >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`} />
                               <span className="font-semibold">{sub.ai_score}/100</span>
@@ -124,7 +127,9 @@ export default async function SubmissionHistoryPage({
                           )}
                         </TableCell>
                         <TableCell>
-                          {sub.ai_feedback ? (
+                          {sub.status === "draft" || sub.status === "in_progress" ? (
+                            <span className="text-muted-foreground text-xs italic">Not submitted yet</span>
+                          ) : sub.ai_feedback ? (
                             <div className="flex items-start gap-2 max-h-20 overflow-y-auto pr-2 custom-scrollbar text-sm text-muted-foreground">
                               <MessageSquare className="h-4 w-4 shrink-0 mt-0.5 text-blue-500/70" />
                               <p className="line-clamp-3 leading-snug">{sub.ai_feedback}</p>
@@ -138,11 +143,25 @@ export default async function SubmissionHistoryPage({
                             {format(new Date(sub.created_at), "MMM d, yyyy")}
                           </div>
                           <div className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(new Date(sub.created_at), { addSuffix: true })}
+                            Claimed {formatDistanceToNow(new Date(sub.created_at), { addSuffix: true })}
                           </div>
                         </TableCell>
+                        <TableCell>
+                          {sub.status === "draft" || sub.status === "in_progress" ? (
+                            <span className="text-muted-foreground text-xs italic">-</span>
+                          ) : (
+                            <>
+                              <div className="text-sm">
+                                {format(new Date(sub.updated_at), "MMM d, yyyy")}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                Submitted {formatDistanceToNow(new Date(sub.updated_at), { addSuffix: true })}
+                              </div>
+                            </>
+                          )}
+                        </TableCell>
                         <TableCell className="text-right">
-                          {prUrl && prUrl !== "pending" && (
+                          {prUrl && prUrl !== "pending" && prUrl !== "pending_claim" && (
                             <Link href={prUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-blue-600 hover:underline">
                               <GitPullRequest className="mr-1 h-3 w-3" />
                               View PR

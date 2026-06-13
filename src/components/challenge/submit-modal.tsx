@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -83,9 +83,7 @@ export function SubmitModal({ challengeId, onSuccess, children }: SubmitModalPro
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<div />}>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger render={React.isValidElement(children) ? children : <button>{children}</button>} />
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-2xl">Submit Solution</DialogTitle>

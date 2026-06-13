@@ -177,7 +177,7 @@ export const submissionsApi = {
 };
 
 export const submissionsAdminApi = {
-  review: (id: string, data: { status: "approved" | "rejected" | "under_review"; ai_score?: number; ai_feedback?: string }) => 
+  review: (id: string, data: { status: "approved" | "rejected"; ai_score?: number; ai_feedback?: string }) => 
     request(`/submissions/${id}/review`, { method: "PATCH", body: JSON.stringify(data) }),
 };
 

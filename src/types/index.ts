@@ -3,7 +3,7 @@ export type Profile = {
   email: string;
   display_name: string | null;
   avatar_url: string | null;
-  role: "admin" | "developer";
+  role: "admin" | "developer" | "super_admin";
   is_blocked: boolean;
   email_verified: boolean;
   email_otp: string | null;

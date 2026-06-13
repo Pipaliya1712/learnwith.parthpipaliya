@@ -26,10 +26,11 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const { profile, isLoading } = useAuth();
+  console.log("happaning")
+  console.log("profileprofile", profile)
   const router = useRouter();
-
   useEffect(() => {
-    if (!isLoading && (!profile || profile.role !== "admin")) {
+    if (!isLoading && (!profile || !["admin", "super_admin"].includes(profile.role))) {
       router.push("/dashboard");
     }
   }, [profile, isLoading, router]);
@@ -38,7 +39,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     return <LWFullScreenLoader />;
   }
 
-  if (!profile || profile.role !== "admin") return null;
+  if (!profile || !["admin", "super_admin"].includes(profile.role)) return null;
 
   return <>{children}</>;
 }

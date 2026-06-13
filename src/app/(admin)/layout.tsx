@@ -7,6 +7,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log("hooray")
   return (
     <AdminGuard>
       <div className="flex min-h-screen flex-col bg-background">
