@@ -102,3 +102,74 @@ export type PublicUser = {
   role: "admin" | "developer";
   created_at: string;
 };
+
+export type ChallengeDifficulty = "beginner" | "intermediate" | "advanced" | "expert";
+
+export type ChallengeStatus = "draft" | "published" | "archived";
+
+export type ProjectBrief = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+export type Challenge = {
+  id: string;
+  project_id: string;
+  title: string;
+  slug: string;
+  description: string;
+  acceptance_criteria: string | null;
+  difficulty: ChallengeDifficulty;
+  points: number;
+  estimated_hours: number | null;
+  status: ChallengeStatus;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+  project?: ProjectBrief;
+  tags?: Tag[];
+};
+
+export type SubmissionStatus = "in_progress" | "submitted" | "approved" | "rejected";
+
+export type Submission = {
+  id: string;
+  challenge_id: string;
+  user_id: string;
+  github_pr_url: string;
+  github_repo_url: string | null;
+  notes: string | null;
+  status: SubmissionStatus;
+  ai_score: number | null;
+  ai_feedback: string | null;
+  created_at: string;
+  updated_at: string;
+  challenge?: Challenge;
+  profiles?: {
+    display_name: string | null;
+    avatar_url: string | null;
+  };
+};
+
+export type UserProgress = {
+  user_id: string;
+  points: number;
+  level: string;
+  solved_challenges: number;
+  approved_submissions: number;
+  rejected_submissions: number;
+  updated_at: string;
+  rank?: number;
+};
+
+export type LeaderboardEntry = {
+  rank: number;
+  user_id: string;
+  display_name: string;
+  avatar_url: string | null;
+  points: number;
+  level: string;
+  solved_challenges: number;
+};
+
