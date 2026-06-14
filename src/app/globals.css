@@ -48,16 +48,6 @@
   --color-brand-start: var(--brand-start);
   --color-brand-mid: var(--brand-mid);
   --color-brand-end: var(--brand-end);
-
-  --color-surface-container: var(--surface-container);
-  --color-surface-container-low: var(--surface-container-low);
-  --color-surface-container-high: var(--surface-container-high);
-  --color-surface-container-lowest: var(--surface-container-lowest);
-  --color-surface-container-highest: var(--surface-container-highest);
-  --color-outline-variant: var(--outline-variant);
-  --color-on-surface: var(--on-surface);
-  --color-on-surface-variant: var(--on-surface-variant);
-
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -151,80 +141,65 @@
   --brand-start: oklch(0.55 0.22 265);
   --brand-mid: oklch(0.60 0.18 290);
   --brand-end: oklch(0.55 0.20 310);
-
-  --surface-container: #ffffff;
-  --surface-container-low: #f8fafc;
-  --surface-container-high: #f1f5f9;
-  --surface-container-lowest: #ffffff;
-  --surface-container-highest: #e2e8f0;
-  --outline-variant: #cbd5e1;
-  --on-surface: #0f172a;
-  --on-surface-variant: #475569;
 }
 
+/* ==========================================================================
+   DARK MODE — Deep blue-black with violet undertones
+   ========================================================================== */
 .dark {
-  --background: #0f1418;
-  --foreground: #dee3e9;
+  --background: oklch(0.14 0.02 265);
+  --foreground: oklch(0.965 0.008 265);
 
-  --card: #171c20;
-  --card-foreground: #dee3e9;
+  --card: oklch(0.185 0.022 265);
+  --card-foreground: oklch(0.965 0.008 265);
 
-  --popover: #171c20;
-  --popover-foreground: #dee3e9;
+  --popover: oklch(0.185 0.022 265);
+  --popover-foreground: oklch(0.965 0.008 265);
 
-  --primary: #89ceff;
-  --primary-foreground: #001e2f;
+  --primary: oklch(0.72 0.18 265);
+  --primary-foreground: oklch(0.14 0.02 265);
 
-  --secondary: #4fdbc8;
-  --secondary-foreground: #00201c;
+  --secondary: oklch(0.24 0.025 265);
+  --secondary-foreground: oklch(0.965 0.008 265);
 
-  --muted: #1b2024;
-  --muted-foreground: #bec8d2;
+  --muted: oklch(0.24 0.025 265);
+  --muted-foreground: oklch(0.645 0.02 265);
 
-  --accent: #252b2f;
-  --accent-foreground: #dee3e9;
+  --accent: oklch(0.27 0.035 265);
+  --accent-foreground: oklch(0.965 0.008 265);
 
-  --destructive: #ffb4ab;
-  --destructive-foreground: #690005;
+  --destructive: oklch(0.704 0.17 22);
+  --destructive-foreground: oklch(0.965 0.008 265);
 
-  --border: #3e4850;
-  --input: #3e4850;
-  --ring: #89ceff;
+  --border: oklch(0.98 0.005 265 / 10%);
+  --input: oklch(0.98 0.005 265 / 15%);
+  --ring: oklch(0.72 0.18 265);
 
-  --chart-1: #89ceff;
-  --chart-2: #4fdbc8;
-  --chart-3: #ffb95f;
-  --chart-4: #89ceff;
-  --chart-5: #ffb4ab;
+  --chart-1: oklch(0.60 0.20 265);
+  --chart-2: oklch(0.60 0.17 155);
+  --chart-3: oklch(0.60 0.15 85);
+  --chart-4: oklch(0.60 0.22 305);
+  --chart-5: oklch(0.60 0.18 25);
 
-  --sidebar: #171c20;
-  --sidebar-foreground: #dee3e9;
-  --sidebar-primary: #89ceff;
-  --sidebar-primary-foreground: #001e2f;
-  --sidebar-accent: #252b2f;
-  --sidebar-accent-foreground: #dee3e9;
-  --sidebar-border: #3e4850;
-  --sidebar-ring: #89ceff;
+  --sidebar: oklch(0.165 0.022 265);
+  --sidebar-foreground: oklch(0.965 0.008 265);
+  --sidebar-primary: oklch(0.60 0.20 265);
+  --sidebar-primary-foreground: oklch(0.965 0.008 265);
+  --sidebar-accent: oklch(0.27 0.035 265);
+  --sidebar-accent-foreground: oklch(0.965 0.008 265);
+  --sidebar-border: oklch(0.98 0.005 265 / 10%);
+  --sidebar-ring: oklch(0.72 0.18 265);
 
-  --success: #4fdbc8;
-  --success-foreground: #00201c;
-  --warning: #ffb95f;
-  --warning-foreground: #2a1700;
-  --info: #89ceff;
-  --info-foreground: #001e2f;
+  --success: oklch(0.65 0.17 160);
+  --success-foreground: oklch(0.14 0.02 265);
+  --warning: oklch(0.78 0.16 80);
+  --warning-foreground: oklch(0.14 0.02 265);
+  --info: oklch(0.65 0.15 230);
+  --info-foreground: oklch(0.14 0.02 265);
 
-  --brand-start: #89ceff;
-  --brand-mid: #4fdbc8;
-  --brand-end: #ffb95f;
-
-  --surface-container: #1b2024;
-  --surface-container-low: #171c20;
-  --surface-container-high: #252b2f;
-  --surface-container-lowest: #0a0f13;
-  --surface-container-highest: #30353a;
-  --outline-variant: #3e4850;
-  --on-surface: #dee3e9;
-  --on-surface-variant: #bec8d2;
+  --brand-start: oklch(0.72 0.20 265);
+  --brand-mid: oklch(0.68 0.16 290);
+  --brand-end: oklch(0.65 0.18 310);
 }
 
 /* ==========================================================================
@@ -303,25 +278,6 @@
     box-shadow:
       0 0 20px oklch(from var(--primary) l c h / 25%),
       0 0 60px oklch(from var(--primary) l c h / 8%);
-  }
-
-  .glass-panel {
-    background: rgba(15, 20, 24, 0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(14, 165, 233, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 10px rgba(14, 165, 233, 0.05);
-  }
-  .active-glow {
-    box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
-  }
-  .text-glow-cyan {
-    text-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
-  }
-  .text-glow-amber {
-    text-shadow: 0 0 15px rgba(245, 158, 11, 0.7);
-  }
-  .galaxy-mask {
-    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
   }
 
   .detail-surface {

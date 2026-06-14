@@ -186,14 +186,6 @@ export const commentsApi = {
 };
 
 // ─── USERS ───────────────────────────────────────────────────────────────────
-import {
-  Challenge,
-  Submission,
-  UserProgress,
-  LeaderboardEntry,
-} from "@/types";
-
-// ─── USERS ───────────────────────────────────────────────────────────────────
 export const usersApi = {
   list: (params: { skip?: number; limit?: number } = {}) => {
     const query = new URLSearchParams();
@@ -218,56 +210,4 @@ export const usersApi = {
 
   updateRole: (userId: string, role: "admin" | "developer") =>
     request(`/users/${userId}/role`, { method: "PATCH", body: JSON.stringify({ role }) }),
-
-  profile: (userId: string) =>
-    request<{ user: any; projects: any[]; comments: any[]; progress: UserProgress; challenges: any[] }>(`/users/${userId}/profile`),
-
-  leaderboard: (limit?: number) =>
-    request<{ items: LeaderboardEntry[] }>(`/users/leaderboard?limit=${limit || 50}`),
-
-  platformMetrics: () =>
-    request<{ total_challenges: number; total_users: number; total_submissions: number }>("/users/platform-metrics"),
 };
-
-// ─── CHALLENGES ──────────────────────────────────────────────────────────────
-export const challengesApi = {
-  list: (params: { skip?: number; limit?: number; status?: string; project_id?: string; difficulty?: string } = {}) => {
-    const query = new URLSearchParams();
-    if (params.skip !== undefined) query.set("skip", params.skip.toString());
-    if (params.limit !== undefined) query.set("limit", params.limit.toString());
-    if (params.status) query.set("status", params.status);
-    if (params.project_id) query.set("project_id", params.project_id);
-    if (params.difficulty) query.set("difficulty", params.difficulty);
-    return request<{ items: Challenge[]; total: number; page: number; limit: number }>(
-      `/challenges?${query.toString()}`
-    );
-  },
-  getBySlug: (slug: string) => request<Challenge>(`/challenges/slug/${slug}`),
-  claim: (challengeId: string) => request<{ success: boolean; message: string }>(`/challenges/${challengeId}/claim`, { method: "POST" }),
-  myClaimed: () => request<{ items: any[]; total: number }>("/challenges/me/claimed"),
-  create: (data: any) => request<{ success: boolean; id: string; slug: string }>("/challenges", { method: "POST", body: JSON.stringify(data) }),
-  update: (challengeId: string, data: any) => request<{ success: boolean; message: string }>(`/challenges/${challengeId}`, { method: "PATCH", body: JSON.stringify(data) }),
-  delete: (challengeId: string) => request<{ success: boolean; message: string }>(`/challenges/${challengeId}`, { method: "DELETE" }),
-};
-
-// ─── SUBMISSIONS ─────────────────────────────────────────────────────────────
-export const submissionsApi = {
-  submit: (data: { challenge_id: string; github_pr_url: string; github_repo_url?: string; notes?: string }) =>
-    request<{ success: boolean; message: string }>("/submissions", { method: "POST", body: JSON.stringify(data) }),
-  mySubmissions: (params: { skip?: number; limit?: number } = {}) => {
-    const query = new URLSearchParams();
-    if (params.skip !== undefined) query.set("skip", params.skip.toString());
-    if (params.limit !== undefined) query.set("limit", params.limit.toString());
-    return request<{ items: Submission[]; total: number; page: number; limit: number }>(`/submissions/me?${query.toString()}`);
-  },
-  getPendingReviews: (params: { skip?: number; limit?: number } = {}) => {
-    const query = new URLSearchParams();
-    if (params.skip !== undefined) query.set("skip", params.skip.toString());
-    if (params.limit !== undefined) query.set("limit", params.limit.toString());
-    return request<{ items: Submission[]; total: number; page: number; limit: number }>(`/submissions/pending?${query.toString()}`);
-  },
-  getSingle: (id: string) => request<Submission>(`/submissions/${id}`),
-  review: (id: string, data: { status: string; ai_score?: number; ai_feedback?: string }) =>
-    request<{ success: boolean; message: string }>(`/submissions/${id}/review`, { method: "PATCH", body: JSON.stringify(data) }),
-};
-
