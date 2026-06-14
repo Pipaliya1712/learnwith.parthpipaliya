@@ -246,96 +246,91 @@ export function DashboardContent({
 
   return (
     <div className="space-y-7">
-      <div className="space-y-1 pt-2">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">Projects</h1>
-        <p className="text-lg text-muted-foreground sm:text-lg">
-          Browse all projects and find one to contribute to
-        </p>
-      </div>
       <div className="grid gap-4 xl:grid-cols-[minmax(320px,1fr)_auto_auto_auto]">
 
-      {/* ── Command Palette Search ──────────────────────────────────────── */}
-      <SearchCommand
-        tags={tags}
-        onCategoryChange={handleCategoryChange}
-        onSearchChange={setSearch}
-        onTagSelect={handleTagSelect}
-      />
+        {/* ── Command Palette Search ──────────────────────────────────────── */}
+        <SearchCommand
+          tags={tags}
+          onCategoryChange={handleCategoryChange}
+          onSearchChange={setSearch}
+          onTagSelect={handleTagSelect}
+        />
 
-      {/* ── Projects-only controls ──────────────────────────────────────── */}
-      {showProjectsGrid && (
-        <div className="flex flex-wrap items-center gap-3">
-          <Button
-            variant="outline"
-            className="h-11 justify-between gap-3 rounded-xl border-border/80 bg-card/35 px-5 text-sm text-muted-foreground shadow-sm hover:border-primary/45 hover:bg-card"
-            onClick={() => setShowFilters((value) => !value)}
-            aria-expanded={showFilters}
-          >
-            <span className="flex items-center gap-2">
-              <Filter className="size-4" />
-              <span>Filters</span>
-              {activeFilterCount > 0 && (
-                <span className="flex size-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground shadow-lg shadow-primary/25">
-                  {activeFilterCount}
-                </span>
-              )}
-            </span>
-            <ChevronDown
-              className={cn(
-                "size-4 transition-transform",
-                showFilters && "rotate-180"
-              )}
-            />
-          </Button>
+        {/* ── Projects-only controls ──────────────────────────────────────── */}
+        {showProjectsGrid && (
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              variant="outline"
+              className="h-11 justify-between gap-3 rounded-xl border-border/80 bg-card/35 px-5 text-sm text-muted-foreground shadow-sm hover:border-primary/45 hover:bg-card"
+              onClick={() => setShowFilters((value) => !value)}
+              aria-expanded={showFilters}
+            >
+              <span className="flex items-center gap-2">
+                <Filter className="size-4" />
+                <span>Filters</span>
+                {activeFilterCount > 0 && (
+                  <span className="flex size-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground shadow-lg shadow-primary/25">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </span>
+              <ChevronDown
+                className={cn(
+                  "size-4 transition-transform",
+                  showFilters && "rotate-180"
+                )}
+              />
+            </Button>
 
-          <div className="flex h-11 items-center gap-3 rounded-xl border border-border/80 bg-card/35 px-4 shadow-sm">
-            <ArrowDownUp className="size-4 text-muted-foreground" />
-            <div className="min-w-24">
-              <Select value={sort} onValueChange={(value) => setSort(value as SortOption)}>
-                <SelectTrigger className="h-auto border-0 bg-transparent p-0 text-sm font-semibold shadow-none focus-visible:ring-0">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent align="start" className="min-w-44">
-                  {Object.entries(sortConfig).map(([value, option]) => (
-                    <SelectItem key={value} value={value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="flex h-11 items-center gap-3 rounded-xl border border-border/80 bg-card/35 px-4 shadow-sm">
+              <ArrowDownUp className="size-4 text-muted-foreground" />
+              <div className="min-w-24">
+
+                <Select value={sort} onValueChange={(value) => setSort(value as SortOption)}>
+                  <SelectTrigger className="h-auto border-0 !bg-transparent p-0 text-sm font-semibold !shadow-none focus-visible:ring-0">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent align="start" className="min-w-44">
+                    {Object.entries(sortConfig).map(([value, option]) => (
+                      <SelectItem key={value} value={value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="flex h-11 shrink-0 items-center gap-1.5 rounded-xl border border-border/80 bg-card/35 p-1 shadow-sm">
+              {[
+                { value: "grid" as const, label: "Grid view", icon: Grid3X3 },
+                { value: "list" as const, label: "List view", icon: List },
+              ].map((item) => {
+                const Icon = item.icon;
+                const isActive = viewMode === item.value;
+
+                return (
+                  <Button
+                    key={item.value}
+                    variant="ghost"
+                    size="icon"
+                    aria-label={item.label}
+                    aria-pressed={isActive}
+                    className={cn(
+                      "size-7 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground",
+                      isActive &&
+                      "border border-primary/70 bg-primary/15 text-primary shadow-lg shadow-primary/20 hover:bg-primary/20 hover:text-primary"
+                    )}
+                    onClick={() => setViewMode(item.value)}
+                  >
+                    <Icon className="size-4" />
+                  </Button>
+                );
+              })}
             </div>
           </div>
-
-          <div className="flex h-11 shrink-0 items-center gap-1.5 rounded-xl border border-border/80 bg-card/35 p-1 shadow-sm">
-            {[
-              { value: "grid" as const, label: "Grid view", icon: Grid3X3 },
-              { value: "list" as const, label: "List view", icon: List },
-            ].map((item) => {
-              const Icon = item.icon;
-              const isActive = viewMode === item.value;
-
-              return (
-                <Button
-                  key={item.value}
-                  variant="ghost"
-                  size="icon"
-                  aria-label={item.label}
-                  aria-pressed={isActive}
-                  className={cn(
-                    "size-7 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground",
-                    isActive &&
-                      "border border-primary/70 bg-primary/15 text-primary shadow-lg shadow-primary/20 hover:bg-primary/20 hover:text-primary"
-                  )}
-                  onClick={() => setViewMode(item.value)}
-                >
-                  <Icon className="size-4" />
-                </Button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-  </div>
+        )}
+      </div>
       {/* ── Tag Filter Panel ────────────────────────────────────────────── */}
       {showProjectsGrid && showFilters && (
         <div className="rounded-2xl border border-border/80 bg-card/25 p-5 shadow-sm">
@@ -450,7 +445,7 @@ function TagChip({
       className={cn(
         "h-9 gap-2 rounded-xl border-border/80 bg-background/35 px-4 text-sm font-semibold text-foreground shadow-sm hover:border-primary/50 hover:bg-primary/10",
         active &&
-          "border-primary/70 bg-primary/15 text-primary shadow-lg shadow-primary/15 hover:bg-primary/20 hover:text-primary"
+        "border-primary/70 bg-primary/15 text-primary shadow-lg shadow-primary/15 hover:bg-primary/20 hover:text-primary"
       )}
       onClick={onClick}
     >
