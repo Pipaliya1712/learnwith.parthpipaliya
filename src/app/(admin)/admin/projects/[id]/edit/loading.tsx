@@ -1,8 +1,9 @@
+import { LWPageSkeleton } from "@/components/ui/lw-page-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function EditProjectLoading() {
   return (
-    <div className="space-y-8 max-w-4xl mx-auto pb-12 p-6">
+    <LWPageSkeleton className="space-y-8 max-w-4xl mx-auto pb-12 p-6">
       {/* Title Skeleton */}
       <div className="mb-8">
         <Skeleton className="h-8 w-48 mb-2" />
@@ -49,7 +50,7 @@ export default function EditProjectLoading() {
           </div>
         </div>
       </div>
-      
+
       {/* Navigation Buttons Skeleton */}
       <div className="mt-8 flex items-center justify-between border-t pt-6">
         <Skeleton className="h-10 w-24" />
@@ -58,6 +59,6 @@ export default function EditProjectLoading() {
           <Skeleton className="h-10 w-28" />
         </div>
       </div>
-    </div>
+    </LWPageSkeleton>
   );
 }

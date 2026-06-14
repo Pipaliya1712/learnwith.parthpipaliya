@@ -19,7 +19,8 @@ import {
   type UpdatePasswordInput,
 } from "@/lib/validations/auth";
 import { toast } from "sonner";
-import { Pencil, Check, X, ShieldAlert, Upload, Loader2, Image as ImageIcon } from "lucide-react";
+import { Pencil, Check, X, ShieldAlert, Upload, Image as ImageIcon } from "lucide-react";
+import { LWLoader } from "@/components/ui/lw-loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AvatarModal } from "@/components/ui/avatar-modal";
 
@@ -29,7 +30,7 @@ export default function SettingsPage() {
   if (isLoading || !profile) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="shimmer h-8 w-8 rounded-full" />
+        <LWLoader size="md" />
       </div>
     );
   }
@@ -125,7 +126,7 @@ function ProfilePictureForm({ currentUrl, displayName, email }: { currentUrl: st
               className={`cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-9 px-4 py-2 ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}
             >
               {isUploading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <LWLoader size="sm" className="mr-2" />
               ) : (
                 <Upload className="mr-2 h-4 w-4" />
               )}

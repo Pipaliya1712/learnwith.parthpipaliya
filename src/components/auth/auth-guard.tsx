@@ -3,6 +3,7 @@
 import { useAuth } from "@/components/providers/auth-provider";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { LWFullScreenLoader } from "@/components/ui/lw-fullscreen-loader";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { profile, isLoading } = useAuth();
@@ -15,11 +16,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   }, [profile, isLoading, router]);
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="shimmer h-8 w-8 rounded-full" />
-      </div>
-    );
+    return <LWFullScreenLoader />;
   }
 
   if (!profile) return null;
@@ -29,23 +26,20 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const { profile, isLoading } = useAuth();
+  console.log("happaning")
+  console.log("profileprofile", profile)
   const router = useRouter();
-
   useEffect(() => {
-    if (!isLoading && (!profile || profile.role !== "admin")) {
+    if (!isLoading && (!profile || !["admin", "super_admin"].includes(profile.role))) {
       router.push("/dashboard");
     }
   }, [profile, isLoading, router]);
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="shimmer h-8 w-8 rounded-full" />
-      </div>
-    );
+    return <LWFullScreenLoader />;
   }
 
-  if (!profile || profile.role !== "admin") return null;
+  if (!profile || !["admin", "super_admin"].includes(profile.role)) return null;
 
   return <>{children}</>;
 }

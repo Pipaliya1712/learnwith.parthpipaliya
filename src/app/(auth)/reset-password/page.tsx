@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, KeyRound } from "lucide-react";
+import { KeyRound } from "lucide-react";
 import { toast } from "sonner";
+import { LWButtonLoader } from "@/components/ui/lw-loader";
 
 import {
   Card,
@@ -144,7 +145,7 @@ export default function ResetPasswordPage() {
             disabled={isLoading}
           >
             {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <LWButtonLoader />
             ) : (
               <KeyRound className="mr-2 h-4 w-4" />
             )}

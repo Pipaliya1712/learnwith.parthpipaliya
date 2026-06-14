@@ -158,6 +158,29 @@ export const projectsApi = {
   deleteTag: (id: string) => request(`/projects/tags/${id}`, { method: "DELETE" }),
 };
 
+// ─── CHALLENGES ───────────────────────────────────────────────────────────────
+export const challengesApi = {
+  getBySlug: (slug: string) => request<any>(`/challenges/slug/${slug}`),
+  claim: (id: string) => request(`/challenges/${id}/claim`, { method: "POST" }),
+};
+
+export const challengesAdminApi = {
+  create: async (data: Record<string, any>) => request("/challenges", { method: "POST", body: JSON.stringify(data) }),
+  update: async (id: string, data: Record<string, any>) => request(`/challenges/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+  delete: async (id: string) => request(`/challenges/${id}`, { method: "DELETE" }),
+};
+
+// ─── SUBMISSIONS ──────────────────────────────────────────────────────────────
+export const submissionsApi = {
+  submit: (data: { challenge_id: string; github_pr_url: string; github_repo_url?: string; notes?: string }) => 
+    request(`/submissions`, { method: "POST", body: JSON.stringify(data) }),
+};
+
+export const submissionsAdminApi = {
+  review: (id: string, data: { status: "approved" | "rejected"; ai_score?: number; ai_feedback?: string }) => 
+    request(`/submissions/${id}/review`, { method: "PATCH", body: JSON.stringify(data) }),
+};
+
 // ─── COMMENTS ────────────────────────────────────────────────────────────────
 export const commentsApi = {
   listByProject: (projectId: string, params: { skip?: number; limit?: number } = {}) => {

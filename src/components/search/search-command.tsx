@@ -350,7 +350,7 @@ export function SearchCommand({
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder="Search projects, users, technologies..."
-          className="h-14 w-full bg-transparent pl-14 pr-28 text-lg text-foreground placeholder:text-muted-foreground/70 focus:outline-none sm:text-xl"
+          className="h-14 w-full bg-transparent pl-14 pr-28 text-lg text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-xl"
         />
         {query && (
           <button

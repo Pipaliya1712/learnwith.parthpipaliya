@@ -2,8 +2,10 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Loader2, CheckCircle2, Mail, RefreshCw } from "lucide-react";
+import { CheckCircle2, Mail, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
+import { LWLoader } from "@/components/ui/lw-loader";
+import { LWButtonLoader } from "@/components/ui/lw-loader";
 
 import {
   Card,
@@ -95,7 +97,7 @@ function VerifyEmailForm() {
               Redirecting you to the dashboard...
             </p>
           </div>
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          <LWLoader size="sm" className="text-muted-foreground" />
         </CardContent>
       </Card>
     );
@@ -140,7 +142,7 @@ function VerifyEmailForm() {
 
           <Button type="submit" className="w-full" disabled={isVerifying}>
             {isVerifying ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <LWButtonLoader />
             ) : null}
             {isVerifying ? "Verifying..." : "Verify Email"}
           </Button>
@@ -176,7 +178,7 @@ export default function VerifyEmailPage() {
       fallback={
         <Card className="border-border/50 shadow-xl shadow-black/5 dark:shadow-black/20">
           <CardContent className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <LWLoader size="lg" />
           </CardContent>
         </Card>
       }

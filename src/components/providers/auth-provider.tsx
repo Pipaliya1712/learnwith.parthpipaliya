@@ -41,7 +41,7 @@ export function AuthProvider({ children, initialProfile = null }: { children: Re
       value={{
         profile,
         isLoading,
-        isAdmin: profile?.role === "admin",
+        isAdmin: profile?.role === "admin" || profile?.role === "super_admin",
         signOut,
       }}
     >

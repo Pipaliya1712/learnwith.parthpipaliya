@@ -11,12 +11,16 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
+  Target,
+  CheckSquare,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/auth-provider";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
+  { href: "/admin/challenges", label: "Challenges", icon: Target },
+  { href: "/admin/reviews", label: "Reviews", icon: CheckSquare },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
 ];
@@ -39,7 +43,7 @@ export function AdminSidebar() {
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         title={isExpanded ? "Collapse Sidebar" : "Expand Sidebar"}
-        className="absolute -right-3 top-6 z-10 flex size-6 items-center justify-center rounded-full border bg-background text-muted-foreground shadow-sm hover:text-foreground hover:scale-110 transition-transform"
+        className="absolute -right-3 top-6 z-10 flex size-6 items-center justify-center rounded-full border bg-background text-muted-foreground shadow-sm hover:text-foreground hover:scale-110 transition-transform focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       >
         {isExpanded ? <ChevronLeft className="size-3" /> : <ChevronRight className="size-3" />}
       </button>
@@ -55,7 +59,7 @@ export function AdminSidebar() {
                 href={item.href}
                 title={!isExpanded ? item.label : undefined}
                 className={cn(
-                  "group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground",
+                  "group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
                   isActive && "bg-primary/10 text-primary ring-1 ring-primary/15 hover:bg-primary/15 hover:text-primary",
                   !isExpanded && "justify-center px-0 w-11"
                 )}

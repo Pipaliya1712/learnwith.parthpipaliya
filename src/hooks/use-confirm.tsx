@@ -12,7 +12,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { LWButtonLoader } from "@/components/ui/lw-loader";
 
 type ConfirmOptions = {
   title: string;
@@ -68,7 +68,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
               onClick={handleConfirm}
               disabled={isProcessing}
             >
-              {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isProcessing && <LWButtonLoader />}
               {options?.confirmText || "Confirm"}
             </Button>
           </AlertDialogFooter>

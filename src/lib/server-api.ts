@@ -124,3 +124,76 @@ export async function getTagsServer() {
   const data = await fetchFromApi("/projects/tags");
   return data || [];
 }
+
+export async function getChallengeBySlugServer(slug: string) {
+  const data = await fetchFromApi(`/challenges/slug/${slug}`);
+  return data;
+}
+
+export async function getChallengesServer(params: { [key: string]: string | string[] | undefined } = {}) {
+  const query = new URLSearchParams();
+  const page = parseInt((params.page as string) || "1");
+  const limit = parseInt((params.limit as string) || "12");
+  query.set("skip", ((page - 1) * limit).toString());
+  query.set("limit", limit.toString());
+
+  const data = await fetchFromApi(`/challenges?${query.toString()}`);
+  return data || { items: [], total: 0, page: 1, limit: 12 };
+}
+
+export async function getAdminChallengesServer(params: { [key: string]: string | string[] | undefined } = {}) {
+  const query = new URLSearchParams();
+  const page = parseInt((params.page as string) || "1");
+  const limit = parseInt((params.limit as string) || "12");
+  query.set("skip", ((page - 1) * limit).toString());
+  query.set("limit", limit.toString());
+  
+  // Empty status bypasses the "published" default so admin sees drafts
+  query.set("status", "");
+
+  const data = await fetchFromApi(`/challenges?${query.toString()}`);
+  return data || { items: [], total: 0, page: 1, limit: 12 };
+}
+
+export async function getMyChallengesServer() {
+  const data = await fetchFromApi("/challenges/me/claimed");
+  return data || { items: [], total: 0 };
+}
+
+export async function getMySubmissionsServer(params: { [key: string]: string | string[] | undefined } = {}) {
+  const query = new URLSearchParams();
+  const page = parseInt((params.page as string) || "1");
+  const limit = parseInt((params.limit as string) || "20");
+  query.set("skip", ((page - 1) * limit).toString());
+  query.set("limit", limit.toString());
+
+  const data = await fetchFromApi(`/submissions/me?${query.toString()}`);
+  return data || { items: [], total: 0, page: 1, limit: 20 };
+}
+
+export async function getMyProgressServer() {
+  const data = await fetchFromApi("/auth/me/progress");
+  return data || { points: 0, level: "V1", solved_challenges: 0 };
+}
+
+export async function getLeaderboardServer(limit: number = 50) {
+  const data = await fetchFromApi(`/users/leaderboard?limit=${limit}`);
+  return data || { items: [] };
+}
+
+export async function getPendingSubmissionsServer(params: { [key: string]: string | string[] | undefined } = {}) {
+  const query = new URLSearchParams();
+  const page = parseInt((params.page as string) || "1");
+  const limit = parseInt((params.limit as string) || "20");
+  query.set("skip", ((page - 1) * limit).toString());
+  query.set("limit", limit.toString());
+
+  const data = await fetchFromApi(`/submissions/pending?${query.toString()}`);
+  return data || { items: [], total: 0, page: 1, limit: 20 };
+}
+
+export async function getPlatformMetricsServer() {
+  const data = await fetchFromApi("/users/platform-metrics");
+  return data || { total_challenges: 0, total_users: 0, total_submissions: 0 };
+}
+

@@ -54,10 +54,6 @@ export function UserCard({ user }: UserCardProps) {
               <Calendar className="h-3.5 w-3.5" />
               Joined {format(new Date(user.created_at), "MMM d, yyyy")}
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Shield className="h-3.5 w-3.5" />
-              Active member
-            </span>
           </div>
         </div>
       </div>

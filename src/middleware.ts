@@ -41,7 +41,7 @@ export async function middleware(request: NextRequest) {
       return response;
     }
     
-    if (session.role !== "admin") {
+    if (session.role !== "admin" && session.role !== "super_admin") {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }

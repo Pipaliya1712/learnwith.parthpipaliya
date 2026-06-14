@@ -5,6 +5,9 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
+  Target,
+  Trophy,
+  History,
   Settings,
   ShieldCheck,
   ChevronLeft,
@@ -20,6 +23,26 @@ const navItems = [
     label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    label: "Challenges",
+    href: "/challenges",
+    icon: Target,
+  },
+  {
+    label: "My Challenges",
+    href: "/my-challenges",
+    icon: Trophy,
+  },
+  {
+    label: "History",
+    href: "/submissions",
+    icon: History,
+  },
+  {
+    label: "Leaderboard",
+    href: "/leaderboard",
+    icon: Trophy,
   },
   {
     label: "Settings",
@@ -63,7 +86,7 @@ export function AppSidebar() {
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         title={isExpanded ? "Collapse Sidebar" : "Expand Sidebar"}
-        className="absolute -right-3 top-6 z-10 flex size-6 items-center justify-center rounded-full border bg-background text-muted-foreground shadow-sm hover:text-foreground hover:scale-110 transition-transform"
+        className="absolute -right-3 top-6 z-10 flex size-6 items-center justify-center rounded-full border bg-background text-muted-foreground shadow-sm hover:text-foreground hover:scale-110 transition-transform focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       >
         {isExpanded ? <ChevronLeft className="size-3" /> : <ChevronRight className="size-3" />}
       </button>
@@ -80,7 +103,7 @@ export function AppSidebar() {
               href={item.href}
               title={!isExpanded ? item.label : undefined}
               className={cn(
-                "group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground",
+                "group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
                 isActive && "bg-primary/10 text-primary ring-1 ring-primary/15 hover:bg-primary/15 hover:text-primary",
                 !isExpanded && "justify-center px-0 w-11"
               )}

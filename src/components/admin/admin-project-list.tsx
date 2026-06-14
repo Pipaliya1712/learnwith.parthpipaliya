@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { projectsApi } from "@/lib/api-client";
 import type { Project, Tag } from "@/types";
 import { Pencil, Trash2 } from "lucide-react";
+import { LWLoader } from "@/components/ui/lw-loader";
 import { format } from "date-fns";
 
 type ProjectWithTags = Project & { tags: Tag[] };
@@ -37,6 +38,9 @@ export function AdminProjectList({
   pageSize?: number;
 }) {
   const [projectList, setProjectList] = useState(projects);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   const handleToggleVisibility = async (projectId: string, current: boolean) => {
     try {
@@ -52,14 +56,25 @@ export function AdminProjectList({
     }
   };
 
-  const handleDelete = async (projectId: string) => {
+  const handleDelete = async () => {
+    if (!pendingDeleteId) return;
+    setDeletingId(pendingDeleteId);
     try {
-      await projectsApi.delete(projectId);
-      setProjectList((prev) => prev.filter((p) => p.id !== projectId));
+      await projectsApi.delete(pendingDeleteId);
+      setProjectList((prev) => prev.filter((p) => p.id !== pendingDeleteId));
       toast.success("Project deleted");
+      setDeleteDialogOpen(false);
+      setPendingDeleteId(null);
     } catch (error: unknown) {
       toast.error(getErrorMessage(error, "Failed to delete project"));
+    } finally {
+      setDeletingId(null);
     }
+  };
+
+  const openDeleteDialog = (projectId: string) => {
+    setPendingDeleteId(projectId);
+    setDeleteDialogOpen(true);
   };
 
   const columns: ColumnDef<ProjectWithTags>[] = [
@@ -156,44 +171,63 @@ export function AdminProjectList({
             </Button>
           </Link>
           {!project.is_deleted && (
-            <AlertDialog>
-              <AlertDialogTrigger render={<Button variant="ghost" size="icon" />}>
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Delete project?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This will hide &quot;{project.name}&quot; from all views. The
-                    data will be soft-deleted and can be recovered from the
-                    database.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => handleDelete(project.id)}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => openDeleteDialog(project.id)}
+            >
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
           )}
         </div>
       ),
     },
   ];
 
+  const pendingProject = projectList.find((p) => p.id === pendingDeleteId);
+
   return (
-    <DataTable
-      columns={columns}
-      data={projectList}
-      total={total}
-      pageSize={pageSize}
-      currentPage={currentPage}
-    />
+    <>
+      <DataTable
+        columns={columns}
+        data={projectList}
+        total={total}
+        pageSize={pageSize}
+        currentPage={currentPage}
+      />
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={(open) => {
+        if (!deletingId) setDeleteDialogOpen(open);
+      }}>
+        <AlertDialogContent>
+          {deletingId ? (
+            <div className="flex items-center justify-center py-8">
+              <LWLoader size="lg" />
+            </div>
+          ) : (
+            <>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete project?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will hide &quot;{pendingProject?.name}&quot; from all views. The
+                  data will be soft-deleted and can be recovered from the
+                  database.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </>
+          )}
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
 
