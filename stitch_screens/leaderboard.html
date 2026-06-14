@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Inter+Tight:wght@600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #0f1418;
+            color: #dee3e9;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3e4850;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#2a1700",
+                      "surface-container-low": "#171c20",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "surface-variant": "#30353a",
+                      "surface-tint": "#89ceff",
+                      "surface-dim": "#0f1418",
+                      "secondary-container": "#04b4a2",
+                      "primary-fixed-dim": "#89ceff",
+                      "on-primary-fixed": "#001e2f",
+                      "outline": "#88929b",
+                      "on-primary-fixed-variant": "#004c6e",
+                      "error": "#ffb4ab",
+                      "secondary-fixed": "#71f8e4",
+                      "tertiary-container": "#d88a00",
+                      "primary-container": "#0ea5e9",
+                      "on-tertiary": "#472a00",
+                      "primary": "#89ceff",
+                      "on-background": "#dee3e9",
+                      "on-primary": "#00344d",
+                      "background": "#0f1418",
+                      "on-secondary-fixed-variant": "#005048",
+                      "on-surface-variant": "#bec8d2",
+                      "on-secondary": "#003731",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "inverse-primary": "#006591",
+                      "on-surface": "#dee3e9",
+                      "tertiary-fixed": "#ffddb8",
+                      "surface-container-high": "#252b2f",
+                      "surface-bright": "#353a3e",
+                      "error-container": "#93000a",
+                      "on-error": "#690005",
+                      "surface-container": "#1b2024",
+                      "on-primary-container": "#003751",
+                      "on-tertiary-container": "#4a2c00",
+                      "tertiary": "#ffb95f",
+                      "surface-container-highest": "#30353a",
+                      "inverse-surface": "#dee3e9",
+                      "secondary-fixed-dim": "#4fdbc8",
+                      "primary-fixed": "#c9e6ff",
+                      "surface-container-lowest": "#0a0f13",
+                      "on-secondary-container": "#003f38",
+                      "inverse-on-surface": "#2c3135",
+                      "secondary": "#4fdbc8",
+                      "outline-variant": "#3e4850",
+                      "surface": "#0f1418",
+                      "on-secondary-fixed": "#00201c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "3xl": "64px",
+                      "2xl": "48px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "xl": "32px",
+                      "container-max": "1280px",
+                      "margin-mobile": "16px",
+                      "lg": "24px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "body-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter Tight"],
+                      "label-caps": ["Inter"],
+                      "headline-lg": ["Inter Tight"],
+                      "display-lg": ["Inter Tight"],
+                      "headline-lg-mobile": ["Inter Tight"],
+                      "code-md": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "metric-lg": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "code-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "metric-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="font-body-md text-body-md bg-background text-on-background">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container border-r border-outline-variant flex flex-col py-lg z-50">
+<div class="px-lg mb-xl">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">Learn With 2.0</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-70 mt-xs">Technical Mastery</p>
+</div>
+<nav class="flex-1 px-md space-y-xs overflow-y-auto custom-scrollbar">
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span class="font-body-md text-body-md">Challenges</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined">code</span>
+<span class="font-body-md text-body-md">Projects</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 border-l-[3px] border-primary-container bg-primary-container/15 text-primary-container font-bold transition-colors">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-body-md text-body-md">Leaderboard</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-body-md text-body-md">My Journey</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="font-body-md text-body-md">Profile</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined">rate_review</span>
+<span class="font-body-md text-body-md">Review Queue</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer active:scale-95 duration-150 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Users</span>
+</div>
+</nav>
+<div class="px-md mt-auto pt-lg">
+<button class="w-full py-md bg-primary-container text-on-primary-container rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-sm">
+<span>Continue Learning</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 px-gutter flex justify-between items-center bg-surface border-b border-outline-variant z-40">
+<div class="flex items-center gap-md">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full bg-surface-container border-none rounded-lg pl-10 py-2 font-body-sm text-body-sm focus:ring-1 focus:ring-primary-container outline-none placeholder:text-outline" placeholder="Search rankings, users, or challenges..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-xl">
+<div class="flex gap-md">
+<button class="p-sm rounded-full hover:bg-surface-container-low transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm rounded-full hover:bg-surface-container-low transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="flex items-center gap-sm cursor-pointer group">
+<img alt="Current user profile" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AP1WRLu-sDwNctjgG77W6oJxgJjEsPDcUef1fxY0AJbzlOBH87Je1jD3gWy7imv6PXqE7ysqhlESZTV7NHcbGa-dQPHFEfMVYCg7-wlWDXO7yBQOVYR_J4SdsjkRenvas1fm1tSnrQWmhWzsyC5a55ZYne2a05PyEKjcAasgtlJ8rS9rZ7fNTFiVF1Kkdcf3YrI-SauJB4i7aOflCpjMpcYnJXV4ihe5lgD0glM3Z8MjFVho9mm5bEZhAFGNgm8"/>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-container transition-colors">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 mt-16 p-gutter min-h-screen">
+<div class="max-w-container-max mx-auto space-y-xl">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-lg">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface">Leaderboard</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Recognizing technical excellence and mastery across the platform. Rise through the ranks by completing projects and challenges.</p>
+</div>
+<div class="flex gap-md bg-surface-container p-base rounded-xl border border-outline-variant">
+<button class="px-xl py-sm bg-primary-container text-on-primary-container rounded-lg font-bold font-label-caps text-label-caps">Weekly</button>
+<button class="px-xl py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-caps text-label-caps transition-all">All Time</button>
+</div>
+</div>
+<!-- Bento Grid Section: Top 3 & My Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Podium Top 3 -->
+<div class="lg:col-span-8 grid grid-cols-3 gap-md h-64">
+<!-- Rank 2 -->
+<div class="bg-surface-container border border-outline-variant rounded-xl flex flex-col items-center justify-center p-md text-center group hover:border-primary-container/40 transition-all">
+<div class="relative mb-md">
+<img class="w-20 h-20 rounded-full border-4 border-outline-variant" data-alt="A portrait of a female software engineer in a modern workspace, soft lighting, professional and clean digital aesthetic with subtle slate and cyan tones." src="https://lh3.googleusercontent.com/aida/AP1WRLvpAI7M8Vb0uRQpYb-otG7t07qVkYph-TKto6rtQZAwSm6thwT7Z6qqDYsb9Ktu6owkWYdY72woGkjMCJaNPUdI0PErI8W_9otjQx8nabZo9mF4KckStAo81c4ZCEik9kDncGQU1UCyz1Df6xTnO-5wRhn9bB-1TcZSwt5HHozXrrxxqcg9pjfo1MmtfWpEWBWkhZ4KId8u1eDY6G_rtdfA0cl-iKw-_W6LyvwVgog_aoinfBDEnDhBnaw"/>
+<div class="absolute -bottom-2 -right-2 bg-on-surface-variant w-8 h-8 rounded-full flex items-center justify-center border-4 border-surface-container">
+<span class="font-metric-lg text-[14px]">2</span>
+</div>
+</div>
+<span class="font-headline-md text-headline-md block mb-1">Sarah J.</span>
+<span class="font-code-md text-code-md text-tertiary">24,850 XP</span>
+</div>
+<!-- Rank 1 -->
+<div class="bg-surface-container-high border-2 border-primary-container/30 rounded-xl flex flex-col items-center justify-center p-md text-center relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary-container"></div>
+<div class="relative mb-lg">
+<img class="w-24 h-24 rounded-full border-4 border-primary-container" data-alt="A profile photo of a senior developer in a sleek high-tech office environment, ambient blue and teal lighting, shallow depth of field, high-end professional photography style." src="https://lh3.googleusercontent.com/aida/AP1WRLtZhoqa64v6_cfG4mPMS41VJnXbQkiqT5qXv2ouIe0NDjFUK0hOVsOFZ-OMDQwYwW0z6O8P2wpDOxc5x8DSNMM7opXkB9-XDcmtZ3ZGa6G1DVj0FBuTFy6DPYqwZxXp18ulV5jlHscqf14Sf2cyusgzkgz6rF6Z8xNL7UrDifB0C07TTZUOvUVkZs7_VDG9-I3NlXDyBBll4iuMqSJV-rfwKwjSQAfKmhOJQ8BKZLtTCN9nb8LXGXaVEA"/>
+<div class="absolute -bottom-2 -right-2 bg-primary-container w-10 h-10 rounded-full flex items-center justify-center border-4 border-surface-container-high">
+<span class="material-symbols-outlined text-white text-md">workspace_premium</span>
+</div>
+</div>
+<span class="font-display-lg text-[28px] leading-none block mb-1">Mark R.</span>
+<span class="font-metric-lg text-metric-lg text-tertiary">31,200 XP</span>
+</div>
+<!-- Rank 3 -->
+<div class="bg-surface-container border border-outline-variant rounded-xl flex flex-col items-center justify-center p-md text-center group hover:border-primary-container/40 transition-all">
+<div class="relative mb-md">
+<img class="w-20 h-20 rounded-full border-4 border-outline-variant" data-alt="A professional headshot of a developer in a minimalist studio setting, soft cinematic lighting, monochromatic background with sharp focus and clean corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida/AP1WRLtGNHGOdlHxJAeWF3JDHMVe5CRD46NFL-ev-VGMj9_AmDGcl69rXVo06gTnKjqOBGk_BkuAsOouR6fbau0A4J8DmAjXL_fPICRWCsBW65h2XjZJpMgyGRmwDlaCqp8m_HAoVLY6dYLK6AKCqORlL5t1B6ottXEhVV37uC8n81LuzLkQ2T1VSKNhT0V4OdgF6cyFtaNlV-d-cjpXLAz4CLB83A1G8Fj-rYxeZaoKJZ8Cv8T0HkJ8rtCmHCE"/>
+<div class="absolute -bottom-2 -right-2 bg-[#A0522D] w-8 h-8 rounded-full flex items-center justify-center border-4 border-surface-container">
+<span class="font-metric-lg text-[14px]">3</span>
+</div>
+</div>
+<span class="font-headline-md text-headline-md block mb-1">Amara T.</span>
+<span class="font-code-md text-code-md text-tertiary">22,400 XP</span>
+</div>
+</div>
+<!-- My Stats Card -->
+<div class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col justify-between">
+<div>
+<h3 class="font-label-caps text-label-caps text-primary-container mb-md">YOUR STANDING</h3>
+<div class="flex items-center gap-md mb-lg">
+<img class="w-14 h-14 rounded-full border border-primary-container" src="https://lh3.googleusercontent.com/aida/AP1WRLvvmJRbBmm4h8MbTKn-jc98LhqT_lPj-PezVpU5X4C78f-kQzjOa7PNiPvqQzMgSjDoLrL0AfmH1yiok7KKyueREpFWB4bkqJjkaI8QLS3BXcbF6ekMK4SsyRpKrUakoN_D2TvgB7qQTOzlbrasEuQbcSo2eR_LP8FzDdfS0MgrHgE9q9ypcGtBuwzS-Yxc5zrXztNOf5RsqVCwznU9wwYbdOmFkhaZYp8Yn92Af4l-wW2gAAg59fU5_Rk"/>
+<div>
+<p class="font-headline-md text-headline-md">Felix Vance</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Top 4% of Learners</p>
+</div>
+</div>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-body-md">Global Rank</span>
+<span class="font-metric-lg text-metric-lg">#142</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-3/4 rounded-full"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-body-sm">Next Rank in 1,200 XP</span>
+<span class="font-code-md text-code-md text-tertiary">14,350 / 15,550</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Rankings Table Section -->
+<div class="bg-surface-container border border-outline-variant rounded-xl overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md">Global Rankings</h2>
+<div class="flex gap-sm">
+<button class="p-sm text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-sm text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">download</span></button>
+</div>
+</div>
+<table class="w-full border-collapse text-left">
+<thead>
+<tr class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">
+<th class="px-lg py-lg font-bold">Rank</th>
+<th class="px-lg py-lg font-bold">User</th>
+<th class="px-lg py-lg font-bold text-center">Status</th>
+<th class="px-lg py-lg font-bold text-center">Streak</th>
+<th class="px-lg py-lg font-bold text-right">Mastery XP</th>
+</tr>
+</thead>
+<tbody class="font-body-md">
+<!-- User Row (Special Highlight) -->
+<tr class="border-y border-outline-variant/30 bg-primary-container/10 group transition-colors">
+<td class="px-lg py-md">
+<span class="font-metric-lg text-primary-container">142</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full border border-primary-container" src="https://lh3.googleusercontent.com/aida/AP1WRLtekOG0ZazaZBqGZwicYrTSd-Csq40qu4M5I5ARLj-1Rn1599CaiUq2FCtl2suc6RO-NHKRJGb87b4TQjDbNR2CBTriTAh_ym9iFf4SUz2RUM1jp8FfF_Qh8JyD9dP2vv0quupa92kvUVhs2HbaKeRCImCZ2IITPHflFDCVH7i0ACs0QQa_UorJ3HFex-1664uDvOGuU8rxpFNzNujo0elS6FjsvH5N8ufdkqczr8f5X9A2cer72N5vfYY"/>
+<div>
+<div class="font-bold text-on-surface flex items-center gap-sm">
+                                            Felix Vance (You)
+                                            <span class="bg-primary-container/20 text-primary-container px-2 py-0.5 rounded text-[10px] font-bold">ACTIVE</span>
+</div>
+<div class="text-xs text-on-surface-variant">Senior Cloud Architect Path</div>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-center">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">stars</span>
+</td>
+<td class="px-lg py-md text-center">
+<div class="flex items-center justify-center gap-sm text-on-surface">
+<span class="material-symbols-outlined text-orange-400 text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-code-md">12d</span>
+</div>
+</td>
+<td class="px-lg py-md text-right">
+<span class="font-metric-lg text-tertiary">14,350</span>
+</td>
+</tr>
+<!-- Others -->
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors">
+<td class="px-lg py-md font-metric-lg text-on-surface-variant">143</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AP1WRLsRAfVaqbqD9VDlUWVPRTW_yreQ6G1FqECrOkSD_798sq9L-jL15aaHeqJE-JCuaqM1ZV-clrbM_MCmYeFesi7IDFOu4ena0zv4N-xOsZVeJfQF1pdVPb5wT8tVuBUSbQqgA4ebn7ghu57Dv-47Nm9g_sqN1vzzIndHpS_ukLFlfEB2HbNK-8bIJiAavBAcIkTzeJXxaCs8PqdpnfQ5UXP5CfLbc6gb1J8j0Lht_qt2lCrDMgBpvcB4bQ0"/>
+<div>
+<div class="font-bold text-on-surface">David Chen</div>
+<div class="text-xs text-on-surface-variant">Systems Specialist</div>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-center">
+<span class="material-symbols-outlined text-on-surface-variant/40">verified</span>
+</td>
+<td class="px-lg py-md text-center">
+<div class="flex items-center justify-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">local_fire_department</span>
+<span class="font-code-md">08d</span>
+</div>
+</td>
+<td class="px-lg py-md text-right">
+<span class="font-metric-lg text-tertiary/70">14,280</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors">
+<td class="px-lg py-md font-metric-lg text-on-surface-variant">144</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AP1WRLtLsBjFN7RH8EA_DLFYGcANSZg3f9DUHkIojPjALcr9YD8t-5W3EnMn-zgwe0kS3RhGrfuz2PW2BeVnhnXz5hyq645AJLFs5qRfhNhbSxVXVlk80cGgSSWDP_-hqKx_l1z9EXmzH1h5dWoJUlvrG2FlHOlxE2R7glIMob2_79FjZ-5JzIizffqg_5mhRzASOtz73ap4bD8951hBIgu8-dDImtkHcaqLMV8NtlG39qLrAP0-hY1dcNGfUug"/>
+<div>
+<div class="font-bold text-on-surface">Elena Kozlova</div>
+<div class="text-xs text-on-surface-variant">Backend Security Expert</div>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-center">
+<span class="material-symbols-outlined text-on-surface-variant/40">verified</span>
+</td>
+<td class="px-lg py-md text-center">
+<div class="flex items-center justify-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">local_fire_department</span>
+<span class="font-code-md">42d</span>
+</div>
+</td>
+<td class="px-lg py-md text-right">
+<span class="font-metric-lg text-tertiary/70">14,100</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors">
+<td class="px-lg py-md font-metric-lg text-on-surface-variant">145</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AP1WRLtFhjir7LxgW6ZZUAwmRWnswPBxbwXMJEw363Vg4Vqes_mx2uClILhgWrvTbeRf39vHdDlDtoUWHC21aDUEc2w3CrUtK8ndvB4_nfMKJ6AsnibI8QDAES110UJCKpfiJ4DiJW6A0keIszHGYlkw0A6BhfprggNRqdQvVWQh_sGoxEDAju6xjiNRfM7kHu_o4dM6O2UpwZ2CqbpR27ICRqa9P1_vVQ26SUkDgg5_J2ST7gnYN5czpVxG0w"/>
+<div>
+<div class="font-bold text-on-surface">Zackary Miller</div>
+<div class="text-xs text-on-surface-variant">Fullstack Ninja</div>
+</div>
+</div>
+</td>
+<td class="px-lg py-md text-center">
+<span class="material-symbols-outlined text-on-surface-variant/40">verified</span>
+</td>
+<td class="px-lg py-md text-center">
+<div class="flex items-center justify-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">local_fire_department</span>
+<span class="font-code-md">05d</span>
+</div>
+</td>
+<td class="px-lg py-md text-right">
+<span class="font-metric-lg text-tertiary/70">13,950</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-lg flex items-center justify-between">
+<button class="flex items-center gap-sm text-on-surface-variant hover:text-primary-container transition-colors font-label-caps text-label-caps">
+<span class="material-symbols-outlined">chevron_left</span> PREVIOUS 50
+                    </button>
+<div class="flex gap-md">
+<span class="w-8 h-8 flex items-center justify-center rounded bg-primary-container text-on-primary-container font-bold text-sm">3</span>
+<span class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant text-sm hover:border-primary-container transition-colors cursor-pointer">4</span>
+<span class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant text-sm hover:border-primary-container transition-colors cursor-pointer">5</span>
+</div>
+<button class="flex items-center gap-sm text-on-surface-variant hover:text-primary-container transition-colors font-label-caps text-label-caps">
+                        NEXT 50 <span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Footer Meta -->
+<div class="flex flex-col md:flex-row justify-between items-center text-on-surface-variant text-sm border-t border-outline-variant pt-lg pb-xl">
+<div class="flex items-center gap-xl">
+<span class="flex items-center gap-sm"><span class="material-symbols-outlined text-[16px]">update</span> Last updated: 2 mins ago</span>
+<span class="flex items-center gap-sm"><span class="material-symbols-outlined text-[16px]">info</span> Calculation rules</span>
+</div>
+<div class="mt-md md:mt-0">
+                    © 2024 Learn With 2.0 Technical Board
+                </div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interaction for table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                row.style.transform = 'scale(0.995)';
+                setTimeout(() => {
+                    row.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-1', 'ring-primary-container');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-1', 'ring-primary-container');
+        });
+    </script>
+</body></html>

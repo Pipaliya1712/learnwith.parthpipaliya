@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Review Queue | Learn With 2.0</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Inter+Tight:wght@600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#2a1700",
+                      "surface-container-low": "#171c20",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "surface-variant": "#30353a",
+                      "surface-tint": "#89ceff",
+                      "surface-dim": "#0f1418",
+                      "secondary-container": "#04b4a2",
+                      "primary-fixed-dim": "#89ceff",
+                      "on-primary-fixed": "#001e2f",
+                      "outline": "#88929b",
+                      "on-primary-fixed-variant": "#004c6e",
+                      "error": "#ffb4ab",
+                      "secondary-fixed": "#71f8e4",
+                      "tertiary-container": "#d88a00",
+                      "primary-container": "#0ea5e9",
+                      "on-tertiary": "#472a00",
+                      "primary": "#89ceff",
+                      "on-background": "#dee3e9",
+                      "on-primary": "#00344d",
+                      "background": "#0f1418",
+                      "on-secondary-fixed-variant": "#005048",
+                      "on-surface-variant": "#bec8d2",
+                      "on-secondary": "#003731",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "inverse-primary": "#006591",
+                      "on-surface": "#dee3e9",
+                      "tertiary-fixed": "#ffddb8",
+                      "surface-container-high": "#252b2f",
+                      "surface-bright": "#353a3e",
+                      "error-container": "#93000a",
+                      "on-error": "#690005",
+                      "surface-container": "#1b2024",
+                      "on-primary-container": "#003751",
+                      "on-tertiary-container": "#4a2c00",
+                      "tertiary": "#ffb95f",
+                      "surface-container-highest": "#30353a",
+                      "inverse-surface": "#dee3e9",
+                      "secondary-fixed-dim": "#4fdbc8",
+                      "primary-fixed": "#c9e6ff",
+                      "surface-container-lowest": "#0a0f13",
+                      "on-secondary-container": "#003f38",
+                      "inverse-on-surface": "#2c3135",
+                      "secondary": "#4fdbc8",
+                      "outline-variant": "#3e4850",
+                      "surface": "#0f1418",
+                      "on-secondary-fixed": "#00201c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "3xl": "64px",
+                      "2xl": "48px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "xl": "32px",
+                      "container-max": "1280px",
+                      "margin-mobile": "16px",
+                      "lg": "24px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "body-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter Tight"],
+                      "label-caps": ["Inter"],
+                      "headline-lg": ["Inter Tight"],
+                      "display-lg": ["Inter Tight"],
+                      "headline-lg-mobile": ["Inter Tight"],
+                      "code-md": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "metric-lg": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "code-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "metric-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0f1418;
+            color: #dee3e9;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1b2024;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3e4850;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #88929b;
+        }
+        .action-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #04b4a2 100%);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container border-r border-outline-variant flex flex-col py-lg z-50">
+<div class="px-md mb-xl">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Learn With 2.0</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase opacity-70">Technical Mastery</p>
+</div>
+<nav class="flex-1 space-y-xs">
+<!-- Dashboard -->
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined mr-md">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<!-- Review Queue (Active) -->
+<a class="flex items-center px-md py-sm border-l-[3px] border-primary-container bg-primary-container/15 text-primary-container font-bold cursor-pointer active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined mr-md">rate_review</span>
+<span class="font-body-md">Review Queue</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined mr-md">workspace_premium</span>
+<span class="font-body-md">Challenges</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined mr-md">code</span>
+<span class="font-body-md">Projects</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined mr-md">leaderboard</span>
+<span class="font-body-md">Leaderboard</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined mr-md">analytics</span>
+<span class="font-body-md">Analytics</span>
+</a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined mr-md">group</span>
+<span class="font-body-md">Users</span>
+</a>
+</nav>
+<div class="mt-auto px-md pt-lg">
+<button class="w-full py-md px-md rounded-xl action-gradient text-white font-bold flex items-center justify-center gap-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined">bolt</span>
+                Continue Learning
+            </button>
+</div>
+</aside>
+<!-- Header / Top Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-surface border-b border-outline-variant flex justify-between items-center h-16 px-gutter ml-64">
+<div class="flex items-center bg-surface-container rounded-lg px-md py-xs w-96">
+<span class="material-symbols-outlined text-on-surface-variant mr-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-full placeholder:text-on-surface-variant/50" placeholder="Search pull requests, users, or tickets..." type="text"/>
+</div>
+<div class="flex items-center space-y-0 space-x-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-sm rounded-full transition-all">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-sm rounded-full transition-all">settings</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Current user profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLv2ls0JvRfr8sxZIqu0F9xix3E_qZ6JCnu05fOYzPW5BkZ92phJxQAUPiF-bRSZDMbDhFv-LXsMSfxA_OpEWElRwX1C0QPZkUTUROvMnapDAzTtU4Imfa8D7ab4DTkql29RPyaQTFFcElFXud7K8xQUOVfkqsrIA8F_N4lzcdvzhRS1RbSnQftQlvTPn_tuAo6lu7RtzIbJJTVurMaRA3kZdcHZ602HwkqzLwq7osLoMYAgcg2k3lHo6kA"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 h-screen flex flex-col bg-background">
+<div class="p-gutter flex-1 flex flex-col min-h-0">
+<!-- Title and Stats -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Admin Review Queue</h2>
+<p class="font-body-md text-on-surface-variant">Manage and audit incoming technical submissions.</p>
+</div>
+<div class="flex gap-md">
+<div class="bg-surface-container border border-outline-variant p-md rounded-xl flex items-center gap-md">
+<div class="text-tertiary">
+<p class="font-label-caps text-label-caps uppercase opacity-70">Awaiting</p>
+<p class="font-metric-lg text-metric-lg">24</p>
+</div>
+<div class="w-px h-10 bg-outline-variant"></div>
+<div class="text-secondary">
+<p class="font-label-caps text-label-caps uppercase opacity-70">Active</p>
+<p class="font-metric-lg text-metric-lg">12</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Filters -->
+<div class="grid grid-cols-12 gap-md mb-lg">
+<div class="col-span-8 bg-surface-container p-md rounded-xl border border-outline-variant flex items-center gap-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant">FILTER BY:</span>
+<div class="flex gap-sm">
+<span class="bg-primary-container/10 text-primary-container px-sm py-xs rounded-lg font-label-caps text-label-caps border border-primary-container/20 cursor-pointer hover:bg-primary-container/20 transition-colors">Python</span>
+<span class="bg-surface-container-high text-on-surface-variant px-sm py-xs rounded-lg font-label-caps text-label-caps border border-outline-variant cursor-pointer hover:bg-surface-container-highest transition-colors">Rust</span>
+<span class="bg-surface-container-high text-on-surface-variant px-sm py-xs rounded-lg font-label-caps text-label-caps border border-outline-variant cursor-pointer hover:bg-surface-container-highest transition-colors">TypeScript</span>
+<span class="bg-surface-container-high text-on-surface-variant px-sm py-xs rounded-lg font-label-caps text-label-caps border border-outline-variant cursor-pointer hover:bg-surface-container-highest transition-colors">Security Audit</span>
+</div>
+</div>
+<div class="col-span-4 bg-surface-container p-md rounded-xl border border-outline-variant flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">AUTO-ASSIGN</span>
+<div class="relative inline-block w-10 h-6">
+<input class="opacity-0 w-0 h-0 peer" id="toggle-assign" type="checkbox"/>
+<label class="absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-surface-container-highest transition-all rounded-full border border-outline-variant before:content-[''] before:absolute before:h-4 before:w-4 before:left-1 before:bottom-[3px] before:bg-on-surface-variant before:transition-all before:rounded-full peer-checked:bg-secondary-container peer-checked:before:translate-x-4 peer-checked:before:bg-white" for="toggle-assign"></label>
+</div>
+</div>
+</div>
+<!-- High-Density Table Container -->
+<div class="flex-1 bg-surface-container border border-outline-variant rounded-xl overflow-hidden flex flex-col">
+<div class="overflow-x-auto custom-scrollbar flex-1">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-high z-10">
+<tr class="border-b border-outline-variant">
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Reference</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Candidate / Author</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Module / Project</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1: Awaiting Review -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-md whitespace-nowrap">
+<span class="font-code-md text-code-md text-primary">#PR-8821</span>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="h-6 w-6 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Alex's avatar" class="w-full h-full" src="https://lh3.googleusercontent.com/aida/AP1WRLszcTpKsME0XKe3gwJDtQy7LseDUUCd0Bc_T6JJBKtwDutJ_aw744AlJEaXkjILsXhuTXRP4OdAvIoKynsBOxZ89fc9MHI5yv6yfYHwEsbDnRAXuNSYO2_mtuGImBJofp7uz1XNoII0Us8t7ugtlyw6gPEMQ4fT6M6dgKnmJXnmUX7LGHwSMGpMDur_G9_VSQELR3YMRi5_ivH5-Eb3gXxYUVdZlvbwsnwlWvAZnvmWeUMV2OxOdWIxSJs"/>
+</div>
+<span class="font-body-sm text-on-surface">Alex Rivera</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="font-body-sm text-on-surface">Memory Leak Fix</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]">C++ Performance Tracks</span>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full text-[11px] font-bold uppercase bg-tertiary-container/20 text-tertiary border border-tertiary-container/30">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5"></span>
+                                        Awaiting Review
+                                    </span>
+</td>
+<td class="px-md py-md text-right">
+<button class="px-md py-xs rounded-lg action-gradient text-white font-bold text-label-caps transition-all opacity-0 group-hover:opacity-100 hover:shadow-lg hover:shadow-primary/20 active:scale-95">REVIEW NOW</button>
+</td>
+</tr>
+<!-- Row 2: In Progress -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-md whitespace-nowrap">
+<span class="font-code-md text-code-md text-primary">#PR-8790</span>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="h-6 w-6 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Sarah's avatar" class="w-full h-full" src="https://lh3.googleusercontent.com/aida/AP1WRLtYGayq5y3XvYNoW9Hy5moMk6OaG4yPOv9xH5RaDfwoSk1ia-oC3tDL4fwOqt-5tiosY9l-Anka8IMx8ZjIX1467lm0dH-RTHdfjdyv-JxruSjpmzutiNfaBZdywmhvXuNd5zAyKkNExA5cGaykPSJC_aHAuzDvMH8oyULSZ3JAaZRAQHFxp85iPEo3xhVoYVYO-PP9GaYkr6xUhsIsSt7OR3yozcVzd5BK3a7tz92sFh76TEP7I_WSWOw"/>
+</div>
+<span class="font-body-sm text-on-surface">Sarah Connor</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="font-body-sm text-on-surface">JWT Implementation</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]">OAuth 2.1 Refactor</span>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full text-[11px] font-bold uppercase bg-secondary-container/20 text-secondary border border-secondary-container/30">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mr-1.5 animate-pulse"></span>
+                                        In Progress
+                                    </span>
+</td>
+<td class="px-md py-md text-right text-on-surface-variant font-label-caps">
+                                    Assigned to @DevAdmin
+                                </td>
+</tr>
+<!-- Row 3: Completed -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-md whitespace-nowrap">
+<span class="font-code-md text-code-md text-primary/60">#PR-8712</span>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="h-6 w-6 rounded-full overflow-hidden bg-surface-container-highest opacity-60">
+<img alt="Kyle's avatar" class="w-full h-full" src="https://lh3.googleusercontent.com/aida/AP1WRLvpJSAnFu1rIdsld6vjxulTDd7mhzYOu0QIWZz9raCf_9Ft0FCbrlL_47XbvBL5KU6hontWP_b1gWyXtEK_B5K2yC2s41AGT-MFsmEQk2F4pjbherZF4zJbsqHZiDJmMMB1YpPWCB7erMcMapNRC7pOCeaDWzZUBFLExmoNqiHhU9JK-afPn4kqNjax68_Gd_x_8UKkC8bZoClgHRiP1Q5FQN63QHt9vpLt8R1xj_kpWHIWcZUlMCVMx04"/>
+</div>
+<span class="font-body-sm text-on-surface-variant">Kyle Reese</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="font-body-sm text-on-surface-variant">Docker Compose Setup</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px] opacity-60">DevOps Mastery</span>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full text-[11px] font-bold uppercase bg-surface-container-highest text-on-surface-variant border border-outline-variant/30">
+<span class="material-symbols-outlined text-[12px] mr-1">check_circle</span>
+                                        Completed
+                                    </span>
+</td>
+<td class="px-md py-md text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">open_in_new</button>
+</td>
+</tr>
+<!-- Row 4: Awaiting Review -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-md whitespace-nowrap">
+<span class="font-code-md text-code-md text-primary">#PR-8901</span>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="h-6 w-6 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Jordan's avatar" class="w-full h-full" src="https://lh3.googleusercontent.com/aida/AP1WRLuQ8wmmnaaT4dYQatObjgFt9VMt1olKVq7D-b5bhNHvdlafx-EBDirRBcO3y2Ad01nzNkE_JzpmTriku9Yvbf0p7fQrSss-GCjypoQCDMAtalY1JB81poBmQgi4gJ3cKHQDxmcMWMwJVbBM8N7uKSmAAoiPRiAwRJ7i8Edm45JCECGxT_bD_dlAEZZ7CdnvcEgRt24UQjWMM8Q8Q0tVlHrENsKEIPs9NAWcx_BSN_MRC82uijDk5P1nGA"/>
+</div>
+<span class="font-body-sm text-on-surface">Jordan Peterson</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="font-body-sm text-on-surface">Tailwind Config Plugin</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]">Frontend Architecture</span>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full text-[11px] font-bold uppercase bg-tertiary-container/20 text-tertiary border border-tertiary-container/30">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5"></span>
+                                        Awaiting Review
+                                    </span>
+</td>
+<td class="px-md py-md text-right">
+<button class="px-md py-xs rounded-lg action-gradient text-white font-bold text-label-caps transition-all opacity-0 group-hover:opacity-100 hover:shadow-lg hover:shadow-primary/20 active:scale-95">REVIEW NOW</button>
+</td>
+</tr>
+<!-- Row 5: Awaiting Review -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-md whitespace-nowrap">
+<span class="font-code-md text-code-md text-primary">#PR-8905</span>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="h-6 w-6 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Morgan's avatar" class="w-full h-full" src="https://lh3.googleusercontent.com/aida/AP1WRLtY2XqfXpL-UBaeLmWf-kC67uBqKdc7OnW5re4gnRCRmZu9pN7R8ogUxgAfRSkmZhd5ciCaNlIO7REYk-L8qoZOQ4tMGWlx0Xc9P0hjYFJpQJXWyTis7UZn_lB1jyqv83ncWTKPNRDQJHW-rt3WTPchuNfS8-uEzkJkYe9gpG5SnixDyMq9rdzSMFYqzwyTGnmpAYmyFFD-m8dH2valxFztqXsKtGkjDHuqGsylWOa8bJTiZYWijgVjEnE"/>
+</div>
+<span class="font-body-sm text-on-surface">Morgan Freeman</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="font-body-sm text-on-surface">S3 File Upload Handler</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]">Cloud Services</span>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full text-[11px] font-bold uppercase bg-tertiary-container/20 text-tertiary border border-tertiary-container/30">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5"></span>
+                                        Awaiting Review
+                                    </span>
+</td>
+<td class="px-md py-md text-right">
+<button class="px-md py-xs rounded-lg action-gradient text-white font-bold text-label-caps transition-all opacity-0 group-hover:opacity-100 hover:shadow-lg hover:shadow-primary/20 active:scale-95">REVIEW NOW</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer Pagination -->
+<div class="p-md bg-surface-container-high border-t border-outline-variant flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Showing 1-20 of 142 tickets</span>
+<div class="flex gap-xs">
+<button class="p-xs rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="px-sm py-xs rounded-lg bg-primary-container text-white font-bold text-label-caps">1</button>
+<button class="px-sm py-xs rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-highest transition-colors">2</button>
+<button class="px-sm py-xs rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-highest transition-colors">3</button>
+<button class="p-xs rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Interactive Layer for Review Overlay (Simulated) -->
+<div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300" id="review-modal">
+<div class="bg-surface-container w-full max-w-4xl border border-outline-variant rounded-2xl overflow-hidden shadow-2xl scale-95 transition-transform duration-300">
+<div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface-container-high">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Review: Memory Leak Fix (#PR-8821)</h3>
+<p class="font-body-sm text-on-surface-variant">Submitted by Alex Rivera • 2 hours ago</p>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container p-sm rounded-full transition-all" onclick="closeReview()">close</button>
+</div>
+<div class="p-lg grid grid-cols-2 gap-lg h-[500px]">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md overflow-y-auto custom-scrollbar">
+<h4 class="font-label-caps text-label-caps text-primary mb-md">SUBMISSION CODE</h4>
+<pre class="font-code-md text-code-md text-secondary leading-relaxed">void handle_request(Request* req) {
+    char* buffer = malloc(1024);
+    if (!req-&gt;is_valid) {
+        // FIXED: Added missing free()
+        free(buffer); 
+        return;
+    }
+    process(buffer);
+    free(buffer);
+}
+                    </pre>
+</div>
+<div class="flex flex-col gap-md">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant">REVIEW NOTES</h4>
+<textarea class="flex-1 bg-surface-container-highest border border-outline-variant rounded-xl p-md text-body-sm focus:ring-1 focus:ring-primary outline-none text-on-surface" placeholder="Add specific feedback for the author..."></textarea>
+<div class="grid grid-cols-2 gap-md">
+<button class="py-md border border-error text-error rounded-xl font-bold hover:bg-error/10 transition-colors">REQUEST CHANGES</button>
+<button class="py-md action-gradient text-white rounded-xl font-bold hover:shadow-lg hover:shadow-primary/20 transition-all">APPROVE &amp; MERGE</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        function openReview() {
+            const modal = document.getElementById('review-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeReview() {
+            const modal = document.getElementById('review-modal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Attach event listeners to all "REVIEW NOW" buttons
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText === 'REVIEW NOW') {
+                btn.addEventListener('click', openReview);
+            }
+        });
+    </script>
+</body></html>

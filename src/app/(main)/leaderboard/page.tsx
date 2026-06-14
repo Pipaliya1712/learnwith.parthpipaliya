@@ -1,174 +1,365 @@
-import { getLeaderboardServer } from "@/lib/server-api";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getLeaderboardServer, getCurrentUserServer, getUserProfileServer } from "@/lib/server-api";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Star, Target, Crown, Medal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Trophy, Star, Target, Crown, Medal, Flame, ChevronLeft, ChevronRight, CheckCircle, Info } from "lucide-react";
 import Link from "next/link";
 
+function getMilestoneInfo(points: number) {
+  let prevPoints = 0;
+  let nextPoints = 100;
+  
+  if (points <= 100) {
+    prevPoints = 0;
+    nextPoints = 100;
+  } else if (points <= 300) {
+    prevPoints = 100;
+    nextPoints = 300;
+  } else if (points <= 700) {
+    prevPoints = 300;
+    nextPoints = 700;
+  } else if (points <= 1500) {
+    prevPoints = 700;
+    nextPoints = 1500;
+  } else {
+    prevPoints = 1500;
+    nextPoints = 5000;
+  }
+
+  const range = nextPoints - prevPoints;
+  const earned = points - prevPoints;
+  const percent = Math.min(100, Math.max(0, Math.round((earned / range) * 100)));
+
+  return { prevPoints, nextPoints, percent };
+}
+
 export default async function LeaderboardPage() {
-  const data = await getLeaderboardServer(50);
-  const items = data.items || [];
+  const leaderboardData = await getLeaderboardServer(50);
+  const items = leaderboardData.items || [];
+
+  const currentUser = await getCurrentUserServer();
+  let myStats = {
+    rank: 0,
+    points: 0,
+    level: "V1",
+    solved_challenges: 0,
+  };
+
+  if (currentUser) {
+    const profileData = await getUserProfileServer(currentUser.id);
+    if (profileData && profileData.progress) {
+      myStats = {
+        rank: profileData.progress.rank || 0,
+        points: profileData.progress.points || 0,
+        level: profileData.progress.level || "V1",
+        solved_challenges: profileData.progress.solved_challenges || 0,
+      };
+    }
+  }
 
   const top3 = items.slice(0, 3);
   const rest = items.slice(3);
 
-  const getPodiumStyle = (rank: number) => {
-    switch (rank) {
-      case 1:
-        return {
-          card: "border-yellow-500/50 bg-gradient-to-t from-yellow-500/10 to-transparent scale-105 z-10",
-          icon: <Crown className="w-8 h-8 text-yellow-500 mx-auto mb-2 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]" />,
-          rankColor: "bg-yellow-500 text-yellow-950",
-          height: "h-[350px]"
-        };
-      case 2:
-        return {
-          card: "border-slate-400/50 bg-gradient-to-t from-slate-400/10 to-transparent",
-          icon: <Medal className="w-7 h-7 text-slate-400 mx-auto mb-2" />,
-          rankColor: "bg-slate-400 text-slate-950",
-          height: "h-[320px]"
-        };
-      case 3:
-        return {
-          card: "border-amber-600/50 bg-gradient-to-t from-amber-600/10 to-transparent",
-          icon: <Medal className="w-6 h-6 text-amber-600 mx-auto mb-2" />,
-          rankColor: "bg-amber-600 text-amber-950",
-          height: "h-[300px]"
-        };
-      default:
-        return {
-          card: "",
-          icon: null,
-          rankColor: "bg-muted text-muted-foreground",
-          height: ""
-        };
-    }
+  // Helper for mock streak and status matching solved challenges
+  const getStreak = (solved: number) => {
+    return solved > 0 ? `${Math.min(30, solved * 2)}d` : "0d";
+  };
+
+  const getInitials = (name: string | null | undefined): string => {
+    if (!name) return "U";
+    return name.substring(0, 2).toUpperCase();
   };
 
   return (
-    <div className="container mx-auto max-w-5xl py-10 px-4 space-y-12">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
-          Global Leaderboard
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          The top open-source contributors on Learn With. Solve challenges, earn points, and level up your developer version.
-        </p>
+    <div className="space-y-10 min-h-screen pb-16">
+      
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-2">
+          <h1 className="text-4xl font-extrabold tracking-tight text-glow-cyan text-primary">
+            Leaderboard
+          </h1>
+          <p className="text-muted-foreground text-base max-w-2xl">
+            Recognizing technical excellence and mastery across the platform. Rise through the ranks by completing projects and challenges.
+          </p>
+        </div>
+        
+        {/* Toggle weekly vs all time (Visual only) */}
+        <div className="flex gap-1 bg-[#1b1b23] p-1 rounded-xl border border-outline-variant">
+          <Button size="sm" className="px-4 bg-primary text-primary-foreground font-bold text-xs uppercase tracking-wider">
+            All Time
+          </Button>
+          <Button size="sm" variant="ghost" className="px-4 text-muted-foreground text-xs uppercase tracking-wider">
+            Weekly
+          </Button>
+        </div>
       </div>
 
       {items.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center border rounded-xl border-dashed bg-card/50">
-          <div className="mb-6 flex size-16 items-center justify-center rounded-2xl bg-muted">
-            <Trophy className="size-8 text-muted-foreground" />
-          </div>
-          <h2 className="text-2xl font-bold tracking-tight">No Leaders Yet</h2>
-          <p className="mt-3 max-w-md text-base leading-7 text-muted-foreground">
+        <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed rounded-2xl bg-[#1b1b23]/50">
+          <Trophy className="size-12 text-muted-foreground mb-4" />
+          <h2 className="text-xl font-bold">No leaders yet</h2>
+          <p className="text-sm text-muted-foreground mt-2 max-w-sm">
             Complete a challenge to be the first on the board!
           </p>
         </div>
       ) : (
         <>
-          {/* Top 3 Podium */}
-          {top3.length > 0 && (
-            <div className="flex flex-col md:flex-row items-end justify-center gap-4 md:gap-6 pt-10 pb-6">
-              {[top3[1], top3[0], top3[2]].map((user) => {
-                if (!user) return null;
-                const style = getPodiumStyle(user.rank);
-                
-                return (
-                  <Link href={`/profile/${user.user_id}`} key={user.user_id} className={`w-full md:w-[280px] relative transition-all hover:-translate-y-2 duration-300 ${style.card} ${style.height}`}>
-                    <Card className="w-full h-full bg-transparent border-none shadow-none">
-                      <CardContent className="pt-6 text-center flex flex-col h-full justify-between">
-                      <div>
-                        {style.icon}
-                        <div className="relative inline-block mb-4">
-                          <Avatar className="w-20 h-20 border-4 border-background mx-auto shadow-xl">
-                            <AvatarImage src={user.avatar_url || ""} alt={user.display_name} />
-                            <AvatarFallback className="text-2xl">{user.display_name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                          </Avatar>
-                          <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full font-bold text-xs shadow-lg ${style.rankColor}`}>
-                            #{user.rank}
-                          </div>
-                        </div>
-                        <h3 className="text-xl font-bold truncate px-2">{user.display_name}</h3>
-                        <Badge variant="outline" className="mt-2 bg-background/50 backdrop-blur-sm border-primary/20 text-primary">
-                          {user.level}
-                        </Badge>
-                      </div>
-                      
-                      <div className="bg-background/40 backdrop-blur-md rounded-lg p-3 flex justify-around mt-4">
-                        <div className="text-center">
-                          <div className="flex items-center justify-center text-yellow-500 font-bold">
-                            <Star className="w-4 h-4 mr-1 fill-yellow-500" />
-                            {user.points}
-                          </div>
-                          <span className="text-[10px] uppercase text-muted-foreground font-semibold">Points</span>
-                        </div>
-                        <div className="text-center">
-                          <div className="flex items-center justify-center text-green-500 font-bold">
-                            <Target className="w-4 h-4 mr-1" />
-                            {user.solved_challenges}
-                          </div>
-                          <span className="text-[10px] uppercase text-muted-foreground font-semibold">Solved</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                    </Card>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+          {/* Bento Grid: Top 3 & My Standing */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            {/* Podium (Top 3) */}
+            <div className="lg:col-span-8 grid grid-cols-3 gap-4 h-80 items-end">
+              
+              {/* Rank 2 */}
+              {top3[1] && (
+                <Link
+                  href={`/profile/${top3[1].user_id}`}
+                  className="bg-[#1b1b23] border border-outline-variant rounded-xl flex flex-col items-center justify-center p-4 text-center group hover:border-primary/45 transition-all h-[90%]"
+                >
+                  <div className="relative mb-3">
+                    <Avatar className="w-16 h-16 border-4 border-outline-variant">
+                      <AvatarImage src={top3[1].avatar_url || ""} />
+                      <AvatarFallback className="text-lg font-bold">
+                        {getInitials(top3[1].display_name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="absolute -bottom-2 -right-2 bg-muted-foreground w-6 h-6 rounded-full flex items-center justify-center border-2 border-background text-[10px] font-bold text-foreground">
+                      2
+                    </div>
+                  </div>
+                  <span className="font-bold text-sm truncate w-full px-2 text-foreground group-hover:text-primary transition-colors">
+                    {top3[1].display_name}
+                  </span>
+                  <span className="font-mono text-xs text-tertiary mt-0.5">
+                    {top3[1].points} XP
+                  </span>
+                </Link>
+              )}
 
-          {/* Rest of the Leaderboard */}
-          {rest.length > 0 && (
-            <Card className="border-border/60 shadow-md">
-              <CardHeader className="bg-muted/30 border-b pb-4">
-                <CardTitle className="text-lg">Rankings</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="divide-y">
-                  {rest.map((user: any) => (
-                    <Link href={`/profile/${user.user_id}`} key={user.user_id} className="flex items-center p-4 hover:bg-muted/30 transition-colors cursor-pointer">
-                      <div className="w-12 text-center font-bold text-lg text-muted-foreground mr-2">
-                        #{user.rank}
-                      </div>
-                      
-                      <Avatar className="w-10 h-10 border mr-4">
-                        <AvatarImage src={user.avatar_url || ""} alt={user.display_name} />
-                        <AvatarFallback>{user.display_name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                      </Avatar>
-                      
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-base truncate hover:underline">{user.display_name}</h4>
-                        <Badge variant="secondary" className="mt-1 text-xs">
-                          {user.level}
-                        </Badge>
-                      </div>
-                      
-                      <div className="flex items-center gap-6 text-right">
-                        <div className="hidden sm:block">
-                          <div className="flex items-center justify-end text-green-500 font-bold">
-                            {user.solved_challenges}
-                          </div>
-                          <span className="text-xs text-muted-foreground">Solved</span>
-                        </div>
-                        
-                        <div className="w-20">
-                          <div className="flex items-center justify-end text-yellow-500 font-bold text-lg">
-                            {user.points}
-                          </div>
-                          <span className="text-xs text-muted-foreground">Points</span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
+              {/* Rank 1 (Elevated) */}
+              {top3[0] && (
+                <Link
+                  href={`/profile/${top3[0].user_id}`}
+                  className="bg-[#24242e] border-2 border-primary/30 rounded-xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group hover:border-primary/60 transition-all h-full"
+                >
+                  <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
+                  <div className="relative mb-4">
+                    <Avatar className="w-20 h-20 border-4 border-primary">
+                      <AvatarImage src={top3[0].avatar_url || ""} />
+                      <AvatarFallback className="text-xl font-bold">
+                        {getInitials(top3[0].display_name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="absolute -bottom-2 -right-2 bg-primary w-8 h-8 rounded-full flex items-center justify-center border-2 border-background text-primary-foreground">
+                      <Crown className="size-4 fill-current" />
+                    </div>
+                  </div>
+                  <span className="font-extrabold text-base truncate w-full px-2 text-foreground group-hover:text-primary transition-colors">
+                    {top3[0].display_name}
+                  </span>
+                  <span className="font-mono text-sm font-extrabold text-tertiary mt-0.5">
+                    {top3[0].points} XP
+                  </span>
+                </Link>
+              )}
+
+              {/* Rank 3 */}
+              {top3[2] && (
+                <Link
+                  href={`/profile/${top3[2].user_id}`}
+                  className="bg-[#1b1b23] border border-outline-variant rounded-xl flex flex-col items-center justify-center p-4 text-center group hover:border-primary/45 transition-all h-[80%]"
+                >
+                  <div className="relative mb-3">
+                    <Avatar className="w-16 h-16 border-4 border-outline-variant">
+                      <AvatarImage src={top3[2].avatar_url || ""} />
+                      <AvatarFallback className="text-lg font-bold">
+                        {getInitials(top3[2].display_name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="absolute -bottom-2 -right-2 bg-amber-700 w-6 h-6 rounded-full flex items-center justify-center border-2 border-background text-[10px] font-bold text-white">
+                      3
+                    </div>
+                  </div>
+                  <span className="font-bold text-sm truncate w-full px-2 text-foreground group-hover:text-primary transition-colors">
+                    {top3[2].display_name}
+                  </span>
+                  <span className="font-mono text-xs text-tertiary mt-0.5">
+                    {top3[2].points} XP
+                  </span>
+                </Link>
+              )}
+
+            </div>
+
+            {/* My Stats Card */}
+            <div className="lg:col-span-4 bg-[#0d0d15] border border-outline-variant rounded-xl p-6 flex flex-col justify-between min-h-[260px]">
+              <div>
+                <h3 className="font-mono text-[10px] font-bold text-primary uppercase tracking-widest mb-4">
+                  Your Standing
+                </h3>
+                
+                <div className="flex items-center gap-3">
+                  <Avatar className="w-12 h-12 border border-primary">
+                    <AvatarImage src={currentUser?.avatar_url || ""} />
+                    <AvatarFallback className="text-sm font-bold">
+                      {getInitials(currentUser?.display_name || currentUser?.email)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h4 className="text-base font-extrabold text-foreground">
+                      {currentUser?.display_name || "You"}
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      Level {myStats.level} Developer
+                    </p>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+
+              <div className="space-y-3 pt-4 border-t border-outline-variant/30">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-muted-foreground">Global Standing</span>
+                  <span className="font-bold text-foreground font-mono text-sm">
+                    {myStats.rank > 0 ? `#${myStats.rank}` : "Unranked"}
+                  </span>
+                </div>
+                
+                {(() => {
+                  const ms = getMilestoneInfo(myStats.points);
+                  return (
+                    <div className="space-y-1.5">
+                      <div className="w-full h-2 bg-background rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary"
+                          style={{ width: `${ms.percent}%` }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-[9px] font-mono text-muted-foreground">
+                        <span>Milestone Progress</span>
+                        <span>{ms.percent}%</span>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Rankings Table */}
+          <div className="bg-[#1b1b23] border border-outline-variant rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-outline-variant/60 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-foreground">Global Rankings</h2>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse text-left text-sm">
+                <thead>
+                  <tr className="font-mono text-[10px] uppercase font-bold text-muted-foreground tracking-wider border-b border-outline-variant/40 bg-muted/10">
+                    <th className="px-6 py-3">Rank</th>
+                    <th className="px-6 py-3">User</th>
+                    <th className="px-6 py-3 text-center">Status</th>
+                    <th className="px-6 py-3 text-center">Streak</th>
+                    <th className="px-6 py-3 text-right">Mastery XP</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-outline-variant/20">
+                  {items.map((user: any) => {
+                    const isSelf = currentUser && user.user_id === currentUser.id;
+                    const streakVal = getStreak(user.solved_challenges);
+                    return (
+                      <tr
+                        key={user.user_id}
+                        className={`transition-colors hover:bg-muted/10 ${
+                          isSelf ? "bg-primary-container/10 font-bold" : ""
+                        }`}
+                      >
+                        <td className="px-6 py-4">
+                          <span className={`font-mono text-sm font-bold ${isSelf ? "text-primary" : "text-muted-foreground"}`}>
+                            {user.rank}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <Link href={`/profile/${user.user_id}`} className="flex items-center gap-3">
+                            <Avatar className="w-8 h-8 border">
+                              <AvatarImage src={user.avatar_url || ""} />
+                              <AvatarFallback className="text-xs font-bold">
+                                {getInitials(user.display_name)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="font-bold text-foreground hover:text-primary transition-colors flex items-center gap-1.5">
+                                {user.display_name}
+                                {isSelf && (
+                                  <Badge className="bg-primary/25 text-primary text-[9px] hover:bg-primary/30 border-none font-bold uppercase py-0 px-1">
+                                    You
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="text-[10px] text-muted-foreground">
+                                Level {user.level}
+                              </div>
+                            </div>
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <CheckCircle className="size-4 text-primary mx-auto opacity-75" />
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {streakVal !== "0d" ? (
+                            <div className="flex items-center justify-center gap-1 text-orange-500 font-mono text-xs font-bold">
+                              <Flame className="size-3.5 fill-current" />
+                              <span>{streakVal}</span>
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground/45 text-xs font-mono">-</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <span className="font-mono text-sm font-bold text-tertiary">
+                            {user.points.toLocaleString()}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination footer (Visual placeholder matching style) */}
+            <div className="p-4 border-t border-outline-variant/40 flex items-center justify-between text-xs">
+              <Button size="sm" variant="ghost" className="gap-1.5 text-muted-foreground hover:text-foreground">
+                <ChevronLeft className="size-4" /> PREVIOUS
+              </Button>
+              <div className="flex gap-2">
+                <span className="w-6 h-6 flex items-center justify-center rounded bg-primary text-primary-foreground font-bold font-mono">
+                  1
+                </span>
+              </div>
+              <Button size="sm" variant="ghost" className="gap-1.5 text-muted-foreground hover:text-foreground">
+                NEXT <ChevronRight className="size-4" />
+              </Button>
+            </div>
+
+          </div>
+
+          {/* Footer Metadata */}
+          <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-muted-foreground border-t border-outline-variant/40 pt-6 gap-2">
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1">
+                <Info className="size-3.5" />
+                Updated every 5 minutes
+              </span>
+            </div>
+            <span>© 2026 Learn With Technical Board</span>
+          </div>
+
         </>
       )}
+
     </div>
   );
 }

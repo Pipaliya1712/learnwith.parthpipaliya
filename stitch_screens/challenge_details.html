@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Challenge Details | Learn With 2.0</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Inter+Tight:wght@600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#703700",
+                        "tertiary": "#ffb783",
+                        "primary": "#c0c1ff",
+                        "background": "#13131b",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#07006c",
+                        "on-secondary-container": "#00424e",
+                        "surface-dim": "#13131b",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "surface-tint": "#c0c1ff",
+                        "outline": "#908fa0",
+                        "tertiary-container": "#d97721",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "on-error-container": "#ffdad6",
+                        "on-surface": "#e4e1ed",
+                        "surface-container-lowest": "#0d0d15",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "on-primary-container": "#0d0096",
+                        "secondary-fixed": "#acedff",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1b1b23",
+                        "on-tertiary-container": "#452000",
+                        "surface-variant": "#34343d",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-surface-variant": "#c7c4d7",
+                        "on-secondary-fixed": "#001f26",
+                        "on-background": "#e4e1ed",
+                        "secondary": "#4cd7f6",
+                        "primary-container": "#8083ff",
+                        "inverse-surface": "#e4e1ed",
+                        "secondary-container": "#03b5d3",
+                        "on-primary": "#1000a9",
+                        "surface": "#13131b",
+                        "surface-container-highest": "#34343d",
+                        "surface-container": "#1f1f27",
+                        "surface-container-high": "#292932",
+                        "on-tertiary": "#4f2500",
+                        "tertiary-fixed": "#ffdcc5",
+                        "primary-fixed": "#e1e0ff",
+                        "outline-variant": "#464554",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-bright": "#393841",
+                        "inverse-on-surface": "#303038",
+                        "on-secondary": "#003640",
+                        "inverse-primary": "#494bd6",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar_width": "280px",
+                        "container_max": "1440px",
+                        "topbar_height": "64px",
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "base": "24px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "48px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["JetBrains Mono"],
+                        "display-md": ["Inter Tight"],
+                        "body-sm": ["Inter"],
+                        "headline-md": ["Inter Tight"],
+                        "display-lg": ["Inter Tight"],
+                        "mono-code": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter Tight"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["14px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "display-md": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "mono-code": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #13131b;
+            color: #e4e1ed;
+            -webkit-font-smoothing: antialiased;
+        }
+        .xp-cta-gradient {
+            background: linear-gradient(to right, #FBBF24, #F59E0B);
+        }
+        .xp-cta-gradient:hover {
+            background: linear-gradient(to right, #F59E0B, #D97706);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .code-container {
+            background: #0d0d15;
+            border: 1px solid #464554;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Side Navigation Bar -->
+<aside class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col h-full py-base z-50">
+<div class="px-md mb-xl">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">Learn With 2.0</h1>
+<p class="font-mono-label text-mono-label text-on-surface-variant mt-xs">Level 42 Developer</p>
+</div>
+<nav class="flex-1 flex flex-col gap-sm px-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-primary font-bold border-l-4 border-primary bg-surface-container transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="extension">extension</span>
+<span class="font-body-md">Challenges</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-body-md">Projects</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-body-md">Leaderboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-body-md">My Journey</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-body-md">Profile</span>
+</a>
+</nav>
+<div class="mt-auto px-sm pt-base border-t border-outline-variant flex flex-col gap-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-mono-label">Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="rate_review">rate_review</span>
+<span class="font-mono-label">Review Queue</span>
+</a>
+<div class="px-md mt-sm">
+<button class="w-full py-sm bg-surface-container-high border border-outline-variant text-on-surface font-mono-label hover:bg-surface-variant transition-all">
+                    Admin Dashboard
+                </button>
+</div>
+</div>
+</aside>
+<!-- Top Utility Bar -->
+<header class="h-topbar_height w-full fixed top-0 z-40 bg-surface border-b border-outline-variant flex justify-between items-center px-gutter ml-sidebar_width" style="width: calc(100% - 280px);">
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg px-md w-96 focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-mono-code font-mono-code w-full text-on-surface" placeholder="Search components, documentation, or users..." type="text"/>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+<div class="h-8 w-px bg-outline-variant mx-sm"></div>
+<div class="flex items-center gap-sm">
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AP1WRLsGI_yzDXWZVSHKGOAzxJHAJHzcJFVmLRDXQDDDkTwrnlg6N1WkA4La6ArTQamREQkOkIhk_UZLs-Coxt-JAP7Twn1A3KBMRqU7jdSEtmFeFlVkRL0OLX_d3svJBriZTqwFtINBTG30itBh_pnz8mLxlGXmaebSpJu_hZKB2Oa-JjWOjPos0atBfSiLpyfqxZzwFUzLL1-XlvD4ZeuGpbuxhJfSg7cGsqBasWtO513Smq-hs6Ufzx3mBA"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar_width mt-topbar_height p-gutter max-w-container_max mx-auto">
+<!-- Hero Section -->
+<section class="relative rounded-xl overflow-hidden mb-xl bg-surface-container border border-outline-variant p-xl flex flex-col md:flex-row justify-between items-end gap-lg">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+
+</div>
+<div class="relative z-10 flex-1">
+<nav class="flex items-center gap-xs font-mono-code text-mono-code text-on-surface-variant mb-md">
+<span>Challenges</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary">System Architecture</span>
+</nav>
+<h2 class="font-display-lg text-display-lg text-on-surface mb-sm">Event-Driven Notification Engine</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Project: <span class="text-secondary font-mono-label">CloudScale Enterprise Hub</span>
+</p>
+<div class="flex gap-sm mt-lg">
+<span class="px-sm py-xs border border-secondary text-secondary font-mono-code text-xs rounded bg-secondary/10">HARD</span>
+<span class="px-sm py-xs border border-primary text-primary font-mono-code text-xs rounded bg-primary/10">BACKEND</span>
+<span class="px-sm py-xs border border-outline text-outline font-mono-code text-xs rounded">REDIS</span>
+</div>
+</div>
+<div class="relative z-10">
+<button class="xp-cta-gradient text-on-primary-fixed font-bold py-md px-xl rounded-lg flex items-center gap-sm transition-all transform active:scale-95 shadow-lg">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                    START CHALLENGE
+                    <span class="ml-sm font-mono-label bg-black/20 px-sm py-xs rounded">+1200 XP</span>
+</button>
+</div>
+</section>
+<!-- Bento Layout for Content & Sidebar -->
+<div class="bento-grid">
+<!-- Left Column: Main Documentation -->
+<div class="col-span-12 lg:col-span-8 space-y-lg">
+<!-- Overview Card -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg">
+<h3 class="font-headline-md text-headline-md mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="subject">subject</span>
+                        Overview
+                    </h3>
+<p class="text-on-surface-variant leading-relaxed mb-base">
+                        In this challenge, you will architect and implement a high-throughput notification engine capable of handling millions of concurrent events. The system must decouple the event source from the delivery mechanism using a message broker, ensuring high availability and fault tolerance.
+                    </p>
+<div class="code-container p-md rounded-lg">
+<div class="flex justify-between items-center mb-sm border-b border-outline-variant pb-xs">
+<span class="font-mono-code text-xs text-on-surface-variant">architecture-specs.yaml</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant" data-icon="content_copy">content_copy</span>
+</div>
+<pre class="font-mono-code text-on-surface whitespace-pre-wrap">engine:
+  throughput: 100k/sec
+  retry_policy: exponential_backoff
+  max_retries: 5
+  persistence: redis_streams
+  dead_letter_queue: enabled</pre>
+</div>
+</div>
+<!-- Realistic Context -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg">
+<h3 class="font-headline-md text-headline-md mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="business_center">business_center</span>
+                        Project Context
+                    </h3>
+<p class="text-on-surface-variant leading-relaxed">
+                        The "CloudScale Enterprise Hub" has seen a massive surge in user activity. Currently, the monolithic API handles notifications synchronously, causing severe latency during peak hours. Your task is to extract this logic into a standalone microservice that consumes events from a Kafka or Redis stream. 
+                    </p>
+<div class="mt-md p-md border-l-4 border-secondary bg-secondary/5 italic text-on-surface-variant">
+                        "We need to ensure that even if our downstream email provider is down, the system doesn't lose user alerts. We need a robust queueing strategy." — Lead Architect
+                    </div>
+</div>
+<!-- Acceptance Criteria -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg">
+<h3 class="font-headline-md text-headline-md mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-tertiary" data-icon="fact_check">fact_check</span>
+                        Acceptance Criteria
+                    </h3>
+<ul class="space-y-sm">
+<li class="flex items-start gap-md group cursor-pointer">
+<div class="mt-1 w-5 h-5 rounded border border-outline-variant flex items-center justify-center group-hover:border-primary">
+<span class="material-symbols-outlined text-xs text-transparent group-hover:text-primary transition-all" data-icon="check">check</span>
+</div>
+<span class="text-on-surface-variant">Implement a consumer that listens to the `user.events` stream.</span>
+</li>
+<li class="flex items-start gap-md group cursor-pointer">
+<div class="mt-1 w-5 h-5 rounded border border-outline-variant flex items-center justify-center group-hover:border-primary">
+<span class="material-symbols-outlined text-xs text-transparent group-hover:text-primary transition-all" data-icon="check">check</span>
+</div>
+<span class="text-on-surface-variant">Configure an exponential backoff strategy for failed notification attempts.</span>
+</li>
+<li class="flex items-start gap-md group cursor-pointer">
+<div class="mt-1 w-5 h-5 rounded border border-outline-variant flex items-center justify-center group-hover:border-primary">
+<span class="material-symbols-outlined text-xs text-transparent group-hover:text-primary transition-all" data-icon="check">check</span>
+</div>
+<span class="text-on-surface-variant">Ensure exactly-once delivery semantics using idempotency keys.</span>
+</li>
+<li class="flex items-start gap-md group cursor-pointer">
+<div class="mt-1 w-5 h-5 rounded border border-outline-variant flex items-center justify-center group-hover:border-primary">
+<span class="material-symbols-outlined text-xs text-transparent group-hover:text-primary transition-all" data-icon="check">check</span>
+</div>
+<span class="text-on-surface-variant">Write integration tests simulating provider timeouts.</span>
+</li>
+</ul>
+</div>
+<!-- Tech Stack -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg">
+<h3 class="font-headline-md text-headline-md mb-md">Required Tech Stack</h3>
+<div class="flex flex-wrap gap-md">
+<div class="flex items-center gap-sm px-md py-sm bg-surface-container-high rounded-lg border border-outline-variant">
+<img alt="TypeScript" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida/AP1WRLsQqPV73Jp3cyuYsOBDjrnUldzk-rOvwmV-csV_7DcUllcoSxaCdXfNtgwdzHWo-AtuIruCbRIPwXm0e-PXrG3T0DKDSbf-cSV_VnrEZRHSdJYf6Lle7hPVFiObsQrK3rW_FCkYy5UQ7EqLEMFJFOVp2JaEllaayqc9oRPTiR47I-O8pwskrg6tQBvfAX74NGZeXgvgx2mCTZ75OGJiQIwYTTsUzoRFssduyrtyLNK75oZCXNzyMKEOTQ"/>
+<span class="font-mono-label text-on-surface">TypeScript 5.x</span>
+</div>
+<div class="flex items-center gap-sm px-md py-sm bg-surface-container-high rounded-lg border border-outline-variant">
+<img alt="Redis" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida/AP1WRLudrp1H3mlWEbVvW5q98nlvO1bChfOyS8vHRJ1DYWLSNQNjJyNSMQAR8ic3AK7FI6DIF_WXNNbpSHAM77xFZUhRKdfQiGV5pwTmh2J2dxzv31ISGhBaqELePPrujY8aJ67mywR971cskJOSD7A3-7q3ftQU2BsUzLRc6bNYOGOZ5mksjuzkIT_YTOFifAfURYPwk7TuE3k-Fyp70JvljcPbfpkO1Kxs0A3gwA19s_YY08WuNwnnq-qXn8M"/>
+<span class="font-mono-label text-on-surface">Redis Stack</span>
+</div>
+<div class="flex items-center gap-sm px-md py-sm bg-surface-container-high rounded-lg border border-outline-variant">
+<img alt="Docker" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida/AP1WRLsNy0WVaRUos3FEiwYwM1RnC7IXwF-4eL_9Z9Ak1_r3e8VPMj4fBpLUi5PN-zCmE7_MBCKD46zXX5agOPawFIVGbQ1MFHgY56WTFjzjVXpyy86MxFTbB4l-Mjp8GANa30p-1_E9JyLi22hZU5X4MEa91BtacfsQd-3gEm6Va3NiKvSJmKn-i1O6fX5rwoWzxSFgukpiBmmUIx-KmAFqjqTy7kpFboph4qh3dZsusATDTyuNyq4hhZ5e8s0"/>
+<span class="font-mono-label text-on-surface">Docker Desktop</span>
+</div>
+<div class="flex items-center gap-sm px-md py-sm bg-surface-container-high rounded-lg border border-outline-variant">
+<img alt="Jest" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida/AP1WRLv6SPRmFgS7Z9sDY6Q0nJk2e2vYvDIkehmLU2qSWGK7v-TyICUe9gNWkuCO4qtUc0PyOxu5ut8a5DFvaGOMeAJ8j4sr3Ta9a5uOipCSTrB3m5yCjJc4WF8n6621ZzkkEJiwNJPwQYH63HaUXojP6oNccolAVt7ojAaKgA2m8SxVkBVRSwe1xRGnXrOzfZJKFFi7ZDCRtMCNi4H3k0JvQdK64JFxJe3o4RfmriHiGuzS2ssBIYX2S-N0Gw"/>
+<span class="font-mono-label text-on-surface">Jest v29</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar -->
+<div class="col-span-12 lg:col-span-4 space-y-lg">
+<!-- Rewards Panel -->
+<div class="bg-surface-container-high border border-primary/30 rounded-xl p-lg relative overflow-hidden">
+<div class="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 blur-3xl rounded-full"></div>
+<h3 class="font-headline-md text-headline-md mb-md text-primary">Challenge Rewards</h3>
+<div class="flex items-center gap-base mb-base">
+<div class="w-16 h-16 bg-surface-container-lowest border-2 border-primary rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div>
+<p class="font-headline-md text-primary">+1,200 XP</p>
+<p class="text-on-surface-variant text-sm">System Architect Mastery</p>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between text-mono-code text-xs">
+<span class="text-on-surface-variant">Achievement</span>
+<span class="text-secondary">Stream Master</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 65%;"></div>
+</div>
+<p class="text-[11px] text-on-surface-variant font-mono-code text-center">350 XP away from Level 43</p>
+</div>
+</div>
+<!-- Info Grid -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg grid grid-cols-2 gap-md">
+<div>
+<p class="font-mono-label text-xs text-on-surface-variant mb-xs">EST. TIME</p>
+<p class="font-headline-md text-on-surface">~4.5 hrs</p>
+</div>
+<div>
+<p class="font-mono-label text-xs text-on-surface-variant mb-xs">DIFFICULTY</p>
+<p class="font-headline-md text-error">Advanced</p>
+</div>
+<div class="col-span-2 pt-md border-t border-outline-variant">
+<p class="font-mono-label text-xs text-on-surface-variant mb-xs">PREREQUISITES</p>
+<div class="flex flex-wrap gap-xs">
+<span class="text-[11px] px-sm py-1 bg-surface-container-highest rounded border border-outline-variant text-on-surface-variant">Async/Await Deep Dive</span>
+<span class="text-[11px] px-sm py-1 bg-surface-container-highest rounded border border-outline-variant text-on-surface-variant">Node.js Internals</span>
+</div>
+</div>
+</div>
+<!-- Related Challenges -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg">
+<h3 class="font-mono-label text-sm text-on-surface-variant mb-md flex items-center justify-between">
+                        Related Challenges
+                        <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</h3>
+<div class="space-y-md">
+<a class="group block p-md bg-surface-container-highest/50 rounded-lg border border-outline-variant hover:border-primary transition-all" href="#">
+<p class="text-xs font-mono-label text-secondary mb-xs">DISTRIBUTED SYSTEMS</p>
+<h4 class="font-body-md text-on-surface group-hover:text-primary transition-colors">Vector Clock Implementation</h4>
+<p class="text-xs text-on-surface-variant mt-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-xs" data-icon="schedule">schedule</span> 3 hrs
+                                <span class="material-symbols-outlined text-xs" data-icon="workspace_premium">workspace_premium</span> 800 XP
+                            </p>
+</a>
+<a class="group block p-md bg-surface-container-highest/50 rounded-lg border border-outline-variant hover:border-primary transition-all" href="#">
+<p class="text-xs font-mono-label text-tertiary mb-xs">INFRASTRUCTURE</p>
+<h4 class="font-body-md text-on-surface group-hover:text-primary transition-colors">Kubernetes Auto-scaler</h4>
+<p class="text-xs text-on-surface-variant mt-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-xs" data-icon="schedule">schedule</span> 6 hrs
+                                <span class="material-symbols-outlined text-xs" data-icon="workspace_premium">workspace_premium</span> 2,500 XP
+                            </p>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Space -->
+<footer class="ml-sidebar_width p-xl border-t border-outline-variant mt-xl text-center">
+<p class="font-mono-code text-xs text-on-surface-variant opacity-50">
+            © 2024 Learn With 2.0 Engineering Curriculum. All Rights Reserved. Build ID: LW2-DEV-99
+        </p>
+</footer>
+<script>
+        // Simple micro-interaction for checklist
+        document.querySelectorAll('ul li').forEach(item => {
+            item.addEventListener('click', () => {
+                const icon = item.querySelector('.material-symbols-outlined');
+                const box = item.querySelector('div');
+                if (icon.classList.contains('text-transparent')) {
+                    icon.classList.remove('text-transparent');
+                    icon.classList.add('text-primary');
+                    box.classList.add('bg-primary/10');
+                    item.querySelector('span:last-child').classList.add('line-through', 'opacity-50');
+                } else {
+                    icon.classList.add('text-transparent');
+                    icon.classList.remove('text-primary');
+                    box.classList.remove('bg-primary/10');
+                    item.querySelector('span:last-child').classList.remove('line-through', 'opacity-50');
+                }
+            });
+        });
+
+        // Dynamic background adjustment for sidebar hover
+        const sideLinks = document.querySelectorAll('aside nav a');
+        sideLinks.forEach(link => {
+            link.addEventListener('mousedown', () => {
+                link.classList.add('scale-95');
+            });
+            link.addEventListener('mouseup', () => {
+                link.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>

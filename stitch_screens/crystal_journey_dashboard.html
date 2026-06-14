@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Crystal Galaxy | Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Inter+Tight:wght@600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Inter+Tight:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "primary-fixed": "#c9e6ff",
+                        "outline": "#88929b",
+                        "tertiary-fixed": "#ffddb8",
+                        "on-background": "#dee3e9",
+                        "on-secondary": "#003731",
+                        "surface-variant": "#30353a",
+                        "secondary-container": "#04b4a2",
+                        "primary-fixed-dim": "#89ceff",
+                        "error-container": "#93000a",
+                        "on-primary-container": "#003751",
+                        "on-surface-variant": "#bec8d2",
+                        "primary-container": "#0ea5e9",
+                        "primary": "#89ceff",
+                        "inverse-on-surface": "#2c3135",
+                        "inverse-surface": "#dee3e9",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#71f8e4",
+                        "secondary": "#4fdbc8",
+                        "on-surface": "#dee3e9",
+                        "on-primary-fixed": "#001e2f",
+                        "surface-bright": "#353a3e",
+                        "tertiary-container": "#d88a00",
+                        "on-tertiary-container": "#4a2c00",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "surface-dim": "#0f1418",
+                        "outline-variant": "#3e4850",
+                        "on-primary": "#00344d",
+                        "surface-container": "#1b2024",
+                        "on-tertiary": "#472a00",
+                        "on-secondary-container": "#003f38",
+                        "inverse-primary": "#006591",
+                        "surface-container-low": "#171c20",
+                        "on-secondary-fixed": "#00201c",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0a0f13",
+                        "surface-container-high": "#252b2f",
+                        "background": "#0f1418",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface-tint": "#89ceff",
+                        "surface": "#0f1418",
+                        "on-secondary-fixed-variant": "#005048",
+                        "tertiary": "#ffb95f",
+                        "surface-container-highest": "#30353a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "base": "4px",
+                        "container-max": "1280px",
+                        "sm": "8px",
+                        "2xl": "48px",
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "3xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter Tight"],
+                        "display-lg": ["Inter Tight"],
+                        "code-md": ["JetBrains Mono"],
+                        "headline-lg": ["Inter Tight"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "metric-lg": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Inter Tight"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "code-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "metric-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(15, 20, 24, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 10px rgba(14, 165, 233, 0.05);
+        }
+        .active-glow {
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
+        }
+        .text-glow-amber {
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.7);
+        }
+        .galaxy-mask {
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(14, 165, 233, 0.3);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden">
+<div class="flex h-screen w-full relative">
+<!-- Sidebar Navigation -->
+<aside class="fixed h-screen w-[280px] left-0 top-0 bg-surface-container-low border-r border-outline-variant z-50 flex flex-col py-lg">
+<div class="px-lg mb-xl">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    Learn With 2.0
+                </h2>
+<p class="text-on-surface-variant text-body-sm opacity-70">Premium Dev Platform</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard Active -->
+<a class="flex items-center gap-md px-lg py-sm bg-[#E0F2FE] dark:bg-primary-container text-primary dark:text-on-primary-container border-l-[3px] border-[#0EA5E9] font-semibold transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span>Challenges</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">code</span>
+<span>Projects</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span>Leaderboard</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">route</span>
+<span>My Journey</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span>Profile</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Analytics</span>
+</a>
+</nav>
+<div class="px-lg mt-auto">
+<button class="w-full py-md px-lg bg-primary text-on-primary-container font-bold rounded-xl active-glow transition-all hover:scale-[1.02]">
+                    Upgrade to Pro
+                </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] flex-1 relative flex flex-col h-screen overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-lg py-sm sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<h1 class="font-code-md text-primary font-bold tracking-widest uppercase">Crystal Galaxy</h1>
+</div>
+<div class="flex items-center gap-lg">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-md text-on-surface-variant">search</span>
+<input class="pl-xl pr-lg py-xs bg-surface-container-high border border-outline-variant rounded-full text-body-sm w-64 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Search parameters..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/30">
+<img alt="User profile" data-alt="A professional headshot of a software developer with short dark hair, wearing a dark crew neck sweater. The lighting is moody and technical with a subtle cyan rim light on one side. The background is a clean, dark minimalist studio setup that matches the premium developer platform aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHS-Lnmi_p3XqdffG0rR_kRQFMqiHz_4vXsfHwefMWmBq2-D1MyzSZpuUIOwSoUdzjNPwguprA8XZwSqdLkeWJMTwUG6DEofnLmv4UiMK_BcQRCTf0bsLXEtnDirFdy8FMJupjaj-_J9PMEsB8OxoFqxWgDjD1GOcIQmP_vRzBDfTuYwusdTWZaTe4X61cOJeUUVP5Yk9DoGQiqFh1pMXz1TxwsRQin59OUB0jop3C9r0EleCiAh5f3ChHzwN8cqMIGfFf7QAC6bQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Area -->
+<div class="flex-1 overflow-y-auto p-lg space-y-lg relative">
+<!-- Hero Section: WebGL Galaxy -->
+<section class="relative h-[480px] w-full rounded-2xl overflow-hidden glass-panel group" style="background: rgba(255,255,255,0.04); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px;">
+<!-- STITCH_SHADER_START:ANIMATION_30 class="absolute inset-0 w-full h-full galaxy-mask opacity-60" -->
+<div class="absolute inset-0 w-full h-full galaxy-mask opacity-60" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_30" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_30');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+varying vec2 v_texCoord;
+
+float hash(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
+
+void main() {
+    vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.y, u_resolution.x);
+    vec2 m = u_mouse / u_resolution - 0.5;
+    
+    // Background space
+    vec3 color = vec3(0.02, 0.04, 0.1); // Deep Navy
+    
+    // Nebula glow
+    float d = length(uv - m * 0.2);
+    color += vec3(0.1, 0.2, 0.4) * exp(-d * 2.0);
+    color += vec3(0.4, 0.1, 0.5) * exp(-length(uv + vec2(0.5, 0.3)) * 3.0) * 0.5;
+    
+    // Starfield/Nodes
+    for(float i=0.0; i<60.0; i++) {
+        float h = hash(vec2(i, 123.45));
+        float speed = 0.1 + h * 0.2;
+        vec2 p = vec2(sin(u_time * speed + h * 6.28), cos(u_time * speed * 0.8 + h * 6.28)) * 0.8;
+        
+        float dist = length(uv - p);
+        float size = 0.002 + h * 0.005;
+        
+        // Crystal color logic based on "hash" as a proxy for levels
+        vec3 crystalColor;
+        if(h < 0.2) crystalColor = vec3(0.2, 0.4, 1.0); // Blue
+        else if(h < 0.4) crystalColor = vec3(0.6, 0.2, 1.0); // Purple
+        else if(h < 0.6) crystalColor = vec3(1.0, 0.2, 0.6); // Pink
+        else if(h < 0.8) crystalColor = vec3(1.0, 0.8, 0.2); // Gold
+        else crystalColor = vec3(0.7, 0.9, 1.0); // Diamond
+        
+        color += crystalColor * (size / dist) * (0.5 + 0.5 * sin(u_time + h * 10.0));
+        
+        // Subtle connection lines for nodes near mouse
+        float mDist = length(p - (m * 2.0));
+        if(mDist < 0.3) {
+            float alpha = smoothstep(0.3, 0.0, mDist);
+            color += crystalColor * 0.1 * alpha;
+        }
+    }
+    
+    // Vignette
+    color *= 1.0 - length(uv) * 0.5;
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_30 -->
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-2xl text-center">
+<h2 class="font-code-md text-display-lg text-glow-cyan text-primary tracking-tighter mb-sm uppercase">Crystal Journey</h2>
+<p class="font-body-lg text-on-surface-variant max-w-xl">Every day of progress forms your learning constellation.</p>
+<div class="mt-xl w-full grid grid-cols-3 gap-xl items-center pointer-events-auto"><div class="text-left space-y-xs"><div class="flex items-center gap-sm"><span class="material-symbols-outlined text-[#F59E0B] text-4xl" style="font-variation-settings: 'FILL' 1;">local_fire_department</span><span class="text-display-lg font-bold text-on-surface">26 Days</span></div><p class="text-on-surface-variant text-body-md">Consistency builds mastery</p></div><div class="flex justify-center"><!-- STITCH_SHADER_START:ANIMATION_35 class="w-full h-48 rounded-xl overflow-hidden" -->
+<div class="w-full h-48 rounded-xl overflow-hidden" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_35" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_35');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+varying vec2 v_texCoord;
+
+float roundedRect(vec2 p, vec2 b, float r) {
+    vec2 d = abs(p) - b + r;
+    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - r;
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 p = uv * 2.0 - 1.0;
+    p.x *= u_resolution.x / u_resolution.y;
+
+    vec3 color = vec3(0.0);
+    
+    // 5 block sequence pattern logic
+    float spacing = 0.45;
+    float width = 0.15;
+    float height = 0.25;
+    float cornerRadius = 0.04;
+    
+    for(float i = 0.0; i < 5.0; i++) {
+        float xOffset = (i - 2.0) * spacing;
+        vec2 blockPos = p - vec2(xOffset, 0.0);
+        
+        // Sequence timing: Frame 1-5 loop
+        // Each block shifts status over time
+        float phase = fract(u_time * 0.4); // Control loop speed
+        float blockIndex = floor(mod(i - floor(phase * 5.0), 5.0));
+        
+        // Colors based on streak/status in sequence
+        vec3 blockColor;
+        float alpha = 1.0;
+        
+        if (blockIndex < 3.0) {
+            // Active sequence blocks (The "streak" moving)
+            blockColor = mix(vec3(0.055, 0.647, 0.914), vec3(0.078, 0.722, 0.651), i/4.0); // Cyan to Teal
+            alpha = 1.0;
+        } else {
+            // Inactive slots
+            blockColor = vec3(0.2, 0.25, 0.33); // #334155
+            alpha = 0.15;
+        }
+
+        float d = roundedRect(blockPos, vec2(width, height), cornerRadius);
+        float mask = smoothstep(0.01, 0.0, d);
+        
+        // Add subtle glow to active ones
+        if (blockIndex < 3.0) {
+            float glow = exp(-d * 10.0) * 0.3;
+            color += blockColor * glow;
+        }
+        
+        color = mix(color, blockColor, mask * alpha);
+    }
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_35 --></div><div class="text-right space-y-sm"><div class="flex flex-col items-end"><span class="text-display-lg font-bold text-primary">LV 18</span><span class="bg-primary/10 text-primary px-sm py-xs rounded-lg text-label-caps font-bold">+340 XP</span></div><div class="w-full max-w-[200px] ml-auto space-y-xs"><div class="flex justify-between text-label-caps text-on-surface-variant"><span>Next milestone</span><span>84%</span></div><div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden"><div class="h-full bg-primary w-[84%]"></div></div></div></div></div>
+</div>
+<!-- Floating Nodes (Visual Only) -->
+</section>
+<div class="grid grid-cols-12 gap-lg h-full">
+<!-- Left Column: Metrics & Feed -->
+<div class="col-span-12 lg:col-span-8 space-y-lg">
+<!-- Metric Grid -->
+<div class="grid grid-cols-3 gap-lg">
+<!-- Daily Momentum -->
+<div class="glass-panel p-lg rounded-2xl flex flex-col items-center text-center">
+<span class="text-label-caps text-on-surface-variant mb-md">DAILY MOMENTUM</span>
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-variant" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-width="6"></circle>
+</svg>
+<div class="absolute font-metric-lg text-primary">75%</div>
+</div>
+<p class="mt-sm text-body-sm text-on-surface-variant">Accelerating</p>
+</div>
+<!-- Current Streak -->
+<div class="glass-panel p-lg rounded-2xl flex flex-col items-center text-center">
+<span class="text-label-caps text-on-surface-variant mb-md">CURRENT STREAK</span>
+<div class="flex items-center gap-sm mt-sm">
+<span class="material-symbols-outlined text-glow-amber text-[#F59E0B] text-4xl" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-metric-lg text-glow-amber text-[#F59E0B]">24</span>
+</div>
+<p class="mt-sm text-body-sm text-on-surface-variant">Days consistent</p>
+</div>
+<!-- Crystal Level -->
+<div class="glass-panel p-lg rounded-2xl flex flex-col items-center text-center">
+<span class="text-label-caps text-on-surface-variant mb-md">CRYSTAL LEVEL</span>
+<div class="flex items-center gap-sm mt-sm">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span class="font-metric-lg text-primary">LV 18</span>
+</div>
+<p class="mt-sm text-body-sm text-on-surface-variant">Master Architect</p>
+</div>
+</div>
+<!-- Galaxy Explorer Feed -->
+<div class="glass-panel p-xl rounded-2xl">
+<div class="flex justify-between items-center mb-xl">
+<h3 class="font-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">hub</span>
+                                    Galaxy Explorer
+                                </h3>
+<button class="text-primary text-body-sm hover:underline">View All Achievement Nodes</button>
+</div>
+<div class="space-y-md">
+<!-- Achievement Node -->
+<div class="flex items-center gap-lg p-md hover:bg-surface-container-high/50 rounded-xl transition-all border border-transparent hover:border-primary/20">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30 shrink-0">
+<span class="material-symbols-outlined text-primary">terminal</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-sm text-body-md font-bold">Node.js Mastery Unlocked</h4>
+<p class="text-body-sm text-on-surface-variant">Completed the advanced asynchronous patterns module.</p>
+</div>
+<div class="text-right">
+<span class="text-primary font-code-md text-body-sm">+500 XP</span>
+<p class="text-body-sm text-on-surface-variant opacity-50">2h ago</p>
+</div>
+</div>
+<div class="flex items-center gap-lg p-md hover:bg-surface-container-high/50 rounded-xl transition-all border border-transparent hover:border-primary/20">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/30 shrink-0">
+<span class="material-symbols-outlined text-secondary">database</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-sm text-body-md font-bold">Relational Voyager</h4>
+<p class="text-body-sm text-on-surface-variant">Designed and optimized 12 complex SQL queries.</p>
+</div>
+<div class="text-right">
+<span class="text-secondary font-code-md text-body-sm">+250 XP</span>
+<p class="text-body-sm text-on-surface-variant opacity-50">Yesterday</p>
+</div>
+</div>
+<div class="flex items-center gap-lg p-md hover:bg-surface-container-high/50 rounded-xl transition-all border border-transparent hover:border-primary/20">
+<div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center border border-tertiary/30 shrink-0">
+<span class="material-symbols-outlined text-tertiary">palette</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-sm text-body-md font-bold">Crystal UI Core</h4>
+<p class="text-body-sm text-on-surface-variant">Published your first design system component.</p>
+</div>
+<div class="text-right">
+<span class="text-tertiary font-code-md text-body-sm">+1,200 XP</span>
+<p class="text-body-sm text-on-surface-variant opacity-50">3 days ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Level Evolution -->
+<div class="col-span-12 lg:col-span-4 space-y-lg">
+<!-- Level Evolution Panel -->
+<div class="glass-panel p-xl rounded-2xl h-full flex flex-col">
+<h3 class="font-headline-md text-on-surface mb-md">Growth Trajectory</h3>
+<div class="relative flex-1 min-h-[300px] flex items-center justify-center rounded-xl bg-background/50 border border-outline-variant overflow-hidden">
+<!-- STITCH_THREEJS_START:ANIMATION_31 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_31" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_31');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+// Crystal Geometry (Dodecahedron as a base for crystal-like facets)
+const geometry = new THREE.DodecahedronGeometry(1.5, 0);
+const material = new THREE.MeshPhongMaterial({
+    color: 0x0EA5E9,
+    emissive: 0x064E6B,
+    specular: 0xffffff,
+    shininess: 100,
+    transparent: true,
+    opacity: 0.8,
+    flatShading: true
+});
+
+const crystal = new THREE.Mesh(geometry, material);
+scene.add(crystal);
+
+// Wireframe overlay for "futuristic" feel
+const wireframe = new THREE.Mesh(
+    geometry,
+    new THREE.MeshBasicMaterial({ color: 0x14B8A6, wireframe: true, transparent: true, opacity: 0.3 })
+);
+crystal.add(wireframe);
+
+// Inner glow sphere
+const glowGeo = new THREE.SphereGeometry(0.8, 32, 32);
+const glowMat = new THREE.MeshBasicMaterial({ color: 0x6366F1, transparent: true, opacity: 0.5 });
+const glow = new THREE.Mesh(glowGeo, glowMat);
+scene.add(glow);
+
+const light = new THREE.PointLight(0xffffff, 1, 100);
+light.position.set(5, 5, 5);
+scene.add(light);
+scene.add(new THREE.AmbientLight(0x404040));
+
+camera.position.z = 5;
+
+function animate() {
+    requestAnimationFrame(animate);
+    crystal.rotation.y += 0.005;
+    crystal.rotation.x += 0.002;
+    glow.scale.setScalar(1.0 + Math.sin(Date.now() * 0.002) * 0.1);
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+});
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_31 -->
+<div class="absolute bottom-md left-md right-md bg-surface/80 backdrop-blur-md p-md rounded-lg border border-primary/20">
+<div class="flex justify-between items-center mb-xs">
+<span class="text-label-caps text-primary">CRYSTAL GROWTH</span>
+<span class="text-label-caps text-on-surface-variant">8,450 / 10,000 XP</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[84%] shadow-[0_0_10px_rgba(14,165,233,0.5)]"></div>
+</div>
+</div>
+</div>
+<div class="mt-lg space-y-md">
+<p class="text-body-sm text-on-surface-variant leading-relaxed">
+                                    Your crystal node is resonating at <span class="text-primary font-bold">84% capacity</span>. Complete three more deep-work sessions to reach <span class="text-secondary font-bold">Evolved State Tier II</span>.
+                                </p>
+<div class="p-md rounded-xl bg-primary/5 border border-primary/10 flex items-center gap-md">
+<div class="material-symbols-outlined text-primary">auto_fix_high</div>
+<div>
+<p class="text-body-sm font-bold">Next Unlock</p>
+<p class="text-label-caps text-on-surface-variant">Custom Shader Workspace</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer-ish floating state -->
+<div class="fixed bottom-lg right-lg z-50">
+<button class="p-md bg-primary text-on-primary-container rounded-full active-glow flex items-center gap-sm hover:scale-110 transition-transform shadow-2xl">
+<span class="material-symbols-outlined">bolt</span>
+<span class="font-bold">Focus Mode</span>
+</button>
+</div>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        // Simple hover parallax effect for glass panels
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            panel.addEventListener('mousemove', (e) => {
+                const rect = panel.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 25;
+                const rotateY = (centerX - x) / 25;
+                
+                panel.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            panel.addEventListener('mouseleave', () => {
+                panel.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+                panel.style.transition = 'transform 0.5s ease';
+            });
+            
+            panel.addEventListener('mouseenter', () => {
+                panel.style.transition = 'none';
+            });
+        });
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('active-glow');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('active-glow');
+        });
+    </script>
+</body></html>

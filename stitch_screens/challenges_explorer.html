@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Inter+Tight:wght@600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-tertiary-fixed": "#2a1700",
+                  "surface-container-low": "#171c20",
+                  "on-error-container": "#ffdad6",
+                  "tertiary-fixed-dim": "#ffb95f",
+                  "surface-variant": "#30353a",
+                  "surface-tint": "#89ceff",
+                  "surface-dim": "#0f1418",
+                  "secondary-container": "#04b4a2",
+                  "primary-fixed-dim": "#89ceff",
+                  "on-primary-fixed": "#001e2f",
+                  "outline": "#88929b",
+                  "on-primary-fixed-variant": "#004c6e",
+                  "error": "#ffb4ab",
+                  "secondary-fixed": "#71f8e4",
+                  "tertiary-container": "#d88a00",
+                  "primary-container": "#0ea5e9",
+                  "on-tertiary": "#472a00",
+                  "primary": "#89ceff",
+                  "on-background": "#dee3e9",
+                  "on-primary": "#00344d",
+                  "background": "#0f1418",
+                  "on-secondary-fixed-variant": "#005048",
+                  "on-surface-variant": "#bec8d2",
+                  "on-secondary": "#003731",
+                  "on-tertiary-fixed-variant": "#653e00",
+                  "inverse-primary": "#006591",
+                  "on-surface": "#dee3e9",
+                  "tertiary-fixed": "#ffddb8",
+                  "surface-container-high": "#252b2f",
+                  "surface-bright": "#353a3e",
+                  "error-container": "#93000a",
+                  "on-error": "#690005",
+                  "surface-container": "#1b2024",
+                  "on-primary-container": "#003751",
+                  "on-tertiary-container": "#4a2c00",
+                  "tertiary": "#ffb95f",
+                  "surface-container-highest": "#30353a",
+                  "inverse-surface": "#dee3e9",
+                  "secondary-fixed-dim": "#4fdbc8",
+                  "primary-fixed": "#c9e6ff",
+                  "surface-container-lowest": "#0a0f13",
+                  "on-secondary-container": "#003f38",
+                  "inverse-on-surface": "#2c3135",
+                  "secondary": "#4fdbc8",
+                  "outline-variant": "#3e4850",
+                  "surface": "#0f1418",
+                  "on-secondary-fixed": "#00201c",
+                  "challenge-beginner": "#22C55E",
+                  "challenge-intermediate": "#0EA5E9",
+                  "challenge-advanced": "#FB923C",
+                  "challenge-expert": "#DC2626",
+                  "progress-track": "#334155",
+                  "progress-fill": "#14B8A6"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "card": "16px",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "xs": "4px",
+                  "3xl": "64px",
+                  "2xl": "48px",
+                  "sm": "8px",
+                  "md": "16px",
+                  "gutter": "24px",
+                  "xl": "32px",
+                  "container-max": "1280px",
+                  "margin-mobile": "16px",
+                  "lg": "24px",
+                  "base": "4px"
+          },
+          "fontFamily": {
+                  "body-sm": ["Inter"],
+                  "body-lg": ["Inter"],
+                  "headline-md": ["Inter Tight"],
+                  "label-caps": ["Inter"],
+                  "headline-lg": ["Inter Tight"],
+                  "display-lg": ["Inter Tight"],
+                  "headline-lg-mobile": ["Inter Tight"],
+                  "code-md": ["JetBrains Mono"],
+                  "body-md": ["Inter"],
+                  "metric-lg": ["JetBrains Mono"]
+          },
+          "fontSize": {
+                  "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                  "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                  "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                  "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                  "code-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "metric-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .card-hover-effect:hover {
+      background-color: theme('colors.surface-container-high');
+      border-color: theme('colors.primary-container');
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Side Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 flex flex-col py-lg border-r border-outline-variant bg-surface-container z-50">
+<div class="px-md mb-xl">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Learn With 2.0</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mt-xs">Technical Mastery</p>
+</div>
+<nav class="flex-1 px-sm space-y-xs overflow-y-auto scrollbar-hide">
+<!-- Active: Challenges -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg border-l-[3px] border-primary-container bg-primary-container/15 text-primary-container font-bold transition-all duration-150 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span class="font-body-md text-body-md">Challenges</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all duration-150 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all duration-150 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">code</span>
+<span class="font-body-md text-body-md">Projects</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all duration-150 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-body-md text-body-md">Leaderboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all duration-150 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-body-md text-body-md">My Journey</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all duration-150 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-body-md text-body-md">Profile</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all duration-150 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</a>
+</nav>
+<div class="px-md mt-auto pt-lg border-t border-outline-variant">
+<button class="w-full bg-primary-container text-on-primary-container font-bold py-md px-lg rounded-xl hover:opacity-90 active:scale-95 transition-all">
+        Continue Learning
+      </button>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-gutter z-40">
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-full px-md py-xs w-96">
+<span class="material-symbols-outlined text-on-surface-variant mr-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-full text-on-surface placeholder:text-outline" placeholder="Search challenges, tags, or authors..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-sm rounded-full text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm rounded-full text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="User avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLtKskAIaWC_iVUbpDim_UzwuW7vnCZ1jJcbyv5kVG7PebZ4-7XUR9vzudjjLGUkZAgDiw68lSpPXywhkd7nQVqTSGab5kyMD1odFDGJ90t6W3rhs83j4H_zo4SPw-SJzpatlJtkU5CF-NBqUCLszdmWgps0XuOy13z8JQolf2v8rvZoXWH2d1ZnZcRjl_inAsIMyPx3KomyjUdwJGg3uvL_ctD-PLulMpdUs_3KKZIjKyz1F97JMDCLLmY"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-gutter pb-xl min-h-screen">
+<!-- Title Section -->
+<div class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Challenges Explorer</h2>
+<p class="text-on-surface-variant mt-xs font-body-md">Level up your technical skills with curated professional challenges.</p>
+</div>
+<!-- Filters & Stats Grid -->
+<div class="grid grid-cols-12 gap-lg mb-xl">
+<div class="col-span-12 lg:col-span-8 flex flex-wrap gap-sm">
+<button class="px-lg py-sm rounded-full bg-primary-container text-on-primary-container font-bold text-label-caps border border-primary-container">All Challenges</button>
+<button class="px-lg py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-all text-label-caps">Frontend</button>
+<button class="px-lg py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-all text-label-caps">Backend</button>
+<button class="px-lg py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-all text-label-caps">DevOps</button>
+<button class="px-lg py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-all text-label-caps">Machine Learning</button>
+<button class="px-lg py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-all text-label-caps">Cybersecurity</button>
+</div>
+<div class="col-span-12 lg:col-span-4 bg-surface-container border border-outline-variant rounded-card p-md flex items-center justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">WEEKLY XP PROGRESS</span>
+<span class="font-metric-lg text-metric-lg text-primary">12,450 / 15,000</span>
+</div>
+<div class="w-16 h-16 relative">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-progress-track" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-progress-fill" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="176" stroke-dashoffset="44" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-code-md text-xs text-on-surface">82%</div>
+</div>
+</div>
+</div>
+<!-- Challenge Cards Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Card 1: Expert Backend -->
+<div class="bg-surface-container border border-outline-variant rounded-card p-lg flex flex-col card-hover-effect transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs rounded bg-challenge-expert/10 text-challenge-expert font-bold text-label-caps border border-challenge-expert/20">EXPERT</span>
+<span class="material-symbols-outlined text-on-surface-variant">terminal</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Distributed Systems: Consensus Algorithms</h3>
+<p class="text-on-surface-variant font-body-sm mb-lg">Implement a robust Raft consensus algorithm for a distributed key-value store with fault tolerance.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">USER COMPLETION</span>
+<span class="font-code-md text-on-surface text-sm">4% COMPLETED</span>
+</div>
+<div class="h-2 w-full bg-progress-track rounded-full overflow-hidden">
+<div class="h-full bg-progress-fill w-[4%]"></div>
+</div>
+<div class="flex items-center justify-between mt-md">
+<div class="flex -space-x-2">
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLui-2FnYjcHK4VIDVmg4AaMsaBoR3J_nMDvuxUwcZXr9eW8T6dByo1GhFd2axWFMGoBmUKPrq6E1JkPKL6fQNcjLEd6cpZGo24FwkbNo0mgahaJS4chSXAJvq_wu5-Na2tKDM35THO6tGw6KS4utMLQIKlxxMxS2DrceOfdX3ABpLrOSjZw-U2DQDPefetbArtgCUAppEr7s4WU8DGaLvOrMswPLJsf_4pbZBZ9nBy7zc3u6B_XwAeqXA"/>
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLsINwlIQQbividRwtDmdXnVWrxdaou1xk95AGRQMHG19VoZa0Si4LLHsy3Yi_J22is566ikoCyNkZ-MtEok3So7YT5JMTZZwEneebCGiNMOmtneLkdyKkLTkCBlMnFU0xfG02dpwAHCNtgjCawf1B3ZoGuW3KqMXXwhHjp_9JcBdqUQIyYwho8T5gQfP5hUZz8h__Nwbyn5c4SoUpalwB1myZ3-3MZsA8jBtiE2hPVSYhs3mI5e5Vmwm7c"/>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-surface-container flex items-center justify-center text-[10px] font-bold text-on-surface">+12</div>
+</div>
+<button class="text-primary-container font-bold text-label-caps flex items-center gap-xs">
+              DETAILS <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Intermediate Frontend -->
+<div class="bg-surface-container border border-outline-variant rounded-card p-lg flex flex-col card-hover-effect transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs rounded bg-challenge-intermediate/10 text-challenge-intermediate font-bold text-label-caps border border-challenge-intermediate/20">INTERMEDIATE</span>
+<span class="material-symbols-outlined text-on-surface-variant">html</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Next.js 14: Server Components &amp; Actions</h3>
+<p class="text-on-surface-variant font-body-sm mb-lg">Build a real-time e-commerce dashboard using the latest App Router patterns and streaming SSR.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">USER COMPLETION</span>
+<span class="font-code-md text-on-surface text-sm">68% COMPLETED</span>
+</div>
+<div class="h-2 w-full bg-progress-track rounded-full overflow-hidden">
+<div class="h-full bg-progress-fill w-[68%]"></div>
+</div>
+<div class="flex items-center justify-between mt-md">
+<div class="flex -space-x-2">
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLvX6DSTka5ynXg22Nf7r_s4Esz2GDFxy6aE-s4KRjeEB-vxqY34sJZJeu6p2sku0UCODdLaYvPIcNQv1T6vpRT_PwYRbUKb2NVu3SYNu_VtcLe2q4k7VUdNb85MeS0Tc7k9m1cOGv1wAInwXPK9bUGw1dfoDJ9HTR4yd6mRdNCEwt5tdGLIABTiE2jZv8xpTYT3l7Mx0cPpSlD0HEbWKr0vlriPRwxbUK23p8a9sAKNCbaEKBLt91e21w"/>
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLtAGP-a8UvvX5dpCVY9RRmnlOjmyyOxfd8ii3uvdI2JKQjYYg3u7Adbz9kfm9F-GM7-U0U4wCLEUJsBzr4ymWJcniYJIaJjPYzIVgiNw6IOq5yO9vmQR1ofOSo0ZMD8ALLuHHXLCtO3k0AZIC1VCRR9PFx7WN2rRy1DMsuwuiqjf7T0ysemG5BBhKN0G1TuW4X0Mg4UOKa_ujwQYijXrxF0wvp-YoBgxSWERSy2W9k2DQP5ve6VzIFBwdg"/>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-surface-container flex items-center justify-center text-[10px] font-bold text-on-surface">+84</div>
+</div>
+<button class="text-primary-container font-bold text-label-caps flex items-center gap-xs">
+              RESUME <span class="material-symbols-outlined text-sm">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Advanced Cloud -->
+<div class="bg-surface-container border border-outline-variant rounded-card p-lg flex flex-col card-hover-effect transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs rounded bg-challenge-advanced/10 text-challenge-advanced font-bold text-label-caps border border-challenge-advanced/20">ADVANCED</span>
+<span class="material-symbols-outlined text-on-surface-variant">cloud_queue</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Kubernetes: Zero-Downtime Deployments</h3>
+<p class="text-on-surface-variant font-body-sm mb-lg">Configure advanced blue-green and canary deployment strategies using Istio service mesh.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">USER COMPLETION</span>
+<span class="font-code-md text-on-surface text-sm">22% COMPLETED</span>
+</div>
+<div class="h-2 w-full bg-progress-track rounded-full overflow-hidden">
+<div class="h-full bg-progress-fill w-[22%]"></div>
+</div>
+<div class="flex items-center justify-between mt-md">
+<div class="flex -space-x-2">
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLtM4SKVChns2_a0143nY8-06-wwQ2riJU3gWtzX9XFurSHn5cwH1ptZGkMZYR6Gl9ulOSASsjdiHSnS3GrDSQ7vKQYr7tAHpWRv61_3B7Xp1V3jJ1zJrX9l4hQECTM-0n69qrknGW5qPOIJuElVs4nhPgWpNKUNJ299DkU9j_4qfOaj0vCvtfr27-JZ7c6u1zcNcA7PzQ1Ne7PE2AOkvKjQ1jqrAWuV5TyJq0u2NwGR47LN75lr5t_Bkg"/>
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLsglGcuzDvGyS23mU5bP7h1aJDOJxL9gwlLQhWJFDhr0tVVb7_gqjsjEWrBcSzZtT8TkU071u5wDWbm5-faGptoRwF9YK-cW_67gIgwTdV7GrK2T1Gk0S__Ba8shMtd6zdgN2LjtWqzJq-fq6qvHI9khHOW9R8QYc4ewzOwlLbzyjiurJuJGvWMkI-UdfKTcbIjl-RosrsPOcqPnEYhfel9fueRgFdBIn4DyraVgI8cigZOGgdWdlFw7D4"/>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-surface-container flex items-center justify-center text-[10px] font-bold text-on-surface">+31</div>
+</div>
+<button class="text-primary-container font-bold text-label-caps flex items-center gap-xs">
+              DETAILS <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4: Beginner Scripting -->
+<div class="bg-surface-container border border-outline-variant rounded-card p-lg flex flex-col card-hover-effect transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs rounded bg-challenge-beginner/10 text-challenge-beginner font-bold text-label-caps border border-challenge-beginner/20">BEGINNER</span>
+<span class="material-symbols-outlined text-on-surface-variant">code_off</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Python for Data Analysis: NumPy Basics</h3>
+<p class="text-on-surface-variant font-body-sm mb-lg">Master the fundamentals of array manipulation and vectorization for high-performance computing.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">USER COMPLETION</span>
+<span class="font-code-md text-on-surface text-sm">100% COMPLETED</span>
+</div>
+<div class="h-2 w-full bg-progress-track rounded-full overflow-hidden">
+<div class="h-full bg-progress-fill w-[100%]"></div>
+</div>
+<div class="flex items-center justify-between mt-md">
+<div class="flex items-center gap-xs text-challenge-beginner">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-bold text-label-caps">COMPLETED</span>
+</div>
+<button class="text-primary-container font-bold text-label-caps flex items-center gap-xs">
+              REVIEW <span class="material-symbols-outlined text-sm">history</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 5: Intermediate Security -->
+<div class="bg-surface-container border border-outline-variant rounded-card p-lg flex flex-col card-hover-effect transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs rounded bg-challenge-intermediate/10 text-challenge-intermediate font-bold text-label-caps border border-challenge-intermediate/20">INTERMEDIATE</span>
+<span class="material-symbols-outlined text-on-surface-variant">security</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">OWASP Top 10: SQL Injection Defense</h3>
+<p class="text-on-surface-variant font-body-sm mb-lg">Learn to identify and mitigate blind SQL injection vulnerabilities in a mock Node.js environment.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">USER COMPLETION</span>
+<span class="font-code-md text-on-surface text-sm">0% COMPLETED</span>
+</div>
+<div class="h-2 w-full bg-progress-track rounded-full overflow-hidden">
+<div class="h-full bg-progress-fill w-[0%]"></div>
+</div>
+<div class="flex items-center justify-between mt-md">
+<div class="flex -space-x-2">
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLt6KsM8g4QmNdthHz0t-Dmks9mpi-r516FcpXQdljwOqk3JZ6wLPIDPK3IdflAFdsaD27pR2si0T9qPmuGc91hZxbFPcpreOkQRYMvsf3plRfo0rqdW0so4hv9IRdiOXs3kDvsL-RdfangZ5I_1elC5lv8yrQnFiJrGojzFIZDmRvkYtOTK7fa8W66chpKNtwC4eGrX2D2X_EbcxeW-bbADbT9v1_bluwFO6eBTD_tJU5tdbflE8jlC1DE"/>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-surface-container flex items-center justify-center text-[10px] font-bold text-on-surface">+204</div>
+</div>
+<button class="text-primary-container font-bold text-label-caps flex items-center gap-xs">
+              START <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 6: Advanced Mobile -->
+<div class="bg-surface-container border border-outline-variant rounded-card p-lg flex flex-col card-hover-effect transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs rounded bg-challenge-advanced/10 text-challenge-advanced font-bold text-label-caps border border-challenge-advanced/20">ADVANCED</span>
+<span class="material-symbols-outlined text-on-surface-variant">smartphone</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Flutter: Custom Painters &amp; Animations</h3>
+<p class="text-on-surface-variant font-body-sm mb-lg">Create complex 60fps animations and custom UI widgets using low-level canvas painting API.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">USER COMPLETION</span>
+<span class="font-code-md text-on-surface text-sm">15% COMPLETED</span>
+</div>
+<div class="h-2 w-full bg-progress-track rounded-full overflow-hidden">
+<div class="h-full bg-progress-fill w-[15%]"></div>
+</div>
+<div class="flex items-center justify-between mt-md">
+<div class="flex -space-x-2">
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLt3f2QLsz8dI4R0s0U_Dhw2AicAFmhYyMOgtLwDxCDyKhjEPTK0cnSmNqhp9JsbaLd4paLZQ58IHo7mM28-fmV53AvSQGTztmtUVkpMr6ThphT-S_Dv1TbeEB8IzsCZCBnDsrXWHfMez83Pz3BwgxzjBCn7nMyDSt-BLyXiE6CKs452N0ugAB7aC5Erlo_r7eqAKSrGgZm6qdgSuxEpg-2MReIJBcGVsRK6Quc5nkbMHt1-7msSssTwTDw"/>
+<img alt="Participant" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida/AP1WRLtEUTGv73vOGWONECH_XqbY7yylKYZ6PeyK4MJXc2zwgTeDZmyuBPoScNxybrVj7qvsI2RGkwHoEkL6zyvrdzhE8LNrmcj0vW9RiefqCRZ_ZltFW419DEdPeAUJaUhjUTKGVkACdF3ITu-r8AmwnAd8xCS_AGbSTK5_eAk8kce8Wd082Zm4alM0fQrIpj6PtUc2taLdcJYHyzF90jNAtqZOsZ8zY8TAgYt1d1P0khUmdGkXRzv_Qri_0Gg"/>
+</div>
+<button class="text-primary-container font-bold text-label-caps flex items-center gap-xs">
+              CONTINUE <span class="material-symbols-outlined text-sm">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Section / Banner -->
+<section class="mt-2xl relative rounded-card overflow-hidden h-64 border border-outline-variant group">
+<img class="absolute inset-0 w-full h-full object-cover grayscale opacity-30 group-hover:opacity-40 transition-opacity duration-500" data-alt="A macro photograph of futuristic digital architecture made of glass and glowing fiber optic cables. The scene is dominated by deep slate blues and vibrant cyan light trails, creating a sense of complex data flow and technical precision. The lighting is low-key with sharp, high-contrast highlights, perfectly matching a professional technical mastery brand identity." src="https://lh3.googleusercontent.com/aida/AP1WRLs3dklnt12DxqpdqY7th4tuD7fJOvkoc8yWA_ZgPYP72Ps8wsRp2CKenDX77kSIpad3OJF9j9UmsBgvjUdM8xGoczN9M6IePozRGd0UoERmAeiceR18KZL7liHN-w4XSGsx5qPn79ZBAMNmVSOL49CRRVXzl9cP8cwH_KmqkkIGPyTBlXB19t-PPHeLFy5L_T5Itwin5dIpVAS_EhOVfJ594fx3HndYTsaJCddNE2HmmiUA13I7Cu_7AVk"/>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent flex flex-col justify-center px-xl">
+<span class="px-sm py-xs rounded bg-primary-container/20 text-primary-container font-bold text-label-caps border border-primary-container/30 w-fit mb-sm">NEW SEASON</span>
+<h2 class="font-display-lg text-headline-lg text-on-surface max-w-xl">Deep Dive: WebAssembly in Production</h2>
+<p class="text-on-surface-variant font-body-lg max-w-lg mt-md">Push the boundaries of browser performance. This 4-week challenge tracks your journey from JS bridge to native performance.</p>
+<div class="mt-lg flex gap-md">
+<button class="bg-primary text-on-primary font-bold py-sm px-xl rounded-xl hover:opacity-90 active:scale-95 transition-all">Enroll Now</button>
+<button class="border border-outline-variant text-on-surface font-bold py-sm px-xl rounded-xl hover:bg-surface-container-high transition-all">Watch Preview</button>
+</div>
+</div>
+</section>
+<!-- Footer Meta -->
+<footer class="mt-3xl pt-xl border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-lg text-on-surface-variant text-body-sm pb-lg">
+<div>© 2024 Learn With 2.0 Technical Academy</div>
+<div class="flex gap-xl">
+<a class="hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="hover:text-primary transition-colors" href="#">API Reference</a>
+<a class="hover:text-primary transition-colors" href="#">Community Support</a>
+</div>
+<div class="flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-challenge-beginner animate-pulse"></span>
+        System Status: Operational
+      </div>
+</footer>
+</main>
+<script>
+    // Micro-interactions and atmospheric effects
+    document.querySelectorAll('.card-hover-effect').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        // Card hover logic handled by CSS classes for performance
+      });
+    });
+
+    // Custom console message for technical users
+    console.log("%cLearn With 2.0 %cTechnical Mastery Console Active", "color: #89ceff; font-weight: bold; font-size: 1.2rem;", "color: #14B8A6; font-size: 1rem;");
+  </script>
+</body></html>

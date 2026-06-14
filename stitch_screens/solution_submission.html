@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Submit Challenge | Learn With 2.0</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Inter+Tight:wght@600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#703700",
+                    "tertiary": "#ffb783",
+                    "primary": "#c0c1ff",
+                    "background": "#13131b",
+                    "on-error": "#690005",
+                    "on-primary-fixed": "#07006c",
+                    "on-secondary-container": "#00424e",
+                    "surface-dim": "#13131b",
+                    "tertiary-fixed-dim": "#ffb783",
+                    "surface-tint": "#c0c1ff",
+                    "outline": "#908fa0",
+                    "tertiary-container": "#d97721",
+                    "on-secondary-fixed-variant": "#004e5c",
+                    "on-error-container": "#ffdad6",
+                    "on-surface": "#e4e1ed",
+                    "surface-container-lowest": "#0d0d15",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "secondary-fixed-dim": "#4cd7f6",
+                    "on-primary-container": "#0d0096",
+                    "secondary-fixed": "#acedff",
+                    "error-container": "#93000a",
+                    "surface-container-low": "#1b1b23",
+                    "on-tertiary-container": "#452000",
+                    "surface-variant": "#34343d",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-surface-variant": "#c7c4d7",
+                    "on-secondary-fixed": "#001f26",
+                    "on-background": "#e4e1ed",
+                    "secondary": "#4cd7f6",
+                    "primary-container": "#8083ff",
+                    "inverse-surface": "#e4e1ed",
+                    "secondary-container": "#03b5d3",
+                    "on-primary": "#1000a9",
+                    "surface": "#13131b",
+                    "surface-container-highest": "#34343d",
+                    "surface-container": "#1f1f27",
+                    "surface-container-high": "#292932",
+                    "on-tertiary": "#4f2500",
+                    "tertiary-fixed": "#ffdcc5",
+                    "primary-fixed": "#e1e0ff",
+                    "outline-variant": "#464554",
+                    "on-tertiary-fixed": "#301400",
+                    "surface-bright": "#393841",
+                    "inverse-on-surface": "#303038",
+                    "on-secondary": "#003640",
+                    "inverse-primary": "#494bd6",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar_width": "280px",
+                    "container_max": "1440px",
+                    "topbar_height": "64px",
+                    "xs": "4px",
+                    "gutter": "24px",
+                    "base": "24px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "xl": "48px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "mono-label": ["JetBrains Mono"],
+                    "display-md": ["Inter Tight"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Inter Tight"],
+                    "display-lg": ["Inter Tight"],
+                    "mono-code": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter Tight"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "mono-label": ["14px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display-md": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "mono-code": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #13131b;
+            color: #e4e1ed;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1b1b23;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #464554;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            background: rgba(27, 36, 64, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid #2e3d67;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="h-topbar_height w-full fixed top-0 z-40 flex justify-between items-center px-gutter ml-sidebar_width bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">Learn With 2.0</span>
+<div class="h-4 w-px bg-outline-variant mx-sm"></div>
+<span class="font-mono-label text-mono-label text-on-surface-variant uppercase tracking-widest">Submission Portal</span>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-sm bg-surface-container-low border border-outline-variant px-md py-xs rounded-lg w-96 group focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-mono-code w-full placeholder-on-surface-variant" placeholder="Search documentation..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">military_tech</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AP1WRLsZMgSmdKmeRNrFkAPMCtsyTSDl0xchRPwhS3j57bYud3dtxmVISND9O6d8e0Dq5FAqoutYokRCPnEf5ESA4e0eE4F8IL1xjfd_UnlIuQuoDzON2Q08qYZxrLb9gCDKGFUhI0R37gkv6zX6Y9CBHV3CJyD--fGBoA1gnbIAT-ntVt4QX2NP290H-qaEJJyg3Tc6SEFxq-iamjxGl5vuEv3lFZZUihAOXwD00L8Cm7zK8DvPHoEN2lm7FQs"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation Bar -->
+<aside class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col h-full py-base z-50">
+<div class="px-md mb-xl">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">terminal</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary leading-none">LW2.0</h1>
+<p class="text-[10px] font-mono-label text-on-surface-variant uppercase tracking-tighter">Level 42 Developer</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-sm px-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200 rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-mono-label">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-primary font-bold border-l-4 border-primary bg-surface-container rounded-r-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">extension</span>
+<span class="font-mono-label">Challenges</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200 rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-mono-label">Projects</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200 rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-mono-label">Leaderboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200 rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-mono-label">My Journey</span>
+</a>
+</nav>
+<div class="px-sm mt-auto space-y-sm">
+<button class="w-full bg-surface-variant text-on-surface-variant py-sm rounded-lg font-mono-label text-sm hover:bg-outline-variant transition-colors mb-md">Admin Dashboard</button>
+<div class="pt-base border-t border-outline-variant">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-mono-label">Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface rounded-lg" href="#">
+<span class="material-symbols-outlined">rate_review</span>
+<span class="font-mono-label">Review Queue</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar_width mt-topbar_height h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar bg-background p-gutter">
+<div class="max-w-container_max mx-auto h-full">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-sm font-mono-code text-on-surface-variant mb-md">
+<a class="hover:text-primary transition-colors" href="#">Challenges</a>
+<span>/</span>
+<a class="hover:text-primary transition-colors" href="#">Real-time Data Pipeline</a>
+<span>/</span>
+<span class="text-on-surface">Submit Solution</span>
+</nav>
+<div class="grid grid-cols-12 gap-lg h-full">
+<!-- Left: Submission Form -->
+<div class="col-span-8 flex flex-col gap-lg">
+<div class="flex flex-col gap-xs mb-sm">
+<h2 class="font-display-md text-display-md text-on-surface">Submit Challenge Solution</h2>
+<p class="text-on-surface-variant font-body-md">Provide your GitHub repository link and detailed architectural breakdown for peer and instructor review.</p>
+</div>
+<!-- Input Card -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg flex flex-col gap-lg">
+<!-- GitHub URL Field -->
+<div class="flex flex-col gap-sm">
+<label class="font-mono-label text-on-surface-variant uppercase tracking-wider text-xs flex items-center gap-sm">
+<span class="material-symbols-outlined text-sm">link</span>
+                                GitHub Pull Request URL
+                            </label>
+<input class="bg-surface-container-high border border-outline-variant rounded-lg px-md py-sm font-mono-code text-primary focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder-on-surface-variant/40" placeholder="https://github.com/username/repo/pull/1" type="text"/>
+</div>
+<!-- Markdown Editor Simulator -->
+<div class="flex flex-col gap-sm">
+<label class="font-mono-label text-on-surface-variant uppercase tracking-wider text-xs flex items-center gap-sm">
+<span class="material-symbols-outlined text-sm">description</span>
+                                Technical Notes &amp; Architecture
+                            </label>
+<div class="border border-outline-variant rounded-lg overflow-hidden flex flex-col bg-surface-container-high">
+<!-- Toolbar -->
+<div class="bg-surface-variant/30 border-b border-outline-variant px-md py-xs flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">format_bold</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">format_italic</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">code</button>
+<div class="w-px h-4 bg-outline-variant"></div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">format_list_bulleted</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">image</button>
+<div class="ml-auto flex items-center gap-sm">
+<span class="text-[10px] font-mono-label text-on-surface-variant/60">Markdown Enabled</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant/60">help_outline</span>
+</div>
+</div>
+<!-- Textarea -->
+<textarea class="bg-transparent border-none focus:ring-0 w-full p-md font-mono-code text-on-surface placeholder-on-surface-variant/30 resize-none" placeholder="## Architecture Overview
+Briefly describe how you approached the problem...
+
+### Tech Stack
+- React / Tailwind
+- Node.js / Express
+- Redis for Caching" rows="12"></textarea>
+</div>
+</div>
+<!-- Attachments -->
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-sm border border-dashed border-outline-variant hover:border-primary transition-colors px-md py-sm rounded-lg text-on-surface-variant hover:text-primary text-sm font-mono-label">
+<span class="material-symbols-outlined">attach_file</span>
+                                Attach Screenshots or Diagrams
+                            </button>
+<p class="text-xs text-on-surface-variant italic">Max 5MB. PNG, JPG, or SVG only.</p>
+</div>
+</div>
+<!-- Submission Action -->
+<div class="flex items-center justify-between pt-md">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">info</span>
+<span class="text-sm">This submission will be visible to mentors and registered students.</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="px-lg py-sm font-mono-label text-on-surface hover:bg-surface-variant rounded-lg transition-colors">Save Draft</button>
+<button class="px-xl py-sm bg-gradient-to-r from-[#6366F1] to-[#4F46E5] text-white font-bold rounded-lg hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary/20">Submit Final Solution</button>
+</div>
+</div>
+</div>
+<!-- Right: Status and Instructions -->
+<div class="col-span-4 flex flex-col gap-lg">
+<!-- Status Tracker Card -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Review Lifecycle</h3>
+<div class="relative mt-md">
+<!-- Vertical Line -->
+<div class="absolute left-[11px] top-0 bottom-0 w-px bg-outline-variant"></div>
+<!-- Steps -->
+<div class="flex flex-col gap-lg">
+<!-- Step 1: Active -->
+<div class="flex items-start gap-md relative z-10">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">edit</span>
+</div>
+<div>
+<h4 class="font-mono-label text-on-surface text-sm">Submission Draft</h4>
+<p class="text-xs text-on-surface-variant">You are currently preparing your submission.</p>
+</div>
+</div>
+<!-- Step 2: Pending -->
+<div class="flex items-start gap-md relative z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-xs">hourglass_empty</span>
+</div>
+<div>
+<h4 class="font-mono-label text-on-surface-variant text-sm">Technical Review</h4>
+<p class="text-xs text-on-surface-variant/60">An instructor will verify your code and architecture.</p>
+</div>
+</div>
+<!-- Step 3: Pending -->
+<div class="flex items-start gap-md relative z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-xs">verified</span>
+</div>
+<div>
+<h4 class="font-mono-label text-on-surface-variant text-sm">Approval &amp; XP</h4>
+<p class="text-xs text-on-surface-variant/60">Solution validated. Points and achievements unlocked.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Success Checklist -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-tertiary">workspace_premium</span>
+                            Review Checklist
+                        </h3>
+<ul class="space-y-md">
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary text-md">check_circle</span>
+<span class="text-sm text-on-surface-variant">Public repository access or team-invite granted.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary text-md">check_circle</span>
+<span class="text-sm text-on-surface-variant">Comprehensive README with setup instructions.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary text-md">check_circle</span>
+<span class="text-sm text-on-surface-variant">Clean code with descriptive variable naming.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary text-md">check_circle</span>
+<span class="text-sm text-on-surface-variant">Edge cases handled and unit tests passed.</span>
+</li>
+</ul>
+<div class="mt-sm pt-md border-t border-outline-variant">
+<p class="text-xs text-on-surface-variant leading-relaxed">
+                                Tip: High-quality technical notes often lead to faster review cycles and bonus "Clarity" badges.
+                            </p>
+</div>
+</div>
+<!-- Helpful Graphic -->
+<div class="relative overflow-hidden rounded-xl h-48 border border-outline-variant">
+
+<div class="absolute inset-0 p-lg flex flex-col justify-end bg-gradient-to-t from-surface to-transparent">
+<span class="font-mono-label text-xs text-primary uppercase tracking-widest mb-xs">Next Challenge</span>
+<h4 class="font-headline-md text-on-surface">Micro-Frontend Arch</h4>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Success Toast (Hidden by default) -->
+<div class="fixed bottom-gutter right-gutter bg-surface-container-high border-l-4 border-primary p-md rounded-lg shadow-2xl flex items-center gap-md transform translate-y-24 transition-transform duration-300 pointer-events-none opacity-0" id="success-toast">
+<div class="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">done_all</span>
+</div>
+<div>
+<p class="font-mono-label text-on-surface text-sm">Submission Received!</p>
+<p class="text-xs text-on-surface-variant">Review typically takes 24-48 hours.</p>
+</div>
+</div>
+<script>
+        // Simple Micro-interactions
+        const submitBtn = document.querySelector('button.bg-gradient-to-r');
+        const toast = document.getElementById('success-toast');
+
+        submitBtn.addEventListener('click', () => {
+            submitBtn.textContent = 'Uploading...';
+            submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-24', 'opacity-0');
+                submitBtn.textContent = 'Submitted!';
+                submitBtn.classList.remove('from-[#6366F1]', 'to-[#4F46E5]');
+                submitBtn.classList.add('from-emerald-500', 'to-emerald-600');
+            }, 1500);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 5000);
+        });
+
+        // Hover effect for steps
+        const steps = document.querySelectorAll('.z-10');
+        steps.forEach(step => {
+            step.addEventListener('mouseenter', () => {
+                step.classList.add('translate-x-1');
+            });
+            step.addEventListener('mouseleave', () => {
+                step.classList.remove('translate-x-1');
+            });
+        });
+    </script>
+</body></html>
