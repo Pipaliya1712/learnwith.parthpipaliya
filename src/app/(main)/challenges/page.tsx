@@ -124,7 +124,7 @@ export default async function ChallengesPage({
             return (
               <div
                 key={challenge.id}
-                className="group relative flex flex-col justify-between rounded-2xl border border-outline-variant bg-[#1b1b23] p-6 hover:border-primary transition-colors duration-300"
+                className="group relative flex flex-col justify-between rounded-2xl border border-border dark:border-outline-variant bg-card dark:bg-[#1b1b23] p-6 hover:border-primary transition-colors duration-300"
               >
                 <div className="space-y-4">
                   {/* Badges */}

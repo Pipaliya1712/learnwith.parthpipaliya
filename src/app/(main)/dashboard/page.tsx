@@ -4,6 +4,7 @@ import { GalaxyShader } from "@/components/visuals/galaxy-shader";
 import { SequenceShader } from "@/components/visuals/sequence-shader";
 import { CrystalModel } from "@/components/visuals/crystal-model";
 import { formatDistanceToNow } from "date-fns";
+import { Badge } from "@/components/ui/badge";
 import {
   Trophy,
   Activity,
@@ -128,7 +129,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8 min-h-screen pb-12">
       {/* Hero Section with WebGL background */}
-      <section className="relative h-[480px] w-full rounded-2xl overflow-hidden glass-panel p-10 flex flex-col justify-between">
+      <section className="relative h-[480px] w-full rounded-2xl overflow-hidden bg-[#0a0a0f] border border-border p-10 flex flex-col justify-between dark">
         <GalaxyShader />
         
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-8 text-center z-10">
@@ -139,7 +140,7 @@ export default async function DashboardPage() {
             Every day of progress forms your learning constellation.
           </p>
 
-          <div className="mt-12 w-full grid grid-cols-1 md:grid-cols-3 gap-8 items-center pointer-events-auto">
+          <div className="mt-12 w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center pointer-events-auto">
             {/* Left Col: Streak */}
             <div className="text-left space-y-1">
               <div className="flex items-center gap-2">
@@ -149,18 +150,13 @@ export default async function DashboardPage() {
               <p className="text-muted-foreground text-sm">Consistency builds mastery</p>
             </div>
 
-            {/* Middle Col: Streak Visualizer Canvas */}
-            <div className="flex justify-center h-28 w-full max-w-[220px] mx-auto">
-              <SequenceShader activeCount={Math.min(5, streak)} />
-            </div>
-
             {/* Right Col: Level */}
             <div className="text-right space-y-2">
               <div className="flex flex-col items-end">
                 <span className="text-3xl font-extrabold text-primary">LV {progress.level.replace("V", "")}</span>
-                <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wider mt-1">
+                <Badge variant="secondary" className="bg-secondary/20 text-secondary-foreground">
                   +{progress.points} XP
-                </span>
+                </Badge>
               </div>
               <div className="w-full max-w-[200px] ml-auto space-y-1">
                 <div className="flex justify-between text-[10px] font-semibold text-muted-foreground uppercase">

@@ -44,11 +44,7 @@ const navItems = [
     href: "/my-journey",
     icon: Route,
   },
-  {
-    label: "Profile",
-    href: "/profile",
-    icon: User,
-  },
+
   {
     label: "Settings",
     href: "/settings",
@@ -70,18 +66,13 @@ export function AppSidebar() {
 
   const items = isAdmin
     ? [
-        ...navItems.slice(0, 6),
+        ...navItems.slice(0, 5),
         {
-          label: "Admin Review Queue",
-          href: "/admin/review-queue",
+          label: "Admin Panel",
+          href: "/admin",
           icon: ShieldCheck,
         },
-        {
-          label: "Manage Challenges",
-          href: "/admin/challenges",
-          icon: ShieldCheck,
-        },
-        ...navItems.slice(6),
+        ...navItems.slice(5),
       ]
     : navItems;
 

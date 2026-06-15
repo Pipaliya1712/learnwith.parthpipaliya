@@ -99,7 +99,7 @@ export default async function MyJourneyPage() {
           </h3>
 
           {activeClaims.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground text-sm border border-dashed rounded-xl bg-[#1b1b23]/30">
+            <div className="p-8 text-center text-muted-foreground text-sm border border-dashed rounded-xl bg-card/50 dark:bg-[#1b1b23]/30">
               No active challenges. Explore the Challenges tab to claim and start your first task!
             </div>
           ) : (
@@ -107,7 +107,7 @@ export default async function MyJourneyPage() {
               {activeClaims.map((claim: any) => (
                 <div
                   key={claim.id}
-                  className="bg-[#1b1b23] border border-outline-variant rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-primary/50 transition-colors"
+                  className="bg-card dark:bg-[#1b1b23] border border-border dark:border-outline-variant rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-primary/50 transition-colors"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center gap-2.5">
@@ -162,7 +162,7 @@ export default async function MyJourneyPage() {
         </h3>
 
         {completedClaims.length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground text-sm border border-dashed rounded-xl bg-[#1b1b23]/30">
+          <div className="p-8 text-center text-muted-foreground text-sm border border-dashed rounded-xl bg-card/50 dark:bg-[#1b1b23]/30">
             No completed milestones yet. Complete a claimed challenge and get approved to build your timeline!
           </div>
         ) : (
@@ -170,9 +170,9 @@ export default async function MyJourneyPage() {
             {completedClaims.map((claim: any) => (
               <div key={claim.id} className="relative group">
                 {/* Timeline Dot */}
-                <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-primary border-4 border-[#13131b] shadow-[0_0_8px_rgba(192,193,255,0.6)]" />
+                <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-primary border-4 border-background dark:border-[#13131b] shadow-[0_0_8px_rgba(192,193,255,0.6)]" />
                 
-                <div className="bg-[#1b1b23] border border-outline-variant/60 hover:border-primary/40 rounded-xl p-5 space-y-3 transition-colors">
+                <div className="bg-card dark:bg-[#1b1b23] border border-border dark:border-outline-variant/60 hover:border-primary/40 rounded-xl p-5 space-y-3 transition-colors">
                   <div className="flex justify-between items-start">
                     <div>
                       <span className="text-[10px] font-mono text-muted-foreground">
@@ -194,7 +194,7 @@ export default async function MyJourneyPage() {
                   </div>
 
                   {claim.ai_feedback && (
-                    <div className="p-3 bg-[#0d0d15] rounded-lg border border-outline-variant/40 space-y-1.5">
+                    <div className="p-3 bg-muted/50 dark:bg-[#0d0d15] rounded-lg border border-border dark:border-outline-variant/40 space-y-1.5">
                       <div className="flex items-center gap-1 text-[10px] font-bold text-primary uppercase font-mono tracking-wider">
                         <Sparkles className="size-3" />
                         AI Verification Report (Score: {claim.ai_score}/100)

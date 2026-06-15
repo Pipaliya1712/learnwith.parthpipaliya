@@ -86,7 +86,7 @@ export default async function LeaderboardPage() {
         </div>
         
         {/* Toggle weekly vs all time (Visual only) */}
-        <div className="flex gap-1 bg-[#1b1b23] p-1 rounded-xl border border-outline-variant">
+        <div className="flex gap-1 bg-card dark:bg-[#1b1b23] p-1 rounded-xl border border-border dark:border-outline-variant">
           <Button size="sm" className="px-4 bg-primary text-primary-foreground font-bold text-xs uppercase tracking-wider">
             All Time
           </Button>
@@ -97,7 +97,7 @@ export default async function LeaderboardPage() {
       </div>
 
       {items.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed rounded-2xl bg-[#1b1b23]/50">
+        <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed rounded-2xl bg-card/50 dark:bg-[#1b1b23]/50">
           <Trophy className="size-12 text-muted-foreground mb-4" />
           <h2 className="text-xl font-bold">No leaders yet</h2>
           <p className="text-sm text-muted-foreground mt-2 max-w-sm">
@@ -116,7 +116,7 @@ export default async function LeaderboardPage() {
               {top3[1] && (
                 <Link
                   href={`/profile/${top3[1].user_id}`}
-                  className="bg-[#1b1b23] border border-outline-variant rounded-xl flex flex-col items-center justify-center p-4 text-center group hover:border-primary/45 transition-all h-[90%]"
+                  className="bg-card dark:bg-[#1b1b23] border border-border dark:border-outline-variant rounded-xl flex flex-col items-center justify-center p-4 text-center group hover:border-primary/45 transition-all h-[90%]"
                 >
                   <div className="relative mb-3">
                     <Avatar className="w-16 h-16 border-4 border-outline-variant">
@@ -142,7 +142,7 @@ export default async function LeaderboardPage() {
               {top3[0] && (
                 <Link
                   href={`/profile/${top3[0].user_id}`}
-                  className="bg-[#24242e] border-2 border-primary/30 rounded-xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group hover:border-primary/60 transition-all h-full"
+                  className="bg-card dark:bg-[#24242e] border-2 border-primary/30 rounded-xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group hover:border-primary/60 transition-all h-full"
                 >
                   <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
                   <div className="relative mb-4">
@@ -169,7 +169,7 @@ export default async function LeaderboardPage() {
               {top3[2] && (
                 <Link
                   href={`/profile/${top3[2].user_id}`}
-                  className="bg-[#1b1b23] border border-outline-variant rounded-xl flex flex-col items-center justify-center p-4 text-center group hover:border-primary/45 transition-all h-[80%]"
+                  className="bg-card dark:bg-[#1b1b23] border border-border dark:border-outline-variant rounded-xl flex flex-col items-center justify-center p-4 text-center group hover:border-primary/45 transition-all h-[80%]"
                 >
                   <div className="relative mb-3">
                     <Avatar className="w-16 h-16 border-4 border-outline-variant">
@@ -194,7 +194,7 @@ export default async function LeaderboardPage() {
             </div>
 
             {/* My Stats Card */}
-            <div className="lg:col-span-4 bg-[#0d0d15] border border-outline-variant rounded-xl p-6 flex flex-col justify-between min-h-[260px]">
+            <div className="lg:col-span-4 bg-card dark:bg-[#0d0d15] border border-border dark:border-outline-variant rounded-xl p-6 flex flex-col justify-between min-h-[260px]">
               <div>
                 <h3 className="font-mono text-[10px] font-bold text-primary uppercase tracking-widest mb-4">
                   Your Standing
@@ -249,7 +249,7 @@ export default async function LeaderboardPage() {
           </div>
 
           {/* Rankings Table */}
-          <div className="bg-[#1b1b23] border border-outline-variant rounded-xl overflow-hidden">
+          <div className="bg-card dark:bg-[#1b1b23] border border-border dark:border-outline-variant rounded-xl overflow-hidden">
             <div className="px-6 py-4 border-b border-outline-variant/60 flex items-center justify-between">
               <h2 className="text-lg font-bold text-foreground">Global Rankings</h2>
             </div>

@@ -68,11 +68,11 @@ export function AdminReviewList({
     <LWOverlayLoader loading={!!processingId}>
       <div className="space-y-6">
         {/* Header Stats Panel */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#1f1f27] border border-[#464554]/30 p-5 rounded-xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card dark:bg-[#1f1f27] border border-border dark:border-outline-variant/30 p-5 rounded-xl">
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
               Review Inbox
-              <Badge variant="outline" className="bg-[#4cd7f6]/10 text-[#4cd7f6] border-[#4cd7f6]/20 font-mono">
+              <Badge variant="outline" className="bg-primary/10 dark:bg-[#4cd7f6]/10 text-primary dark:text-[#4cd7f6] border-primary/20 dark:border-[#4cd7f6]/20 font-mono">
                 {filteredSubmissions.length} Pending
               </Badge>
             </h2>
@@ -80,15 +80,15 @@ export function AdminReviewList({
           </div>
           
           <div className="flex gap-4">
-            <div className="bg-[#13131b] border border-[#464554]/40 px-4 py-3 rounded-lg flex items-center gap-4">
+            <div className="bg-muted dark:bg-[#13131b] border border-border dark:border-outline-variant/40 px-4 py-3 rounded-lg flex items-center gap-4">
               <div>
                 <p className="text-[10px] uppercase font-bold tracking-wider text-amber-500">Awaiting Review</p>
-                <p className="text-2xl font-bold font-mono text-white">{submissions.length}</p>
+                <p className="text-2xl font-bold font-mono text-foreground">{submissions.length}</p>
               </div>
-              <div className="w-px h-8 bg-[#464554]/40" />
+              <div className="w-px h-8 bg-border dark:bg-outline-variant/40" />
               <div>
-                <p className="text-[10px] uppercase font-bold tracking-wider text-[#4cd7f6]">Filtered</p>
-                <p className="text-2xl font-bold font-mono text-[#4cd7f6]">{filteredSubmissions.length}</p>
+                <p className="text-[10px] uppercase font-bold tracking-wider text-primary dark:text-[#4cd7f6]">Filtered</p>
+                <p className="text-2xl font-bold font-mono text-primary dark:text-[#4cd7f6]">{filteredSubmissions.length}</p>
               </div>
             </div>
           </div>
@@ -96,18 +96,18 @@ export function AdminReviewList({
 
         {/* Bento Filters & Interactive Search Row */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <div className="lg:col-span-4 relative flex items-center bg-[#1f1f27] border border-[#464554]/30 rounded-xl px-3 py-1">
+          <div className="lg:col-span-4 relative flex items-center bg-card dark:bg-[#1f1f27] border border-border dark:border-outline-variant/30 rounded-xl px-3 py-1">
             <Search className="h-4 w-4 text-muted-foreground mr-2 shrink-0" />
             <input
               type="text"
-              className="bg-transparent border-none outline-none focus:ring-0 text-sm w-full placeholder:text-muted-foreground text-white py-2"
+              className="bg-transparent border-none outline-none focus:ring-0 text-sm w-full placeholder:text-muted-foreground text-foreground py-2"
               placeholder="Search by ID, user, or challenge..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          <div className="lg:col-span-5 bg-[#1f1f27] p-3 rounded-xl border border-[#464554]/30 flex items-center gap-3 overflow-x-auto scrollbar-thin">
+          <div className="lg:col-span-5 bg-card dark:bg-[#1f1f27] p-3 rounded-xl border border-border dark:border-outline-variant/30 flex items-center gap-3 overflow-x-auto scrollbar-thin">
             <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase whitespace-nowrap">Filter by:</span>
             <div className="flex gap-1.5">
               {["Python", "Rust", "TypeScript", "SQL"].map((lang) => (
@@ -116,8 +116,8 @@ export function AdminReviewList({
                   onClick={() => setSelectedLanguage(selectedLanguage === lang ? null : lang)}
                   className={`px-2.5 py-1 rounded-md text-xs font-semibold border transition-all ${
                     selectedLanguage === lang
-                      ? "bg-[#4cd7f6]/15 text-[#4cd7f6] border-[#4cd7f6]/40"
-                      : "bg-[#13131b] text-muted-foreground border-[#464554]/30 hover:bg-[#13131b]/80 hover:text-white"
+                      ? "bg-primary/10 dark:bg-[#4cd7f6]/15 text-primary dark:text-[#4cd7f6] border-primary/20 dark:border-[#4cd7f6]/40"
+                      : "bg-muted dark:bg-[#13131b] text-muted-foreground border-border dark:border-outline-variant/30 hover:bg-muted/80 hover:text-foreground"
                   }`}
                 >
                   {lang}
@@ -126,7 +126,7 @@ export function AdminReviewList({
             </div>
           </div>
 
-          <div className="lg:col-span-3 bg-[#1f1f27] px-4 py-3 rounded-xl border border-[#464554]/30 flex items-center justify-between">
+          <div className="lg:col-span-3 bg-card dark:bg-[#1f1f27] px-4 py-3 rounded-xl border border-border dark:border-outline-variant/30 flex items-center justify-between">
             <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase">Auto-Assign</span>
             <button
               onClick={() => {
@@ -136,7 +136,7 @@ export function AdminReviewList({
                 }
               }}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                autoAssign ? "bg-[#4cd7f6]" : "bg-[#13131b] border-[#464554]/50"
+                autoAssign ? "bg-primary dark:bg-[#4cd7f6]" : "bg-muted dark:bg-[#13131b] border-border dark:border-outline-variant/50"
               }`}
             >
               <span
@@ -156,11 +156,11 @@ export function AdminReviewList({
             description={submissions.length === 0 ? "There are no pending submissions to review." : "Try adjusting your search query or filters."}
           />
         ) : (
-          <div className="bg-[#1f1f27] border border-[#464554]/30 rounded-xl overflow-hidden shadow-2xl">
+          <div className="bg-card dark:bg-[#1f1f27] border border-border dark:border-outline-variant/30 rounded-xl overflow-hidden shadow-2xl">
             <div className="overflow-x-auto custom-scrollbar">
               <Table>
-                <TableHeader className="bg-[#13131b]">
-                  <TableRow className="border-b border-[#464554]/30">
+                <TableHeader className="bg-muted dark:bg-[#13131b]">
+                  <TableRow className="border-b border-border dark:border-outline-variant/30">
                     <TableHead className="font-mono text-xs font-bold text-muted-foreground uppercase tracking-wider h-11">Reference</TableHead>
                     <TableHead className="font-mono text-xs font-bold text-muted-foreground uppercase tracking-wider h-11">Candidate / Author</TableHead>
                     <TableHead className="font-mono text-xs font-bold text-muted-foreground uppercase tracking-wider h-11">Module / Project</TableHead>
@@ -168,34 +168,34 @@ export function AdminReviewList({
                     <TableHead className="font-mono text-xs font-bold text-muted-foreground uppercase tracking-wider text-right h-11">Decisions</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody className="divide-y divide-[#464554]/20">
+                <TableBody className="divide-y divide-border dark:divide-outline-variant/20">
                   {filteredSubmissions.map((sub) => {
                     const subRef = `#SUB-${sub.id.substring(0, 4).toUpperCase()}`;
                     return (
                       <Fragment key={sub.id}>
-                        <TableRow className={`hover:bg-[#13131b]/30 transition-colors border-b border-[#464554]/20 ${expandedId === sub.id ? "bg-[#13131b]/20" : ""}`}>
+                        <TableRow className={`hover:bg-muted/50 dark:hover:bg-[#13131b]/30 transition-colors border-b border-border dark:border-outline-variant/20 ${expandedId === sub.id ? "bg-muted dark:bg-[#13131b]/20" : ""}`}>
                           {/* Reference */}
-                          <TableCell className="font-mono font-bold text-xs text-[#4cd7f6]">
+                          <TableCell className="font-mono font-bold text-xs text-primary dark:text-[#4cd7f6]">
                             {subRef}
                           </TableCell>
 
                           {/* Candidate / Author */}
                           <TableCell>
                             <div className="flex items-center gap-3">
-                              <Avatar className="h-7 w-7 border border-[#464554]/40">
+                              <Avatar className="h-7 w-7 border border-border dark:border-outline-variant/40">
                                 <AvatarImage src={sub.profiles?.avatar_url || ""} />
-                                <AvatarFallback className="bg-[#13131b] text-[10px] text-[#c0c1ff]">
+                                <AvatarFallback className="bg-muted dark:bg-[#13131b] text-[10px] text-primary dark:text-[#c0c1ff]">
                                   {(sub.profiles?.display_name || "U")[0].toUpperCase()}
                                 </AvatarFallback>
                               </Avatar>
-                              <span className="font-semibold text-sm text-white">{sub.profiles?.display_name || "Unknown User"}</span>
+                              <span className="font-semibold text-sm text-foreground">{sub.profiles?.display_name || "Unknown User"}</span>
                             </div>
                           </TableCell>
 
                           {/* Module / Project */}
                           <TableCell>
                             <div className="flex flex-col">
-                              <span className="font-medium text-sm text-white">{sub.challenges?.title}</span>
+                              <span className="font-medium text-sm text-foreground">{sub.challenges?.title}</span>
                               <div className="flex items-center gap-2 mt-1">
                                 <span className="text-[10px] uppercase font-bold tracking-wider text-amber-500">
                                   {sub.challenges?.points} XP
@@ -205,7 +205,7 @@ export function AdminReviewList({
                                   href={sub.github_pr_url}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="inline-flex items-center gap-1 text-xs text-[#4cd7f6] hover:underline"
+                                  className="inline-flex items-center gap-1 text-xs text-primary dark:text-[#4cd7f6] hover:underline"
                                 >
                                   View PR <ExternalLink className="h-3 w-3" />
                                 </a>
@@ -221,10 +221,10 @@ export function AdminReviewList({
                                 <Button
                                   variant="ghost"
                                   size="xs"
-                                  className="h-6 px-2 text-xs bg-[#13131b] border border-[#464554]/30 hover:bg-[#1f1f27] text-white"
+                                  className="h-6 px-2 text-xs bg-muted dark:bg-[#13131b] border border-border dark:border-[#464554]/30 hover:bg-card dark:hover:bg-[#1f1f27] text-foreground"
                                   onClick={() => setExpandedId(expandedId === sub.id ? null : sub.id)}
                                 >
-                                  <Bot className="h-3 w-3 mr-1 text-[#4cd7f6]" />
+                                  <Bot className="h-3 w-3 mr-1 text-primary dark:text-[#4cd7f6]" />
                                   {expandedId === sub.id ? "Hide Feedback" : "View Feedback"}
                                 </Button>
                               </div>

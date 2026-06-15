@@ -150,7 +150,7 @@ export default async function ChallengeDetailPage({
                 <Target className="size-5 text-primary" />
                 Acceptance Criteria
               </h3>
-              <div className="bg-[#1b1b23] border border-outline-variant rounded-xl p-6 space-y-3">
+              <div className="bg-card dark:bg-[#1b1b23] border border-border dark:border-outline-variant rounded-xl p-6 space-y-3">
                 {criteriaList.map((criteria: string, index: number) => (
                   <div key={index} className="flex items-start gap-3 text-sm text-muted-foreground">
                     <input
@@ -172,8 +172,8 @@ export default async function ChallengeDetailPage({
               <Cpu className="size-5 text-primary" />
               Runtime Environment
             </h3>
-            <div className="bg-[#0d0d15] rounded-xl border border-outline-variant overflow-hidden">
-              <div className="flex items-center px-4 py-2 bg-[#1b1b23] border-b border-outline-variant gap-3">
+            <div className="bg-card dark:bg-[#0d0d15] rounded-xl border border-border dark:border-outline-variant overflow-hidden">
+              <div className="flex items-center px-4 py-2 bg-muted dark:bg-[#1b1b23] border-b border-border dark:border-outline-variant gap-3">
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
                   <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
@@ -213,7 +213,7 @@ export default async function ChallengeDetailPage({
           </Card>
 
           {/* System Specs Card */}
-          <Card className="border-outline-variant bg-[#1b1b23]">
+          <Card className="border-border dark:border-outline-variant bg-card dark:bg-[#1b1b23]">
             <CardContent className="pt-6 space-y-4">
               <h4 className="text-sm font-bold text-foreground uppercase tracking-wider font-mono flex items-center gap-2">
                 <Terminal className="size-4 text-primary" />
