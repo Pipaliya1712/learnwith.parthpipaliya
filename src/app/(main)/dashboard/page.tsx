@@ -71,38 +71,46 @@ function calculateActiveStreak(submissions: any[]) {
   return streak;
 }
 
-function getMilestoneInfo(points: number) {
-  let prevPoints = 0;
-  let nextPoints = 100;
-  let nextLevel = "V2";
+const GEM_RANKS = [
+  { name: "Quartz", threshold: 0, nextThreshold: 5000 },
+  { name: "Amethyst", threshold: 5000, nextThreshold: 10000 },
+  { name: "Citrine", threshold: 10000, nextThreshold: 20000 },
+  { name: "Garnet", threshold: 20000, nextThreshold: 40000 },
+  { name: "Peridot", threshold: 40000, nextThreshold: 60000 },
+  { name: "Aquamarine", threshold: 60000, nextThreshold: 80000 },
+  { name: "Topaz", threshold: 80000, nextThreshold: 100000 },
+  { name: "Emerald", threshold: 100000, nextThreshold: 150000 },
+  { name: "Sapphire", threshold: 150000, nextThreshold: 200000 },
+  { name: "Diamond", threshold: 200000, nextThreshold: 500000 },
+  { name: "Ruby", threshold: 500000, nextThreshold: 500000 },
+];
 
-  if (points <= 100) {
-    prevPoints = 0;
-    nextPoints = 100;
-    nextLevel = "V2";
-  } else if (points <= 300) {
-    prevPoints = 100;
-    nextPoints = 300;
-    nextLevel = "V3";
-  } else if (points <= 700) {
-    prevPoints = 300;
-    nextPoints = 700;
-    nextLevel = "V4";
-  } else if (points <= 1500) {
-    prevPoints = 700;
-    nextPoints = 1500;
-    nextLevel = "V5";
-  } else {
-    prevPoints = 1500;
-    nextPoints = 5000;
-    nextLevel = "MAX";
+function getMilestoneInfo(points: number) {
+  let currentRank = GEM_RANKS[0];
+  let nextRank = GEM_RANKS[1];
+
+  for (let i = 0; i < GEM_RANKS.length; i++) {
+    if (points >= GEM_RANKS[i].threshold) {
+      currentRank = GEM_RANKS[i];
+      nextRank = GEM_RANKS[i + 1] || GEM_RANKS[i];
+    } else {
+      break;
+    }
   }
 
-  const range = nextPoints - prevPoints;
-  const earned = points - prevPoints;
-  const percent = Math.min(100, Math.max(0, Math.round((earned / range) * 100)));
+  const prevPoints = currentRank.threshold;
+  const nextPoints = currentRank.nextThreshold;
+  const currentLevel = currentRank.name;
+  const nextLevel = currentRank === nextRank ? "MAX" : nextRank.name;
 
-  return { prevPoints, nextPoints, nextLevel, percent };
+  let percent = 100;
+  if (currentRank !== nextRank) {
+    const range = nextPoints - prevPoints;
+    const earned = points - prevPoints;
+    percent = Math.min(100, Math.max(0, Math.round((earned / range) * 100)));
+  }
+
+  return { prevPoints, nextPoints, currentLevel, nextLevel, percent };
 }
 
 export default async function DashboardPage() {
@@ -153,8 +161,8 @@ export default async function DashboardPage() {
             {/* Right Col: Level */}
             <div className="text-right space-y-2">
               <div className="flex flex-col items-end">
-                <span className="text-3xl font-extrabold text-primary">LV {progress.level.replace("V", "")}</span>
-                <Badge variant="secondary" className="bg-secondary/20 text-secondary-foreground">
+                <span className="text-3xl font-extrabold text-primary uppercase">{milestone.currentLevel}</span>
+                <Badge variant="secondary" className="bg-secondary/20 text-secondary-foreground mt-1">
                   +{progress.points} XP
                 </Badge>
               </div>
@@ -236,10 +244,10 @@ export default async function DashboardPage() {
               </span>
               <div className="flex items-center gap-2 mt-1">
                 <Diamond className="text-primary w-9 h-9 fill-primary/10" />
-                <span className="text-3xl font-bold text-primary">LV {progress.level.replace("V", "")}</span>
+                <span className="text-2xl font-bold text-primary uppercase">{milestone.currentLevel}</span>
               </div>
               <p className="mt-3 text-xs text-muted-foreground">
-                {progress.points >= 1500 ? "Master Architect" : "Evolving Developer"}
+                {progress.points >= 150000 ? "Master Architect" : "Evolving Developer"}
               </p>
             </div>
 
@@ -313,7 +321,7 @@ export default async function DashboardPage() {
             <h3 className="text-lg font-bold text-foreground mb-4">Growth Trajectory</h3>
             
             <div className="relative flex-1 min-h-[300px] flex items-center justify-center rounded-xl bg-background/50 border overflow-hidden">
-              <CrystalModel level={progress.level} />
+              <CrystalModel points={progress.points} />
               
               <div className="absolute bottom-4 left-4 right-4 bg-background/85 backdrop-blur-md p-4 rounded-lg border border-primary/10">
                 <div className="flex justify-between items-center mb-1 text-[10px] font-semibold text-primary uppercase">
@@ -355,21 +363,8 @@ export default async function DashboardPage() {
               </Link>
             </div>
           </div>
-
         </div>
-
       </div>
-
-      {/* Floating Focus Mode button */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <Link href="/challenges">
-          <Button variant="gradient" className="rounded-full gap-2 shadow-2xl p-6 hover:scale-105 transition-transform duration-200">
-            <Bolt className="w-5 h-5 fill-current" />
-            <span className="font-bold">Explore Challenges</span>
-          </Button>
-        </Link>
-      </div>
-
     </div>
   );
 }
